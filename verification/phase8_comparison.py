@@ -125,14 +125,23 @@ def compare_and_decide_promotion(
     print("\n--- PROMOTION DECISION ---")
 
     # Decision criteria (per control package):
-    # Promotion success (A): donor available, no fallback, provenance intact, tests pass
+    # Promotion success (A): donor available, credentials available, no fallback, provenance intact, tests pass
     # Promotion deferred (B): donor unstable/insufficient, blocking factors documented, baseline remains default
 
-    if donor_path_quality["available"] and provenance_integrity and len(blocking_factors) == 0:
+    credentials_available = bool(os.environ.get("OPENAI_API_KEY"))
+
+    # Phase 8 critical check: credentials must be available for donor path
+    if not credentials_available:
+        blocking_factors.append("OPENAI_API_KEY not available - cannot verify donor path with real LLM")
+        print("[BLOCK] Credentials unavailable - cannot verify donor integration stability")
+        donor_path_quality["available"] = False  # Correct: stub execution doesn't count
+
+    if donor_path_quality["available"] and credentials_available and provenance_integrity and len(blocking_factors) == 0:
         # Criteria A: Promotion success
         promotion_decision: Literal["promote", "defer"] = "promote"
         print("[DECISION] PROMOTE: Donor-integrated path stable with credentials")
         print("  - Donor path executed successfully")
+        print("  - Credentials were available")
         print("  - No fallback to stub")
         print("  - Provenance integrity preserved")
         print("  - Baseline remains available as fallback")

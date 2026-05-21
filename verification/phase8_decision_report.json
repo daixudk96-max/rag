@@ -1,0 +1,27 @@
+{
+  "promotion_decision": "defer",
+  "donor_path_quality": {
+    "available": false,
+    "hits": 0
+  },
+  "baseline_path_quality": {
+    "available": true,
+    "hits": 0
+  },
+  "provenance_integrity": true,
+  "blocking_factors": [
+    "OPENAI_API_KEY not available - cannot verify donor path with real LLM"
+  ],
+  "evidence": {
+    "provenance_check": {
+      "version_id": "c6c02791-71a2-415c-8aca-d461ffc641f3",
+      "contracts_preserved": [
+        "doc_id",
+        "version_id",
+        "span_id",
+        "chunk_id",
+        "node_id"
+      ]
+    }
+  }
+}
