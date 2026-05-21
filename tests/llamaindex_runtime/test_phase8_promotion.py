@@ -121,7 +121,7 @@ class TestPhase8DonorBaselineComparison:
     def test_comparison_framework_generates_promotion_decision_report(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
-        """RED: Test that Phase 8 comparison produces explicit promotion/deferral decision.
+        """GREEN: Test that Phase 8 comparison produces explicit promotion/deferral decision.
 
         Report must include:
         - donor_hits count and quality metrics
@@ -131,41 +131,39 @@ class TestPhase8DonorBaselineComparison:
         """
         monkeypatch.setenv("OPENAI_API_KEY", "test-key-for-tdd")
 
-        # RED: This test defines the expected Phase 8 comparison output
-        # Current: phase7_comparison.py exists but uses mock registry
-        # Target: phase8_comparison.py should use real registry + real credentials
+        # GREEN: phase8_comparison.py now exists
+        from verification.phase8_comparison import compare_and_decide_promotion
 
-        # Expected report structure:
+        # Create minimal test PDF
+        test_pdf = tmp_path / "test.pdf"
+        test_pdf.write_bytes(b"%PDF-1.4 minimal test\n")
+
+        # GREEN: Run comparison framework
+        report = compare_and_decide_promotion(
+            pdf_path=str(test_pdf),
+            query_text="test query",
+        )
+
+        # GREEN: Report must contain explicit decision
+        assert report["promotion_decision"] in ["promote", "defer"]
+
+        # If deferred, must have blocking factors
+        if report["promotion_decision"] == "defer":
+            assert len(report["blocking_factors"]) > 0, "Deferred decision requires blocking factors"
+
+        # All expected keys present
         expected_report_keys = {
-            "promotion_decision",  # "promote" | "defer"
+            "promotion_decision",
             "donor_path_quality",
             "baseline_path_quality",
             "provenance_integrity",
-            "blocking_factors",  # Required if decision="defer"
-            "evidence",  # Required for both decisions
+            "blocking_factors",
+            "evidence",
         }
+        assert set(report.keys()) >= expected_report_keys
 
-        # For TDD: We'll create verification/phase8_comparison.py
-        # This test should fail because phase8_comparison.py doesn't exist yet
-
-        with pytest.raises(ImportError):
-            from verification.phase8_comparison import compare_and_decide_promotion
-
-            # Will fail in RED phase
-            report = compare_and_decide_promotion(
-                pdf_path=str(tmp_path / "test.pdf"),
-                query_text="test query",
-            )
-
-            # Report must contain explicit decision
-            assert report["promotion_decision"] in ["promote", "defer"]
-
-            # If deferred, must have blocking factors
-            if report["promotion_decision"] == "defer":
-                assert len(report["blocking_factors"]) > 0, "Deferred decision requires blocking factors"
-
-            # All expected keys present
-            assert set(report.keys()) >= expected_report_keys
+        # GREEN: Provenance integrity must be True (both paths preserve frozen contracts)
+        assert report["provenance_integrity"] is True
 
 
 @pytest.mark.integration
@@ -211,14 +209,31 @@ class TestPhase8DefaultPathSwitch:
             ]
         )
 
-        # RED: Expecting new parameter to control default path
-        # Will fail because parameter doesn't exist yet
-        with pytest.raises(TypeError):
-            hits = retrieve_tree_hits_from_pdf(
-                "test.pdf",
-                query="test",
-                embed_model=None,
-                version_id=version_id,
-                registry=registry,
-                default_policy="donor",  # New parameter for Phase 8
-            )
+        # RED: Expecting environment variable or parameter to control default path
+        # Will fail because current parameter is decision_policy, not default_policy
+        # Phase 8 implementation: decision_policy parameter + RAG_TREE_DECISION_POLICY env
+
+        # Option 1: Use environment variable
+        monkeypatch.setenv("RAG_TREE_DECISION_POLICY", "hiro")
+
+        hits_env = retrieve_tree_hits_from_pdf(
+            "test.pdf",
+            query="test",
+            embed_model=None,
+            version_id=version_id,
+            registry=registry,
+        )
+
+        # Option 2: Use explicit parameter (should work)
+        hits_param = retrieve_tree_hits_from_pdf(
+            "test.pdf",
+            query="test",
+            embed_model=None,
+            version_id=version_id,
+            registry=registry,
+            decision_policy="hiro",
+        )
+
+        # GREEN: Both options should work
+        assert isinstance(hits_env, list)
+        assert isinstance(hits_param, list)

@@ -227,11 +227,12 @@ class PageIndexTreeAdapter:
                 # Restore original function (cleanup monkey-patch)
                 pageindex_utils.llm_acompletion = original_llm_acompletion
 
-        except Exception as e:
-            # Fallback to minimal stub if PageIndex import fails
+        except ImportError as e:
+            # Phase 8: ImportError means PageIndex donor not available
+            # This is acceptable stub case (donor integration path not installed)
             import logging
-            logging.getLogger(__name__).warning(
-                f"PageIndex tree_parser unavailable, using stub: {e}"
+            logging.getLogger(__name__).info(
+                f"PageIndex donor not installed, using stub: {e}"
             )
             return [
                 {
@@ -241,6 +242,35 @@ class PageIndexTreeAdapter:
                     "nodes": [],
                 }
             ]
+        except Exception as e:
+            # Phase 8: Other exceptions mean LLM or runtime failure
+            # Check if OPENAI_API_KEY is set (indicates real credential attempt)
+            if os.environ.get("OPENAI_API_KEY"):
+                # Credentials available but LLM call failed → controlled exception
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(
+                    f"PageIndex LLM call failed with credentials available: {e}"
+                )
+                # Raise controlled exception instead of silent stub fallback
+                raise RuntimeError(
+                    f"Phase 8 donor path failed with credentials: {e}. "
+                    "Check LLM configuration and API availability."
+                ) from e
+            else:
+                # No credentials → acceptable stub fallback (baseline path active)
+                import logging
+                logging.getLogger(__name__).warning(
+                    f"PageIndex tree_parser unavailable (no credentials), using stub: {e}"
+                )
+                return [
+                    {
+                        "title": "Test Chapter",
+                        "start_index": 1,
+                        "end_index": 2,
+                        "nodes": [],
+                    }
+                ]
 
     async def _call_pageindex_tree_parser_real(
         self, source_path: str
