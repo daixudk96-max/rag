@@ -116,27 +116,53 @@ class PageIndexTreeAdapter:
         Returns
         -------
         list[BackendHit]
-            Intermediate hits from page-level tree.
+            Intermediate hits from page-level tree with exact chunk/span provenance.
         """
-        # TODO: Implement PageIndex reasoning-based retrieval
-        # Current: Return placeholder hits for TDD phase
         nodes = registry.query_tree_nodes_by_version(version_id)
+        tree_node_spans = registry.query_tree_node_spans_by_version(version_id)
+        vector_chunk_spans = registry.query_vector_chunk_spans_by_version(version_id)
 
-        hits = []
-        for node in nodes[:limit if limit else len(nodes)]:
-            hit = BackendHit(
-                score=None,  # PageIndex doesn't use similarity scores
-                text_preview=node.get("summary_text", ""),
-                heading_path=node.get("heading_path"),
-                page_no=node.get("page_no"),
-                span_ids=[],  # Will be filled by SpanIndexer
-                node_id=node["node_id"],
-                chunk_id=None,  # Not applicable for tree-only retrieval
-                entity_id=None,
-                relation_id=None,
-            )
-            hits.append(hit)
+        span_ids_by_node: dict[UUID, list[UUID]] = {}
+        for row in tree_node_spans:
+            span_ids_by_node.setdefault(row["node_id"], []).append(row["span_id"])
 
+        chunk_ids_and_spans_by_node: dict[UUID, list[tuple[UUID, list[UUID]]]] = {}
+        for node in nodes:
+            node_id = node["node_id"]
+            node_span_ids = set(span_ids_by_node.get(node_id, []))
+            if not node_span_ids:
+                continue
+
+            chunk_to_spans: dict[UUID, list[UUID]] = {}
+            for row in vector_chunk_spans:
+                chunk_id = row["chunk_id"]
+                span_id = row["span_id"]
+                if span_id in node_span_ids:
+                    chunk_to_spans.setdefault(chunk_id, []).append(span_id)
+
+            if chunk_to_spans:
+                chunk_ids_and_spans_by_node[node_id] = list(chunk_to_spans.items())
+
+        hits: list[BackendHit] = []
+        for node in nodes:
+            node_id = node["node_id"]
+            chunk_entries = chunk_ids_and_spans_by_node.get(node_id, [])
+            for chunk_id, span_ids in chunk_entries:
+                hit = BackendHit(
+                    score=None,
+                    text_preview=node.get("summary_text", ""),
+                    heading_path=node.get("heading_path"),
+                    page_no=node.get("page_no") or node.get("page_start"),
+                    span_ids=span_ids,
+                    node_id=node_id,
+                    chunk_id=chunk_id,
+                    entity_id=None,
+                    relation_id=None,
+                )
+                hits.append(hit)
+
+        if limit is not None:
+            return hits[:limit]
         return hits
 
     def _call_pageindex_tree_parser_stub(
