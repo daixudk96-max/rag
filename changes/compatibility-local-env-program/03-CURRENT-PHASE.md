@@ -5,23 +5,58 @@
 - env contract/template freeze: completed
 - RuntimeSettings extension: completed
 - unified seam migration: completed
-- real-validation handoff: active
+- real-validation handoff: completed
 
-## Active Phase
+## Program Complete
 
-### Phase 4 — Real-validation handoff (ACTIVE)
+All 4 phases completed successfully. The current real validation chain has migrated from session-scoped secret injection to local .env configuration method.
 
-Goal:
-- sync the real-validation child package to the local `.env` workflow
-- verify a no-session-mutation workflow is possible
+### Summary
 
-Exit criteria:
-- real-validation package reads from local .env (not session mutation)
-- real-validation tests pass with RuntimeSettings-based config
-- documentation updated to reflect local .env workflow
-- no direct os.getenv(OPENAI_API_KEY) in real-validation code
+**Before (Session-Scoped):**
+- OPENAI_API_KEY injected via shell session
+- Direct os.getenv() calls scattered in code
+- Session mutation required for each validation run
+- Credentials transient, not persisted locally
+
+**After (Local .env):**
+- OPENAI_API_KEY stored in local untracked .env file
+- RuntimeSettings.from_env_llm_only() provides centralized config
+- No session mutation required - values loaded from local file
+- Credentials persistent locally, template tracked for team sharing
+
+### Frozen Decisions Preserved
+
+- Donor priority unchanged
+- Provenance contracts unchanged
+- No graph/multimodal branch reopening
+- No new donor strategy discussions
+
+### Files Changed
+
+1. `.env.example` - tracked template with all variables
+2. `llamaindex_runtime/config.py` - RuntimeSettings with LLM fields + from_env_llm_only()
+3. `llamaindex_runtime/llm/__init__.py` - Unified LLM seam migrated to RuntimeSettings
+4. `changes/compatibility-real-validation-program/` - Updated to local .env workflow
+
+### Test Coverage
+
+- Phase 1: No tests (template freeze)
+- Phase 2: 12 TDD tests (RuntimeSettings LLM fields) - all GREEN
+- Phase 3: 8 TDD tests (unified seam migration) - all GREEN
+- Phase 4: Control package update (no code changes)
+
+Total: 20 new tests, all passing, regression tests passing
 
 ## Completed Phases
+
+### Phase 4 — Real-validation handoff (COMPLETED)
+
+Exit criteria achieved:
+- real-validation package reads from local .env (not session mutation)
+- RuntimeSettings.from_env_llm_only() provides LLM config
+- documentation updated: frozen decision changed from session-scoped to local .env
+- no direct os.getenv(OPENAI_API_KEY) in real-validation code
 
 ### Phase 3 — Unified seam migration (COMPLETED)
 
