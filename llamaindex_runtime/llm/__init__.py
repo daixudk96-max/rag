@@ -39,12 +39,23 @@ def get_llm() -> LLM:
     Returns
     -------
     LLM
-        LlamaIndex LLM instance configured from environment.
+        LlamaIndex LLM instance configured from RuntimeSettings.
 
     Configuration
     -------------
-    - If OPENAI_API_KEY exists → Use litellm with OpenAI
+    - Reads from RuntimeSettings (centralized config):
+      - openai_api_key: required for real LLM
+      - llm_model: default "gpt-4o-mini"
+      - llm_temperature: default 0.0
+      - openai_base_url: optional custom API endpoint
+    - If openai_api_key exists → Use litellm with OpenAI
     - Otherwise → MockLLM (for testing)
+
+    Phase 3 Migration:
+    - Migrated off direct os.getenv to RuntimeSettings
+    - Local .env values flow through centralized config
+    - No session mutation required
+    - LLM config independent of DATABASE_URL
 
     Returns
     -------
@@ -56,16 +67,20 @@ def get_llm() -> LLM:
     if _llm_instance is not None:
         return _llm_instance
 
-    # Check if OpenAI API key exists
-    openai_key = os.getenv("OPENAI_API_KEY")
+    # Phase 3: Read from RuntimeSettings (not direct os.getenv)
+    # Use from_env_llm_only() to avoid DATABASE_URL requirement
+    from llamaindex_runtime.config import RuntimeSettings
+    llm_config = RuntimeSettings.from_env_llm_only()
 
-    if openai_key:
+    if llm_config["openai_api_key"]:
         # Use litellm completion wrapper (compatible with LlamaIndex)
         # litellm is already used by PageIndex donor
         # Create custom LLM wrapper that calls litellm
         _llm_instance = LiteLLMWrapper(
-            model="gpt-4o-mini",
-            api_key=openai_key,
+            model=llm_config["llm_model"],
+            api_key=llm_config["openai_api_key"],
+            temperature=llm_config["llm_temperature"],
+            api_base=llm_config["openai_base_url"] if llm_config["openai_base_url"] else None,
         )
     else:
         # Use MockLLM for testing (no real API calls)
@@ -84,9 +99,16 @@ class LiteLLMWrapper(LLM):
     model: str = "gpt-4o-mini"
     api_key: str | None = None
     temperature: float = 0.0
+    api_base: str | None = None  # Phase 3: Support custom base URL
 
     # ClassVar for metadata (LlamaIndex protocol)
     _model_name: ClassVar[str] = "litellm-gpt-4o-mini"
+
+    @property
+    def metadata(self) -> Any:
+        """LLM metadata (LlamaIndex protocol)."""
+        from llama_index.core.llms import LLMMetadata
+        return LLMMetadata(model_name=self._model_name)
 
     def complete(self, prompt: str, **kwargs: Any) -> CompletionResponse:
         """Complete prompt using litellm."""
@@ -96,12 +118,49 @@ class LiteLLMWrapper(LLM):
             messages=[{"role": "user", "content": prompt}],
             temperature=self.temperature,
             api_key=self.api_key,
+            api_base=self.api_base,
         )
 
         # Return CompletionResponse (LlamaIndex protocol)
         return CompletionResponse(
             text=response.choices[0].message.content,
         )
+
+    def chat(self, messages: list[dict[str, str]], **kwargs: Any) -> Any:
+        """Chat completion using litellm."""
+        response = litellm.completion(
+            model=self.model,
+            messages=messages,
+            temperature=self.temperature,
+            api_key=self.api_key,
+            api_base=self.api_base,
+        )
+        from llama_index.core.llms import ChatResponse
+        return ChatResponse(message=response.choices[0].message)
+
+    async def acomplete(self, prompt: str, **kwargs: Any) -> CompletionResponse:
+        """Async complete - delegates to sync complete for simplicity."""
+        return self.complete(prompt, **kwargs)
+
+    async def achat(self, messages: list[dict[str, str]], **kwargs: Any) -> Any:
+        """Async chat - delegates to sync chat for simplicity."""
+        return self.chat(messages, **kwargs)
+
+    def stream_complete(self, prompt: str, **kwargs: Any) -> Any:
+        """Stream complete - not implemented, raises NotImplementedError."""
+        raise NotImplementedError("Streaming not supported in LiteLLMWrapper")
+
+    async def astream_complete(self, prompt: str, **kwargs: Any) -> Any:
+        """Async stream complete - not implemented."""
+        raise NotImplementedError("Async streaming not supported in LiteLLMWrapper")
+
+    def stream_chat(self, messages: list[dict[str, str]], **kwargs: Any) -> Any:
+        """Stream chat - not implemented."""
+        raise NotImplementedError("Chat streaming not supported in LiteLLMWrapper")
+
+    async def astream_chat(self, messages: list[dict[str, str]], **kwargs: Any) -> Any:
+        """Async stream chat - not implemented."""
+        raise NotImplementedError("Async chat streaming not supported in LiteLLMWrapper")
 
 
 async def llm_acompletion_unified(

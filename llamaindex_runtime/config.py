@@ -75,3 +75,22 @@ class RuntimeSettings:
             llm_temperature=float(os.getenv("LLM_TEMPERATURE", "0.0")),
             openai_base_url=os.getenv("OPENAI_BASE_URL", ""),
         )
+
+    @classmethod
+    def from_env_llm_only(cls) -> dict[str, str | float]:
+        """Load only LLM configuration from environment without DATABASE_URL requirement.
+
+        Phase 3: Used by unified LLM seam to load local .env LLM values
+        without requiring database configuration.
+
+        Returns
+        -------
+        dict[str, str | float]
+            LLM config dict: openai_api_key, llm_model, llm_temperature, openai_base_url
+        """
+        return {
+            "openai_api_key": os.getenv("OPENAI_API_KEY", ""),
+            "llm_model": os.getenv("LLM_MODEL", "gpt-4o-mini"),
+            "llm_temperature": float(os.getenv("LLM_TEMPERATURE", "0.0")),
+            "openai_base_url": os.getenv("OPENAI_BASE_URL", ""),
+        }
