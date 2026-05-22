@@ -4,6 +4,8 @@ import os
 from dataclasses import dataclass
 from typing import ClassVar
 from urllib.parse import urlparse
+from pathlib import Path
+from dotenv import load_dotenv, dotenv_values
 
 
 @dataclass(frozen=True)
@@ -61,6 +63,18 @@ class RuntimeSettings:
 
     @classmethod
     def from_env(cls) -> "RuntimeSettings":
+        # Phase 3 fix: Load .env file before reading environment
+        # This enables local file-based config without session mutation
+        #
+        # Strategy: Find .env in cwd, load values into os.environ
+        # This works even when os.environ was cleared (pure file-based loading)
+        env_path = Path.cwd() / ".env"
+        if env_path.exists():
+            # Load .env file values into os.environ
+            # dotenv_values returns dict, we merge into os.environ
+            env_values = dotenv_values(env_path)
+            os.environ.update(env_values)
+
         return cls(
             database_url=os.getenv("DATABASE_URL", ""),
             vector_backend=os.getenv("VECTOR_BACKEND", "pgvector"),
@@ -83,11 +97,26 @@ class RuntimeSettings:
         Phase 3: Used by unified LLM seam to load local .env LLM values
         without requiring database configuration.
 
+        Phase 3 Fix: Added explicit .env file loading to enable true file-based config
+        (not just process environment). Works even when os.environ is cleared.
+
         Returns
         -------
         dict[str, str | float]
             LLM config dict: openai_api_key, llm_model, llm_temperature, openai_base_url
         """
+        # Phase 3 fix: Load .env file before reading environment
+        # This enables local file-based LLM config without session mutation
+        #
+        # Strategy: Find .env in cwd, load values into os.environ
+        # This works even when os.environ was cleared (pure file-based loading)
+        env_path = Path.cwd() / ".env"
+        if env_path.exists():
+            # Load .env file values into os.environ
+            # dotenv_values returns dict, we merge into os.environ
+            env_values = dotenv_values(env_path)
+            os.environ.update(env_values)
+
         return {
             "openai_api_key": os.getenv("OPENAI_API_KEY", ""),
             "llm_model": os.getenv("LLM_MODEL", "gpt-4o-mini"),

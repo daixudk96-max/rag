@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llamaindex-runtime"
+version = "0.1.0"
+description = "Formal LlamaIndex-first runtime for provenance-centric multi-view RAG"
+requires-python = ">=3.11"
+dependencies = [
+  "docling",
+  "llama-index-core",
+  "llama-index-readers-docling",
+  "llama-index-node-parser-docling",
+  "psycopg[binary]>=3.2.0",
+  "sentence-transformers",
+  "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pillow", "pytest>=8.3.0"]
+graph = ["llama-index-graph-stores-neo4j"]
+qdrant = ["qdrant-client>=1.9.0"]
+milvus = ["pymilvus>=2.3.0"]
+
+[tool.pytest.ini_options]
+markers = [
+    "live_st: live SentenceTransformers integration tests (model download required)",
+]
