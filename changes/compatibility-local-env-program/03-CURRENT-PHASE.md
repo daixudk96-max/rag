@@ -3,26 +3,34 @@
 ## Program Status
 
 - env contract/template freeze: completed
-- RuntimeSettings extension: active
-- unified seam migration: pending
+- RuntimeSettings extension: completed
+- unified seam migration: active
 - real-validation handoff: pending
 
 ## Active Phase
 
-### Phase 2 — RuntimeSettings extension (ACTIVE)
+### Phase 3 — Unified seam migration (ACTIVE)
 
 Goal:
-- extend the central settings seam with LLM configuration fields
-- ensure all LLM config stops living in ad-hoc direct env reads
-- preserve default behavior when no real key is present
+- migrate the unified LLM path off direct session-only secret dependency
+- support local .env loading for real validation
+- preserve mock/fallback behavior when no real key exists
 
 Exit criteria:
-- RuntimeSettings class has LLM-specific fields
-- config.py reads from local .env when available
-- validation tests confirm new configuration inputs work cleanly
-- existing runtime behavior unchanged when LLM key absent
+- unified LLM seam reads from RuntimeSettings instead of direct os.getenv
+- local .env values flow through centralized config
+- mock/fallback preserved when OPENAI_API_KEY absent
+- real validation can run with local .env without session mutation
 
 ## Completed Phases
+
+### Phase 2 — RuntimeSettings extension (COMPLETED)
+
+Exit criteria achieved:
+- RuntimeSettings class has LLM-specific fields (openai_api_key, llm_model, llm_temperature, openai_base_url)
+- config.py reads from local .env via from_env()
+- validation tests pass (12 tests, all GREEN)
+- existing runtime behavior unchanged when LLM absent
 
 ### Phase 1 — Env contract and template freeze (COMPLETED)
 
@@ -34,9 +42,6 @@ Exit criteria achieved:
 - secret slots obvious local-fill placeholders
 
 ## Upcoming Phases
-
-### Phase 3 — Unified seam migration
-- move the unified LLM path off direct session-only secret dependency
 
 ### Phase 4 — Real-validation handoff
 - sync the real-validation child package to the local `.env` workflow
