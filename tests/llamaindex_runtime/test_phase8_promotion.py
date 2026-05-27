@@ -7,9 +7,9 @@ Tests verify whether donor-integrated path can replace baseline as default:
 
 Exit criteria: Either promotion success (A) or promotion deferred with evidence (B).
 """
+
 from __future__ import annotations
 
-import os
 import uuid
 from pathlib import Path
 from typing import Any
@@ -33,7 +33,6 @@ class TestPhase8CredentialedDonorExecution:
         monkeypatch.setenv("OPENAI_API_KEY", "test-key-for-tdd")
 
         from llamaindex_runtime.tree.pageindex_adapter import PageIndexTreeAdapter
-        from llamaindex_runtime.llm import get_llm
 
         # Create test PDF (minimal)
         test_pdf = tmp_path / "test_minimal.pdf"
@@ -52,24 +51,18 @@ class TestPhase8CredentialedDonorExecution:
         # 1. PageIndex import may fail (external dependency)
         # 2. Even if import succeeds, LLM call may fail without real API
 
-        # For TDD: We expect either successful LLM seam call OR controlled fallback
-        # NOT silent stub fallback without logging
-
-        with pytest.raises(Exception) as exc_info:
-            # Should raise controlled exception when LLM call fails
-            # NOT silently return stub tree
+        # Phase 8 TDD: Expect controlled RuntimeError when credentials present but execution fails
+        # NOT: generic Exception, ImportError, or silent stub fallback
+        with pytest.raises(RuntimeError) as exc_info:
             adapter.index_tree(
                 source_path=str(test_pdf),
                 version_id=version_id,
                 registry=registry,
             )
 
-        # RED phase: Exception should be LLM-related, NOT PageIndex import failure
-        # Target: we want to see LLM authentication or network error
-        # NOT: "PageIndex tree_parser unavailable, using stub"
-
-        # For Phase 8 success: This test should pass with real credentials
-        # For Phase 8 deferred: This test proves LLM integration instability
+        # GREEN: Verify error is controlled Phase 8 RuntimeError (not generic exception)
+        assert "Phase 8 donor path failed with credentials" in str(exc_info.value)
+        assert "Check LLM configuration" in str(exc_info.value)
 
     def test_donor_path_preserves_provenance_under_real_llm(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
@@ -109,9 +102,15 @@ class TestPhase8CredentialedDonorExecution:
 
         # Provenance integrity check
         for node in written_nodes:
-            assert isinstance(node.get("version_id"), uuid.UUID), "Frozen contract violation: version_id must be UUID"
-            assert isinstance(node.get("node_id"), uuid.UUID), "Frozen contract violation: node_id must be UUID"
-            assert node["version_id"] == version_id, "Provenance anchoring violation: version_id mismatch"
+            assert isinstance(
+                node.get("version_id"), uuid.UUID
+            ), "Frozen contract violation: version_id must be UUID"
+            assert isinstance(
+                node.get("node_id"), uuid.UUID
+            ), "Frozen contract violation: node_id must be UUID"
+            assert (
+                node["version_id"] == version_id
+            ), "Provenance anchoring violation: version_id mismatch"
 
 
 @pytest.mark.integration
@@ -149,7 +148,9 @@ class TestPhase8DonorBaselineComparison:
 
         # If deferred, must have blocking factors
         if report["promotion_decision"] == "defer":
-            assert len(report["blocking_factors"]) > 0, "Deferred decision requires blocking factors"
+            assert (
+                len(report["blocking_factors"]) > 0
+            ), "Deferred decision requires blocking factors"
 
         # All expected keys present
         expected_report_keys = {

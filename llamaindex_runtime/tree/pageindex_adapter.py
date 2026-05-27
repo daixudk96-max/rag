@@ -8,11 +8,12 @@ References:
 - PageIndex donor repo page_index.py (see donor research docs)
 """
 from __future__ import annotations
+from llamaindex_runtime.config import RuntimeSettings
 
 import os
 import sys
 import uuid
-from typing import Any, Sequence
+from typing import Any
 from uuid import UUID
 
 # Add PageIndex donor repo to sys.path for adapter wrapping
@@ -20,7 +21,7 @@ PAGEINDEX_REPO_PATH = r"C:\Users\daixu\Downloads\rag-upstreams\PageIndex"
 if os.path.exists(PAGEINDEX_REPO_PATH):
     sys.path.insert(0, PAGEINDEX_REPO_PATH)
 
-from .backend_adapter import BackendHit, TreeBackendAdapter
+from .backend_adapter import BackendHit  # noqa: E402
 
 
 class PageIndexTreeAdapter:
@@ -46,44 +47,39 @@ class PageIndexTreeAdapter:
         version_id: UUID,
         registry: Any,
     ) -> None:
-        """Build tree structure from source PDF and write through registry.
+        """Build tree structure from source document and write through registry.
 
-        This method:
-        1. Calls PageIndex tree_parser() to extract embedded tree
-        2. Flattens embedded tree to flat node list
-        3. Generates UUIDs for node_id
-        4. Builds heading_path from parent chain
-        5. Writes through registry.write_tree()
+        This method detects file type and routes to appropriate parser:
+        - PDF files: Calls PageIndex tree_parser()
+        - Markdown files: Calls PageIndex md_to_tree()
+        - Other files: Falls back to stub
+
+        Then flattens embedded tree to flat node list with UUID provenance.
 
         Parameters
         ----------
         source_path:
-            Path to PDF document.
+            Path to source document (PDF or Markdown).
         version_id:
             Version UUID for provenance anchoring.
         registry:
             RegistryWriter seam for persisting tree nodes.
         """
-        # TODO: Port real tree_parser() from PageIndex page_index.py:1029-1063
-        # Current: Use stub/mock for TDD phase
-        embedded_tree = self._call_pageindex_tree_parser_stub(source_path)
+        # Detect file type and call appropriate parser
+        if source_path.lower().endswith('.md'):
+            embedded_tree = self._call_pageindex_md_to_tree(source_path)
+        else:
+            # Default: PDF processing
+            embedded_tree = self._call_pageindex_tree_parser_stub(source_path)
 
         # Flatten embedded tree to local schema (pass version_id for provenance)
         flat_nodes = self._flatten_embedded_tree(
             embedded_tree, version_id=version_id
         )
 
-        # Build node_spans (placeholder - will be filled by SpanIndexer)
+        # node_spans will be populated later by SpanIndexer (not here)
+        # Passing empty list to avoid FK violations with placeholder None values
         node_spans = []
-        for node_dict in flat_nodes:
-            # span_ids will be populated later when spans are indexed
-            node_spans.append(
-                {
-                    "node_id": node_dict["node_id"],
-                    "span_id": None,  # Placeholder
-                    "ordinal_no": 0,
-                }
-            )
 
         # Write through registry seam
         registry.write_tree(
@@ -91,6 +87,7 @@ class PageIndexTreeAdapter:
             nodes=flat_nodes,
             node_spans=node_spans,
         )
+
 
     def retrieve_tree_hits(
         self,
@@ -203,8 +200,11 @@ class PageIndexTreeAdapter:
             try:
                 # Configure PageIndex to disable LLM/Embedding features
                 # (per control package: only transplant structural tree build)
+                # Phase: Read LLM config from RuntimeSettings (not hardcoded)
+                llm_config = RuntimeSettings.from_env_llm_only()
+
                 user_opt = {
-                    "model": "gpt-4o-mini",  # Unified seam provides model config
+                    "model": llm_config["llm_model"],  # Unified seam provides model config
                     "if_add_node_id": None,  # We generate UUIDs ourselves
                     "if_add_node_text": "no",  # Don't add full text
                     "if_add_node_summary": "no",  # Don't use LLM summaries
@@ -281,6 +281,99 @@ class PageIndexTreeAdapter:
         """
         return self._call_pageindex_tree_parser_stub(source_path)
 
+    def _call_pageindex_md_to_tree(
+        self, source_path: str
+    ) -> list[dict[str, Any]]:
+        """Call PageIndex md_to_tree() for markdown file processing.
+
+        Phase 8: Routes PageIndex md_to_tree through unified LLM seam,
+        preventing donor-owned LLM configuration stack.
+
+        Parameters
+        ----------
+        source_path:
+            Path to markdown document.
+
+        Returns
+        -------
+        list[dict]
+            Embedded tree structure from PageIndex md_to_tree.
+        """
+        # Try to import and call real PageIndex md_to_tree
+        try:
+            import asyncio
+            import logging
+            from pageindex.page_index_md import md_to_tree
+            from llamaindex_runtime.config import RuntimeSettings
+
+            logger = logging.getLogger(__name__)
+
+            # Phase 8: Configure md_to_tree with control package parameters
+            # Read LLM config from RuntimeSettings (unified seam)
+            llm_config = RuntimeSettings.from_env_llm_only()
+
+            # Call md_to_tree with control package settings
+            # Control package: disable LLM summaries, full text, add node_id
+            result = asyncio.run(
+                md_to_tree(
+                    md_path=source_path,
+                    if_add_node_summary='no',  # Control package: no LLM summaries
+                    if_add_node_text='no',     # Control package: no full text
+                    if_add_node_id='yes',      # PageIndex adds node_id, we replace with UUID
+                    model=llm_config["llm_model"],  # Unified seam provides model
+                )
+            )
+
+            # Extract structure from result dict
+            embedded_tree = result.get("structure", [])
+            return embedded_tree
+
+        except ImportError as e:
+            # Phase 8: ImportError means PageIndex donor not available
+            import logging
+            logging.getLogger(__name__).info(
+                f"PageIndex md_to_tree not installed, using stub: {e}"
+            )
+            return [
+                {
+                    "title": "Test Markdown Chapter",
+                    "line_num": 1,
+                    "level": 1,
+                    "nodes": [],
+                }
+            ]
+        except Exception as e:
+            # Phase 8: Other exceptions mean LLM or runtime failure
+            # Check if OPENAI_API_KEY is set (indicates real credential attempt)
+            import os
+            if os.environ.get("OPENAI_API_KEY"):
+                # Credentials available but LLM call failed → controlled exception
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(
+                    f"PageIndex md_to_tree failed with credentials available: {e}"
+                )
+                # Raise controlled exception instead of silent stub fallback
+                raise RuntimeError(
+                    f"Phase 8 donor path (markdown) failed with credentials: {e}. "
+                    "Check LLM configuration and API availability."
+                ) from e
+            else:
+                # No credentials → acceptable stub fallback (baseline path active)
+                import logging
+                logging.getLogger(__name__).warning(
+                    f"PageIndex md_to_tree unavailable (no credentials), using stub: {e}"
+                )
+                return [
+                    {
+                        "title": "Test Markdown Chapter",
+                        "line_num": 1,
+                        "level": 1,
+                        "nodes": [],
+                    }
+                ]
+
+
     def _flatten_embedded_tree(
         self,
         embedded_tree: list[dict[str, Any]],
@@ -330,10 +423,15 @@ class PageIndexTreeAdapter:
             else:
                 heading_path = node_dict['title']
 
-            # 3. Use start_index as page_no, ignore end_index
-            page_no = node_dict.get("start_index")
+            # 3. Use start_index (PDF) or line_num (markdown) as page_no
+            # PDF structure: start_index/end_index (page numbers)
+            # Markdown structure: line_num (line numbers, not pages)
+            page_no = node_dict.get("start_index") or node_dict.get("line_num")
 
-            # 4. Heading-based summary (not LLM)
+            # 4. Compute level_no from heading_path depth
+            level_no = self._compute_level_from_heading(heading_path)
+
+            # 5. Heading-based summary (not LLM)
             summary_text = self._heading_based_summary(node_dict, heading_path)
 
             # Create flat node with frozen provenance
@@ -342,7 +440,7 @@ class PageIndexTreeAdapter:
                 "version_id": version_id,  # Frozen provenance contract
                 "parent_node_id": parent_node_id,
                 "node_type": "page_index",
-                "level_no": None,  # Will be computed from heading_path depth
+                "level_no": level_no,  # Computed from heading depth
                 "title": node_dict["title"],
                 "heading_path": heading_path,
                 "page_no": page_no,
@@ -394,3 +492,38 @@ class PageIndexTreeAdapter:
             return f"{last_heading} (page {page_no})"
         else:
             return last_heading
+
+    def _compute_level_from_heading(self, heading_path: str) -> int:
+        """Compute level_no from heading path markdown depth.
+
+        Markdown headings use # symbols for depth:
+        - "#" (level 1) → level_no = 1
+        - "##" (level 2) → level_no = 2
+        - "###" (level 3) → level_no = 3
+        - etc.
+
+        For non-markdown headings (plain text), default to level 1.
+
+        Parameters
+        ----------
+        heading_path:
+            Full heading path (e.g., "# Title/## Section").
+
+        Returns
+        -------
+        int
+            Level number (1-based).
+        """
+        # Extract last heading component from path
+        last_heading = heading_path.split("/")[-1]
+
+        # Count # symbols at start of heading
+        level = 0
+        for char in last_heading:
+            if char == "#":
+                level += 1
+            else:
+                break
+
+        # Default to level 1 if no # symbols found
+        return level if level > 0 else 1
