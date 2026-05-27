@@ -259,19 +259,10 @@ class EnhancedPageIndexClient:
                 }
 
             except ImportError:
-                # PageIndex donor未安装，fallback到PageIndexTreeAdapter
-                self.adapter.index_tree(
-                    source_path=file_path,
-                    version_id=version_id or doc_id,
-                    registry=self.registry if write_to_registry else None,
-                )
-
-                # 从Registry读取树结构（fallback）
-                if write_to_registry and self.registry:
-                    nodes = self.registry.query_tree_nodes_by_version(version_id or doc_id)
-                    tree_structure = self._nodes_to_tree(nodes)
-                else:
-                    tree_structure = []
+                # Phase 8 client layer fix: Donor not installed, use stub directly
+                # DO NOT call adapter.index_tree() (would trigger second md_to_tree call)
+                # Directly create document with stub structure (consistent with PDF path)
+                tree_structure = []  # Stub: empty structure
 
                 self.documents[doc_id] = {
                     'id': doc_id,
