@@ -1,0 +1,95 @@
+{
+  "timestamp": "2026-05-28T02:59:00.883892+00:00",
+  "overall_quality": "fail",
+  "metrics": {
+    "hit_rate": 1.0,
+    "top1_relevance": 0.3,
+    "stability": 0.0,
+    "test_count": 10
+  },
+  "blocking_factors": [
+    "top1_relevance: 30.00% (need >= 90.00%)",
+    "stability: 0.00% (need >= 85.00%)"
+  ],
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85,
+    "tree_depth": 3,
+    "node_chunk_mapping_rate": 0.8,
+    "heading_path_completeness": 0.95,
+    "min_test_queries": 10
+  },
+  "per_query": [
+    {
+      "query": "市场概况",
+      "type": "factual",
+      "hit_count": 4,
+      "top1_relevant": true,
+      "stability": 0.0
+    },
+    {
+      "query": "技术架构设计",
+      "type": "structural",
+      "hit_count": 4,
+      "top1_relevant": true,
+      "stability": 0.0
+    },
+    {
+      "query": "核心算法原理",
+      "type": "factual",
+      "hit_count": 4,
+      "top1_relevant": true,
+      "stability": 0.0
+    },
+    {
+      "query": "数据流程",
+      "type": "structural",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    },
+    {
+      "query": "实验结果",
+      "type": "evidence_sensitive",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    },
+    {
+      "query": "系统部署方案",
+      "type": "factual",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    },
+    {
+      "query": "性能指标",
+      "type": "evidence_sensitive",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    },
+    {
+      "query": "安全策略",
+      "type": "factual",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    },
+    {
+      "query": "错误处理机制",
+      "type": "factual",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    },
+    {
+      "query": "总结与展望",
+      "type": "evidence_sensitive",
+      "hit_count": 4,
+      "top1_relevant": false,
+      "stability": 0.0
+    }
+  ]
+}

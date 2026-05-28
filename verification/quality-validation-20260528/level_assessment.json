@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-05-28T03:00:30.811794+00:00",
+  "level": "Level_3",
+  "level_meaning": "Query quality basically correct but not stable enough (查得基本对)",
+  "blocking_factors": [
+    "top1_relevance: 30.00% (need >= 90.00%)",
+    "stability: 0.00% (need >= 85.00%)"
+  ],
+  "passing_factors": [
+    "hit_rate: 100.00%",
+    "test_count: 10",
+    "tree_depth: 3",
+    "node_chunk_mapping: 100.00%",
+    "heading_path: 100.00%"
+  ],
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85,
+    "tree_depth": 3,
+    "node_chunk_mapping_rate": 0.8,
+    "heading_path_completeness": 0.95,
+    "min_test_queries": 10
+  },
+  "sources": {
+    "query_quality": "2026-05-28T02:59:00.883892+00:00",
+    "tree_diagnosis": "2026-05-28T02:59:00.883892+00:00",
+    "evidence_chain": "2026-05-28T02:59:00.883892+00:00"
+  }
+}
