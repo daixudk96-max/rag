@@ -1,0 +1,3761 @@
+{
+  "requirement_id": "REQ-P9-SAFE-MILESTONE-CLOSE",
+  "created_at": "2026-06-08T11:40:00Z",
+  "approval_required": true,
+  "commit_tag_push_performed": false,
+  "recommended_staging_groups": [
+    {
+      "group": "phase9_close_package",
+      "recommendation": "stage_after_user_approval",
+      "rationale": "These files are the direct output of Phase 9 plans and define the safe closure approval surface."
+    },
+    {
+      "group": "planning_truth_updates",
+      "recommendation": "stage_after_user_approval",
+      "rationale": "These files reconcile stale Phase 7/8 truth and route the milestone to approval-gated closure."
+    },
+    {
+      "group": "implementation_changes_optional",
+      "recommendation": "do_not_stage_by_default",
+      "rationale": "Runtime and test changes need separate approval and code-review scope before milestone closure staging."
+    },
+    {
+      "group": "generated_outputs_optional",
+      "recommendation": "stage_only_if_user_approves_generated_artifacts",
+      "rationale": "Generated validation outputs are useful evidence but broad; stage only the intended artifact subset."
+    }
+  ],
+  "milestone_artifacts_to_stage": [
+    "verification/phase9-milestone-close/classification_report.json",
+    "verification/phase9-milestone-close/classification_report.md",
+    "verification/phase9-milestone-close/state_reconciliation_report.json",
+    "verification/phase9-milestone-close/state_reconciliation_report.md",
+    "verification/phase9-milestone-close/audit_rerun_status.json",
+    "verification/phase9-milestone-close/audit_rerun_status.md",
+    "verification/phase9-milestone-close/staging_plan.json",
+    "verification/phase9-milestone-close/staging_plan.md",
+    "verification/phase9-milestone-close/final_closure_decision.json",
+    ".planning/phases/09-milestone-close-readiness-and-git-hygiene/09-SUMMARY.md",
+    ".planning/phases/09-milestone-close-readiness-and-git-hygiene/09-VERIFICATION.md"
+  ],
+  "planning_state_updates_to_stage": [
+    ".planning/PROJECT.md",
+    ".planning/REQUIREMENTS.md",
+    ".planning/ROADMAP.md",
+    ".planning/STATE.md",
+    ".planning/v1.0-MILESTONE-AUDIT.md",
+    ".planning/workspace-memory.json"
+  ],
+  "implementation_changes_optional": [
+    {
+      "path": "llamaindex_runtime/config.py",
+      "status": "M",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/pyproject.toml",
+      "status": "M",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/pageindex_adapter.py",
+      "status": "M",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/reasoning_backend.py",
+      "status": "AM",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/runtime.py",
+      "status": "M",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_query_quality_validation.py",
+      "status": "MM",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_reasoning_backend_provenance.py",
+      "status": "AM",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/agent/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/agent/query_agent.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/agent/retrieval_tool.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/analysis/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/analysis/analyzer.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/analysis/decision.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/analysis/fusion.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/analysis/normalize.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/analysis/types.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/cli/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/cli/run_pageindex.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/client/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/client/retrieve.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/client/utils.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/embeddings.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/entrypoints/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/entrypoints/classifier.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/entrypoints/query.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/entrypoints/types.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/graph/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/graph/projector.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/graph/query.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/graph/seam.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/ingestion/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/ingestion/bundle.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/ingestion/docling_ingestor.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/ingestion/models.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/ingestion/normalization.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/ingestion/pipeline.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/integration.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/interfaces/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/interfaces/span.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/kag_solver.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/keyword/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/keyword/search.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/logging.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/processing/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/processing/callbacks.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/processing/orchestrator.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/py.typed",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/contracts.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/evidence_scoring.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/001_initial.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/002_version_lifecycle.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/003_tree_persistence.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/004_vector_extension.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/005_kg_extension.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/006_kg_graphrag_enrichment.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/007_processing_status.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/008_evidence_object.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/009_kag_schema.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/010_summary_index.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/011_evidence_dedup_key.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/012_mapping_table_enrichment.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/013_node_embeddings.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/migrations/014_semantic_distribution.sql",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/postgres_adapter.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/registry/tree_generator.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/schema_contract.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/schema_extraction.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/schema_sync.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/schema_yaml_loader.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/summary/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/summary/index.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/backend_adapter.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/evidence_content_resolver.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/factory.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/hiro_decision_policy.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/pruning.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/query.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/scoring.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/tree/semantic_distribution.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/backend.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/chunker.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/embedder.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/exceptions.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/factory.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/loader.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/milvus_backend.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/qdrant_backend.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/refinery.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/vector/runtime.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/workflow/__init__.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "llamaindex_runtime/workflow/hybrid_retrieval_workflow.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "pytest.ini",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/conftest.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/.claude/tdd-guard/data/test.json",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/conftest.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/fixtures/evaluation_fixtures.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_backend_harness.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_candidate_fusion.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_chunking_strategies.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_cli_entrypoint.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_docling_bundle.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_docling_ingestion.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_document_status.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_embeddings.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_evaluation_baseline.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_evidence_content_resolver.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_evidence_object.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_evidence_scoring.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_graph_projector.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_graph_query.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_hiro_decision_policy.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_hiro_recursive_skeleton.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_hiro_traversal_integration.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_hit_distribution.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_hybrid_path.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_hybrid_workflow.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_incremental_processing.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_kag_schema.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_keyword_search.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_kg_graphrag_enrichment.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_kg_persistence.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_live_ingestion_postgres.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_live_query_entrypoint.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_live_sentence_transformers.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_live_tree_path.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_live_vector_path.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_llamaindex_factories.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_logging_helpers.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_milvus_backend.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_node_embeddings.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_normalization_contract.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_normalize_policy.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_overlap_refinery.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_pageindex_adapter.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_pageindex_adapter_markdown.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_pageindex_backend_hit_provenance.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_pageindex_comparison.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_pageindex_real_pdf.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_phase2_transplantation.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_psi_rag_prototype_embedding.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_qdrant_backend.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_query_agent.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_query_classifier.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_query_entrypoint.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_query_phase6.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_raptor_comparison.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_retrieval_tool.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_runtime_packaging.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_schema_contract.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_schema_extraction.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_schema_sync.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_schema_yaml_loader.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_semantic_leaf_grouping.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_span_coordinates.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_summary_index.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_backend_adapter.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_backend_path.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_expansion.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_persistence.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_rollup_query.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_runtime_hiro_selection.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_runtime_traversal_integration.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_scoring_pruning.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_semantic_distribution.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_summary.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_traversal.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_tree_traversal_provenance.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_vector_loader.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/llamaindex_runtime/test_vector_persistence.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/test_real_retrieval_workflow.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/test_run_sonarlint_ls_probe.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/verification/test_phase7_tree_node_span_repair.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/verification/test_phase8_matched_validation.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    },
+    {
+      "path": "tests/verification/test_validation_integrity.py",
+      "status": "??",
+      "reason": "Implementation/test/config change; optional staging group"
+    }
+  ],
+  "generated_outputs_optional": [
+    {
+      "path": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607/judgment_template.csv",
+      "status": "A",
+      "reason": "Generated quality-validation rerun artifact"
+    },
+    {
+      "path": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607/llm_semantic_judgment_report.md",
+      "status": "A",
+      "reason": "Generated quality-validation rerun artifact"
+    },
+    {
+      "path": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607/llm_semantic_judgments.json",
+      "status": "A",
+      "reason": "Generated quality-validation rerun artifact"
+    },
+    {
+      "path": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607/llm_semantic_review_input.json",
+      "status": "A",
+      "reason": "Generated quality-validation rerun artifact"
+    },
+    {
+      "path": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607/retrieval_results.json",
+      "status": "A",
+      "reason": "Generated quality-validation rerun artifact"
+    },
+    {
+      "path": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607/validation_status.json",
+      "status": "A",
+      "reason": "Generated quality-validation rerun artifact"
+    },
+    {
+      "path": "verification/phase8_decision_report.json",
+      "status": "M",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/quality-validation-20260528/level_assessment.json",
+      "status": "M",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/.claude/tdd-guard/data/test.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/README.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/docker-compose.yml",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/pageindex-whitebox-20260527/00-VERIFICATION-ARTICLE.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/pageindex-whitebox-20260527/01-VERIFICATION-SUMMARY.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/pageindex-whitebox-20260527/02-STATUS-BOARD.html",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/pageindex-whitebox-20260527/03-EVIDENCE.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/pageindex_workflow_results.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/.temp_judgment_data.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/EXECUTION-REPORT.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/FINAL-REPORT.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/INFRASTRUCTURE-BLOCKER-REPORT.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/PHASE3-STATUS-REPORT.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/backend_hit_metrics.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/judgment_completed.csv",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/judgment_template.csv",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/level_assessment.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/retrieval_results.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase3-real-validation/validation_status.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase4-quality-validation/FINAL-REPORT.md",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase4-quality-validation/level_assessment.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase4-quality-validation/llm_judgments_backend_hits.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase4-quality-validation/quality_metrics_report.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/active_version_counts.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/heading_path_contract.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/validation_integrity_report.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/active_version_counts.after.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/active_version_counts.before.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/db_readiness.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/db_readiness.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/evidence_chain_delta.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/remediate_active_version_ingestion.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/remediate_simple.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/repair_tree_node_spans.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/run_db_backed_rerun.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/tree_node_span_repair.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase7-db-backed-evidence-chain-rerun/vector_loader_materialization.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/calculate_phase8_metrics.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/judgment_collection_status.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/judgment_completed.csv",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/judgment_template.csv",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/level_assessment.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/phase8_preflight.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/phase8_preflight_status.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/quality_metrics.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/retrieval_results.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/run_matched_validation.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/run_phase8_integrity_gate.py",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/validation_integrity_report.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/phase8-matched-validation-rerun/validation_status.json",
+      "status": "??",
+      "reason": "Generated validation/close artifact"
+    },
+    {
+      "path": "verification/pyproject.toml",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/real_validation_nodes.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/real_validation_result.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/real_validation_tree_visual.html",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/retrieval_hits.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/retrieval_hits_visual.html",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/src/registry/migrations/001_initial.sql",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/src/registry/migrations/002_keyword_indexes.sql",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/src/registry/migrations/003_vector_extension.sql",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/src/registry/migrations/004_tree_extension.sql",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/src/registry/migrations/005_graph_entities.sql",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/src/registry/migrations/011_evidence_dedup_key.sql",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/tests/fixtures/sample_minimal.pdf",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    },
+    {
+      "path": "verification/tests/fixtures/sample_terms.json",
+      "status": "??",
+      "reason": "Verification artifact candidate; optional staging group"
+    }
+  ],
+  "classification_milestone_artifacts_reference": {
+    "count": 68,
+    "source": "verification/phase9-milestone-close/classification_report.json",
+    "note": "Full milestone artifact inventory remains in the classification report; this staging plan recommends only the Phase 9 close package by default."
+  },
+  "excluded_from_staging": [
+    {
+      "path": ".env.example",
+      "status": "M",
+      "reason": "secret-sensitive path marker; excluded from milestone staging"
+    },
+    {
+      "path": "test_token_measurement.py",
+      "status": "??",
+      "reason": "secret-sensitive path marker; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/00-MASTER.md",
+      "status": "M",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/03-CURRENT-PHASE.md",
+      "status": "M",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase8_comparison.py",
+      "status": "M",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".autod/current.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".autod/metrics-template.yaml",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".autod/version.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude-plugin/marketplace.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude-plugin/plugin.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/complete-milestone.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/decision-loop.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/discuss-phase.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/do.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/execute-phase.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/help.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/new-milestone.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/new-project.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/next.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/plan-phase.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/progress.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/commands/gsd/verify-work.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/get-shit-done/workflows/complete-milestone.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/get-shit-done/workflows/do.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/hooks/one-writer-per-file.sh",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/hooks/phase-complete-trigger.sh",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/hooks/session-start",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/scripts/bootstrap_validator.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/scripts/decision_loop.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/scripts/doctor.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/scripts/installer.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/scripts/workspace_memory_writer.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/settings.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/autoplan/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/compatibility-adapter-long-run-control/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/compatibility-adapter-long-run-control/reference/CONTROL-STRATEGY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/design-consultation/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/document-release/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/api/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/client/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/cluster-272/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/cluster-273/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/githubtemppsi-rag-temp/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/graph-path/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/hybrid-path/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/llamaindex-runtime/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/model/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/phase3-real-validation/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/processing/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/quality-validation-20260528/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/registry/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/scripts/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/test/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/tests/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/tree-builder/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/tree/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/vector-path/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/generated/vector/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/gitnexus/gitnexus-cli/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/gitnexus/gitnexus-debugging/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/gitnexus/gitnexus-exploring/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/gitnexus/gitnexus-guide/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/gitnexus/gitnexus-impact-analysis/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/gitnexus/gitnexus-refactoring/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/navigator/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/office-hours/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/templates/bootstrap-current.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/templates/bootstrap-settings.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/templates/bootstrap-state.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/templates/bootstrap-workspace-memory.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/templates/hooks/phase-complete-trigger.sh",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/prime-init/templates/hooks/session-start",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/receiving-code-review/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/requesting-code-review/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/review/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/ship/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/subagent-driven-development/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/systematic-debugging/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/test-driven-development/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/using-git-worktrees/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/skills/verification-before-completion/SKILL.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".claude/tdd-guard/data/test.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".coverage",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content/API/345/217/202/350/200/203/API/345/217/202/350/200/203.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content/API/345/217/202/350/200/203//345/221/275/344/273/244/350/241/214/346/216/245/345/217/243.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content/API/345/217/202/350/200/203//345/256/242/346/210/267/347/253/257API.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content/API/345/217/202/350/200/203//346/225/260/346/215/256/347/273/223/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content/API/345/217/202/350/200/203//346/237/245/350/257/242API.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//344/273/243/347/220/206/347/263/273/347/273/237//344/273/243/347/220/206/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//344/273/243/347/220/206/347/263/273/347/273/237//346/237/245/350/257/242/344/273/243/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//344/273/243/347/220/206/347/263/273/347/273/237//346/243/200/347/264/242/345/267/245/345/205/267.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/267/245/344/275/234/346/265/201/347/263/273/347/273/237//345/267/245/344/275/234/346/265/201/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/267/245/344/275/234/346/265/201/347/263/273/347/273/237//345/267/245/344/275/234/346/265/201/347/274/226/346/216/222/345/231/250.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/267/245/344/275/234/346/265/201/347/263/273/347/273/237//346/237/245/350/257/242/345/210/206/347/261/273/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/267/245/344/275/234/346/265/201/347/263/273/347/273/237//346/267/267/345/220/210/346/243/200/347/264/242/345/267/245/344/275/234/346/265/201.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/267/245/344/275/234/346/265/201/347/263/273/347/273/237//347/273/223/346/236/234/350/236/215/345/220/210/347/256/227/346/263/225.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/274/200/345/217/221/346/214/207/345/215/227//344/273/243/347/240/201/350/264/241/347/214/256.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/274/200/345/217/221/346/214/207/345/215/227//345/274/200/345/217/221/346/214/207/345/215/227.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/274/200/345/217/221/346/214/207/345/215/227//345/274/200/345/217/221/347/216/257/345/242/203/346/220/255/345/273/272.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/274/200/345/217/221/346/214/207/345/215/227//346/211/251/345/261/225/345/274/200/345/217/221.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/274/200/345/217/221/346/214/207/345/215/227//346/265/213/350/257/225/347/255/226/347/225/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/274/200/345/217/221/346/214/207/345/215/227//350/260/203/350/257/225/344/270/216/346/200/247/350/203/275/345/210/206/346/236/220.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//345/277/253/351/200/237/345/274/200/345/247/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/205/351/232/234/346/216/222/351/231/244//346/200/247/350/203/275/351/227/256/351/242/230/346/216/222/346/237/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/205/351/232/234/346/216/222/351/231/244//346/225/205/351/232/234/346/216/222/351/231/244.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/205/351/232/234/346/216/222/351/231/244//346/225/260/346/215/256/344/270/200/350/207/264/346/200/247/351/227/256/351/242/230.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/205/351/232/234/346/216/222/351/231/244//347/275/221/347/273/234/345/222/214/346/225/260/346/215/256/345/272/223/351/227/256/351/242/230.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/205/351/232/234/346/216/222/351/231/244//351/205/215/347/275/256/351/227/256/351/242/230.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/205/351/232/234/346/216/222/351/231/244//351/224/231/350/257/257/350/257/212/346/226/255.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213/Schema/347/256/241/347/220/206/Schema/345/220/214/346/255/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213/Schema/347/256/241/347/220/206/Schema/345/245/221/347/272/246.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213/Schema/347/256/241/347/220/206/Schema/346/217/220/345/217/226.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213/Schema/347/256/241/347/220/206/Schema/347/256/241/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213//345/220/221/351/207/217/346/225/260/346/215/256/346/250/241/345/236/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213//346/225/260/346/215/256/346/250/241/345/236/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213//346/226/207/346/241/243/347/224/237/345/221/275/345/221/250/346/234/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213//346/240/221/345/275/242/346/225/260/346/215/256/346/250/241/345/236/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/225/260/346/215/256/346/250/241/345/236/213//350/247/204/350/214/203/350/267/250/345/272/246/346/250/241/345/236/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//346/225/260/346/215/256/346/265/201/350/256/276/350/256/241.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//346/225/264/344/275/223/346/236/266/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//346/236/266/346/236/204/350/256/276/350/256/241.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/205/263/351/224/256/350/257/215/346/243/200/347/264/242/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237/Milvus/345/220/221/351/207/217/345/220/216/347/253/257.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237/Qdrant/345/220/221/351/207/217/345/220/216/347/253/257.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237//345/220/221/351/207/217/345/220/216/347/253/257/346/212/275/350/261/241/345/261/202.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237//345/265/214/345/205/245/346/250/241/345/236/213/347/256/241/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/220/221/351/207/217/346/243/200/347/264/242/347/263/273/347/273/237//346/226/207/346/234/254/345/210/206/345/235/227/347/255/226/347/225/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/233/276/350/260/261/346/216/245/345/217/243/347/263/273/347/273/237//345/233/276/350/260/261/346/212/225/345/275/261/345/231/250.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/233/276/350/260/261/346/216/245/345/217/243/347/263/273/347/273/237//345/233/276/350/260/261/346/216/245/345/217/243/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/233/276/350/260/261/346/216/245/345/217/243/347/263/273/347/273/237//345/233/276/350/260/261/346/237/245/350/257/242/346/216/245/345/217/243.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//345/233/276/350/260/261/346/216/245/345/217/243/347/263/273/347/273/237//345/233/276/350/260/261/351/233/206/346/210/220/346/216/245/345/217/243.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237/Docling/351/233/206/346/210/220.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//350/247/204/350/214/203/345/214/226/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//350/247/243/346/236/220/347/256/241/351/201/223.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/240/221/345/275/242/346/243/200/347/264/242/347/263/273/347/273/237//346/240/221/345/275/242/346/237/245/350/257/242/345/244/204/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/240/221/345/275/242/346/243/200/347/264/242/347/263/273/347/273/237//346/240/221/345/275/242/346/243/200/347/264/242/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/240/221/345/275/242/346/243/200/347/264/242/347/263/273/347/273/237//346/240/221/345/275/242/346/243/200/347/264/242/350/277/220/350/241/214/346/227/266/347/256/241/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/240/221/345/275/242/346/243/200/347/264/242/347/263/273/347/273/237//346/240/221/345/275/242/350/257/204/345/210/206/344/270/216/345/211/252/346/236/235.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/240/221/345/275/242/347/273/223/346/236/204/347/224/237/346/210/220/345/231/250.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/263/250/345/206/214/350/241/250/345/245/221/347/272/246.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//350/257/201/346/215/256/350/257/204/345/210/206/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//347/273/204/344/273/266/350/256/276/350/256/241//351/205/215/347/275/256/347/256/241/347/220/206/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/236/266/346/236/204/350/256/276/350/256/241//351/233/206/346/210/220/347/255/226/347/225/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/205/263/351/224/256/350/257/215/346/243/200/347/264/242/345/274/225/346/223/216.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216/Milvus/345/220/221/351/207/217/345/220/216/347/253/257.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216/Qdrant/345/220/221/351/207/217/345/220/216/347/253/257.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216//345/220/221/351/207/217/345/220/216/347/253/257/346/212/275/350/261/241/345/261/202.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216//345/265/214/345/205/245/346/250/241/345/236/213/347/256/241/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/220/221/351/207/217/346/243/200/347/264/242/345/274/225/346/223/216//346/226/207/346/234/254/345/210/206/345/235/227/347/255/226/347/225/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//345/233/276/350/260/261/346/243/200/347/264/242/345/274/225/346/223/216.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237/Docling/351/233/206/346/210/220/346/234/272/345/210/266.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//345/244/204/347/220/206/347/256/241/351/201/223/347/274/226/346/216/222.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//346/226/207/346/241/243/346/263/250/345/206/214/346/265/201/347/250/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/226/207/346/241/243/345/244/204/347/220/206/347/263/273/347/273/237//350/247/204/350/214/203/345/214/226/345/220/210/345/220/214/347/256/241/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/240/221/345/275/242/346/243/200/347/264/242/345/274/225/346/223/216/HIRO/345/206/263/347/255/226/347/255/226/347/225/245.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/240/221/345/275/242/346/243/200/347/264/242/345/274/225/346/223/216//346/240/221/345/275/242/346/243/200/347/264/242/345/274/225/346/223/216.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/240/221/345/275/242/346/243/200/347/264/242/345/274/225/346/223/216//346/240/221/346/237/245/350/257/242/345/244/204/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/240/221/345/275/242/346/243/200/347/264/242/345/274/225/346/223/216//346/240/221/350/257/204/345/210/206/344/270/216/345/211/252/346/236/235.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/240/221/345/275/242/346/243/200/347/264/242/345/274/225/346/223/216//346/240/221/350/277/220/350/241/214/346/227/266/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/240/270/345/277/203/346/250/241/345/235/227.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222//345/244/204/347/220/206/345/215/217/350/260/203/346/234/272/345/210/266.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222//345/267/245/344/275/234/346/265/201/347/274/226/346/216/222.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222//346/237/245/350/257/242/345/210/206/347/261/273/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222//347/273/223/346/236/234/350/236/215/345/220/210/347/256/227/346/263/225.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/240/270/345/277/203/346/250/241/345/235/227//351/205/215/347/275/256/347/256/241/347/220/206/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250/PostgreSQL/351/200/202/351/205/215/345/231/250.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250//345/201/245/345/272/267/346/243/200/346/237/245/344/270/216/347/233/221/346/216/247.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250//345/244/204/347/220/206/347/212/266/346/200/201/347/256/241/347/220/206.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250//346/225/260/346/215/256/346/214/201/344/271/205/345/214/226/346/223/215/344/275/234.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250//346/225/260/346/215/256/346/237/245/350/257/242/346/223/215/344/275/234.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237/PostgreSQL/351/200/202/351/205/215/345/231/250//346/226/207/346/241/243/346/263/250/345/206/214/346/265/201/347/250/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/344/270/200/350/207/264/346/200/247/344/277/235/350/257/201.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/225/260/346/215/256/345/256/214/346/225/264/346/200/247/344/277/235/351/232/234.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/225/260/346/215/256/345/272/223/350/277/201/347/247/273/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/240/270/345/277/203/350/241/250/347/273/223/346/236/204/canonical_spans/350/241/250/347/273/223/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/240/270/345/277/203/350/241/250/347/273/223/346/236/204/document_versions/350/241/250/347/273/223/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/240/270/345/277/203/350/241/250/347/273/223/346/236/204/documents/350/241/250/347/273/223/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/240/270/345/277/203/350/241/250/347/273/223/346/236/204/vector_chunks/350/241/250/347/273/223/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//346/240/270/345/277/203/350/241/250/347/273/223/346/236/204//346/240/270/345/277/203/350/241/250/347/273/223/346/236/204.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/225/260/346/215/256/345/272/223Schema/350/256/276/350/256/241//347/264/242/345/274/225/344/270/216/347/272/246/346/235/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/263/250/345/206/214/350/241/250/347/263/273/347/273/237//347/211/210/346/234/254/347/256/241/347/220/206/346/234/272/345/210/266.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/265/213/350/257/225/351/252/214/350/257/201//345/215/225/345/205/203/346/265/213/350/257/225.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/265/213/350/257/225/351/252/214/350/257/201//346/200/247/350/203/275/345/237/272/345/207/206/346/265/213/350/257/225.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/265/213/350/257/225/351/252/214/350/257/201//346/265/213/350/257/225/351/252/214/350/257/201.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/265/213/350/257/225/351/252/214/350/257/201//347/253/257/345/210/260/347/253/257/351/252/214/350/257/201.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/265/213/350/257/225/351/252/214/350/257/201//350/264/250/351/207/217/350/257/204/344/274/260.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//346/265/213/350/257/225/351/252/214/350/257/201//351/233/206/346/210/220/346/265/213/350/257/225.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//345/256/271/345/231/250/345/214/226/351/203/250/347/275/262.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//346/200/247/350/203/275/350/260/203/344/274/230.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//346/225/205/351/232/234/346/216/222/351/231/244/344/270/216/346/201/242/345/244/215.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//346/225/260/346/215/256/345/272/223/351/203/250/347/275/262.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//347/216/257/345/242/203/351/205/215/347/275/256.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//347/233/221/346/216/247/346/227/245/345/277/227.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/203/250/347/275/262/350/277/220/347/273/264//351/203/250/347/275/262/350/277/220/347/273/264.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//345/277/253/351/200/237/345/274/200/345/247/213.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/212/200/346/234/257/346/240/210/346/246/202/350/247/210.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247/LlamaIndex/351/233/206/346/210/220/344/274/230/345/212/277.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//345/244/232/350/247/206/345/233/276/346/243/200/347/264/242/350/203/275/345/212/233//345/205/263/351/224/256/350/257/215/346/243/200/347/264/242.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//345/244/232/350/247/206/345/233/276/346/243/200/347/264/242/350/203/275/345/212/233//345/220/221/351/207/217/346/243/200/347/264/242.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//345/244/232/350/247/206/345/233/276/346/243/200/347/264/242/350/203/275/345/212/233//345/233/276/350/260/261/346/243/200/347/264/242.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//345/244/232/350/247/206/345/233/276/346/243/200/347/264/242/350/203/275/345/212/233//345/244/232/350/247/206/345/233/276/346/243/200/347/264/242/350/203/275/345/212/233.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//345/244/232/350/247/206/345/233/276/346/243/200/347/264/242/350/203/275/345/212/233//346/240/221/345/275/242/346/243/200/347/264/242.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//346/240/270/345/277/203/347/211/271/346/200/247.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//346/267/267/345/220/210/346/243/200/347/264/242/347/274/226/346/216/222.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//346/240/270/345/277/203/347/211/271/346/200/247//346/272/257/346/272/220/346/200/247/344/277/235/350/257/201/346/234/272/345/210/266.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//347/263/273/347/273/237/346/236/266/346/236/204/346/246/202/350/247/210.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//351/241/271/347/233/256/344/273/213/347/273/215.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/content//351/241/271/347/233/256/346/246/202/350/277/260//351/241/271/347/233/256/346/246/202/350/277/260.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": ".qoder/repowiki/zh/meta/repowiki-metadata.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "=1.0.0",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "AGENTS.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "CLAUDE.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "EVALUATION_BASELINE_SUMMARY.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "PageIndex/345/212/237/350/203/275/345/210/206/346/236/220.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "PageIndex/345/256/214/346/225/264/345/212/237/350/203/275/345/210/206/346/236/220/344/270/216/351/233/206/346/210/220/346/226/271/346/241/210.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "_tmp_pageindex_fixture_quality_probe.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "_tmp_pageindex_quality_probe.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "add_md_method.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "architecture-retrieval-integration-research.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/01-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/02-INTERFACES.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/04-TREE-GRAPH-FLOW.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/05-TREE-CURRENT-WHITEBOX.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/06-TREE-SIMPLE-WHITEBOX.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/07-TREE-FLOW-SIMPLE.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/08-SUBTREE-HOTSPOT-DECISION.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/reresearch/psi-rag-skeleton-evaluation.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/research/hiro-skeleton-evaluation.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/research/psi-rag-skeleton-evaluation.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-adapter-program/research/raptor-structure-evaluation.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-local-env-program/00-MASTER.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-local-env-program/01-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-local-env-program/02-INTERFACES.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-local-env-program/04-GOAL-PROMPT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-real-validation-program/01-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-real-validation-program/02-INTERFACES.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-real-validation-program/04-GOAL-PROMPT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-techdebt-program/00-MASTER.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-techdebt-program/01-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-techdebt-program/02-INTERFACES.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-techdebt-program/03-CURRENT-PHASE.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/compatibility-techdebt-program/04-GOAL-PROMPT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-complete-integration/00-MASTER.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-complete-integration/01-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-complete-integration/02-INTERFACES.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-complete-integration/03-CURRENT-PHASE.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-complete-integration/04-GOAL-PROMPT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-migration-program/00-MASTER.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-migration-program/01-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-migration-program/02-INTERFACES.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-migration-program/03-CURRENT-PHASE.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "changes/pageindex-migration-program/04-GOAL-PROMPT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "check_db_state.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "check_sample_pdf.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "check_tables.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "complete-pageindex-integration-migration-plan.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "create_markdown_test.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "debug_vector_retrieval.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "demo_phase4_integration.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "demo_semantic_distribution.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "diagnostic_evidence_chain.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/PROJECT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/REQUIREMENTS.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/STATE.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/config.json",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/contracts/entity-canonicalization-minimum.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/contracts/identity-contract.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/contracts/normalization-contract.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/01-postgresql-registry-foundation/01-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/01-postgresql-registry-foundation/01-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/02-one-parse-canonical-spans/02-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/02-one-parse-canonical-spans/02-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/03-keyword-path/03-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/03-keyword-path/03-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/04-vector-path/04-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/04-vector-path/04-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/05-unified-query-entry/05-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/05-unified-query-entry/05-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/06-tree-formal-rollup/06-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/06-tree-formal-rollup/06-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/07-graph-path/07-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/07-graph-path/07-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/08-hit-distribution-analyzer/08-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/08-hit-distribution-analyzer/08-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/09-deep-hybrid-path/09-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/09-deep-hybrid-path/09-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/10-reranker/10-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/10-reranker/10-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/11-production-hardening/11-01-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/.planning/phases/11-production-hardening/11-01-SUMMARY.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/PROJECT-FREEZE.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/Tree/347/233/256/345/275/225/345/256/214/346/225/264/345/212/237/350/203/275/346/270/205/345/215/225.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/ADAPTER-INTERFACE-DRAFT.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/DOCS-INDEX.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/FINAL-REVIEW-DOC.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/LLAMAINDEX-PHASE-1-PLAN.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/LLAMAINDEX-TARGET-ARCHITECTURE.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/PROJECT-COMBINATION-MAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/complete-implementation-roadmap.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/data-model/storage-alignment-and-update-strategy.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/data-model/storage-schema-draft.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/data-model/system-setup-flow.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/decision-llamaindex-first.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/architecture/llamaindex-implementation-assessment.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/diagrams/final-architecture-diagram.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/diagrams/llamaindex-tool-integration-diagrams.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/diagrams/llamaindex-tool-integration-diagrams.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/diagrams/storage-alignment-key-diagram.html",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/p6_cli_implementation_summary.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/plans/COMPATIBILITY-ADAPTER-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/plans/UPSTREAM-ENHANCEMENT-ROADMAP.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/plans/phase-1-v1-poc-plan.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/plans/provenance-centric-multi-view-rag-roadmap.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/# /360/237/224/215 /346/267/267/345/220/210RAG/347/263/273/347/273/237/346/267/261/345/272/246/346/220/234/347/264/242/346/212/245/345/221/212/357/274/232/344/273/216/345/233/276/350/260/261/345/210/260/345/220/221/351/207/217/345/206/215/345/210/260/346/240/221/347/212/266/347/273/223/346/236/204/347/232/204/346/231/272/350/203/275/344/275/223/346/241/206/346/236/266.ini",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/adaptive-chunking-backup.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/chunking-strategies-comparison.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/deep-research-report (1).md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/deep-research-report (3).md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/deep-research-report.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/final-selection-checklist.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/technical-questions-verification.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research/verified-project-matrix.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/research//347/273/223/345/220/210/351/235/236/345/220/221/351/207/217/346/240/221/347/212/266/347/237/245/350/257/206/345/272/223/343/200/201/347/237/245/350/257/206/345/233/276/350/260/261/344/270/216/345/220/221/351/207/217/346/225/260/346/215/256/345/272/223/347/232/204/344/270/211/345/220/210/344/270/200Agentic RAG/346/236/266/346/236/204/346/267/261/345/272/246.ini",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs/validation/real-validation-report.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs//345/275/223/345/211/215/344/270/211/346/235/241/344/273/273/345/212/241/347/272/277.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs//346/240/221/347/212/266/345/212/237/350/203/275/345/256/214/346/225/264/346/270/205/345/215/225-/350/267/257/347/272/277/345/233/276vs/345/256/236/347/216/260.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "docs//346/240/221/347/212/266/345/212/237/350/203/275/346/236/266/346/236/204/346/276/204/346/270/205.md",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "export_retrieval_hits.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "githubtemppsi-rag-temp/",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "insert_md_method.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "quick_db_check.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "run_migrations.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "run_real_validation.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "scripts/run_pageindex_real_retrieval_workflow.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "scripts/run_sonar_scanner.ps1",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "scripts/run_sonarlint_ls_probe.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "scripts/ws0_add_reconciliation_metadata.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "temp_adapter_changes.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_backend_stack.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_content_extraction.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_llm_reasoning_call.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_mock_integration.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_output.txt",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_pageindex_client.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_pageindex_simple.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_provenance_extraction.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_real_integration.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_retrieve_functionality.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_retrieve_real.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "test_tree_retrieval.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "testsllamaindex_runtimetest_pageindex_model_config.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "update_flatten_method.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/analyze_backend_hits.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/batch_judgment.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/business_queries.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/calculate_metrics.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/interactive_judgment.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/judgment_guide.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/judgment_reference.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/relevance_judgment_template.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase3-real-validation/run_validation.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase4-quality-validation/run_llm_judgment.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/invoke_vector_loader.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/validation_integrity_gate.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/verify_active_version_counts.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/phase5-evidence-chain-verification/verify_heading_path_contract.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/sonarlint_demo_issue.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/api/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/api/errors.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/api/graph_query_handler.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/api/logging_config.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/api/routes.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/api/validation.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/graph_path/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/graph_path/connection.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/graph_path/health.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/graph_path/projection.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/graph_path/query.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/graph_path/span_resolver.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hit_distribution/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hit_distribution/analyzer.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hit_distribution/collector.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hit_distribution/decision.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hit_distribution/types.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hybrid_path/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hybrid_path/aggregator.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hybrid_path/collector.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hybrid_path/expander.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hybrid_path/orchestrator.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/hybrid_path/types.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/keyword_path/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/keyword_path/search.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/parser/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/parser/docling_wrapper.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/parser/normalization.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/parser/span_generator.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/query_classifier/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/registry/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/registry/connection.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/registry/crud.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/registry/queries.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/reranker/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/reranker/fusion.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/reranker/normalize.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/reranker/reranker.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/reranker/types.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/tree_path/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/tree_path/generator.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/tree_path/loader.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/tree_path/query.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/unified_output/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/vector_path/__init__.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/vector_path/chunker.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/vector_path/embedder.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/vector_path/loader.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/src/vector_path/search.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/test_pageindex_workflow.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/conftest.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_api_errors.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_api_validation.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_candidate_fusion.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_connection_pool.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_crud.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_docling_wrapper.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_graph_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_graph_integration.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_graph_projection.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_graph_query.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_graph_schema.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_hit_distribution.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_hit_distribution_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_hybrid_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_hybrid_orchestrator.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_hybrid_types.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_keyword_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_keyword_e2e.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_keyword_path.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_neo4j_connection.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_neo4j_health.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_normalize_policy.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_phase2_e2e.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_query_classifier.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_reranker_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_reranker_fusion.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_reranker_normalize.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_reranker_types.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_runtime_cleanup.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_schema.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_span_generation.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_span_resolver.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_structured_logging.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_tree_generation.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_tree_integration.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_tree_loader.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_tree_query.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_tree_schema.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_unified_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_unified_output.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_vector_api.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_vector_path.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verification/tests/test_vector_schema.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verify_backend_hit_extension.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verify_env_config.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verify_node_embeddings.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verify_reasoning_backend.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "verify_semantic_distribution.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "visualize_nodes.py",
+      "status": "??",
+      "reason": "Unrelated scratch/WIP or broad program artifact; excluded from milestone staging"
+    },
+    {
+      "path": "/346/243/200/347/264/242/345/242/236/345/274/272/346/226/271/346/241/210/345/257/271/346/257/224.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    },
+    {
+      "path": "/350/201/232/347/261/273/345/212/237/350/203/275/347/216/260/347/212/266/344/270/216/345/256/236/347/216/260/351/241/272/345/272/217.md",
+      "status": "??",
+      "reason": "Unclassified WIP; excluded pending user scope decision"
+    }
+  ],
+  "secret_sensitive_excluded": [
+    {
+      "path": ".env.example",
+      "status": "M",
+      "reason": "secret-sensitive path marker; excluded from milestone staging"
+    },
+    {
+      "path": "test_token_measurement.py",
+      "status": "??",
+      "reason": "secret-sensitive path marker; excluded from milestone staging"
+    }
+  ],
+  "pre_commit_required_checks": [
+    "Review staging_plan.json and final_closure_decision.json.",
+    "Run gitnexus_detect_changes or CLI equivalent before any commit.",
+    "Run relevant tests for any implementation_changes selected for staging.",
+    "Run secret scan for database URI schemes and credential-like strings in selected artifacts.",
+    "Confirm final closure scope explicitly with user before commit/tag/push."
+  ],
+  "gitnexus_detect_changes_required": true,
+  "proposed_commit_messages": [
+    "docs(phase9): prepare milestone close approval package",
+    "docs(milestone): reconcile v1.0 planning truth"
+  ],
+  "proposed_commands_after_explicit_approval_only": [
+    "rtk git add <approved files only>",
+    "rtk proxy npx gitnexus detect-changes --repo rag",
+    "rtk git commit -m \"docs(phase9): prepare milestone close approval package\"",
+    "rtk git tag v1.0",
+    "rtk git push --follow-tags"
+  ],
+  "tag_policy": "do_not_tag_without_explicit_user_approval",
+  "push_policy": "do_not_push_without_explicit_user_approval",
+  "closure_route": "accepted_blocker_close_ready",
+  "level_baseline": "Level 2 remains authoritative",
+  "accepted_blockers": [
+    "Level 2 remains authoritative because Phase 8 quality thresholds were missed: hit_rate 0.70 < 0.80, top1_relevance 0.59 < 0.90, stability 0.65 < 0.85.",
+    "Historical Phase 4 invalid Level 3 remains discarded and documented.",
+    "Final commit/tag/push scope requires explicit user approval after Plan 09-04."
+  ],
+  "close_readiness_concerns": [
+    "Several Phase 8 retrieval hits are structural headings with all-zero chunk_id; this is not a Phase 8 integrity blocker but must be visible before closure.",
+    "REQ-P9-SAFE-MILESTONE-CLOSE remains partial until Plan 09-04 writes the staging plan, final closure decision, summary, and verification artifacts.",
+    "08-VALIDATION.md is missing; Phase 8 has summary and verification artifacts, but Nyquist discovery records validation coverage as missing."
+  ],
+  "no_raw_database_url_written": true
+}

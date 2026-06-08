@@ -1,0 +1,25 @@
+{
+  "requirement_id": "REQ-P9-SAFE-MILESTONE-CLOSE",
+  "decision_date": "2026-06-08T11:42:00Z",
+  "phase9_status": "ACCEPTED_BLOCKER_CLOSE_PENDING_APPROVAL",
+  "closure_route": "accepted_blocker_close_ready",
+  "level_baseline": "Level 2 remains authoritative",
+  "approval_required": true,
+  "approved_by_user": false,
+  "commit_tag_push_performed": false,
+  "next_allowed_action": "await_user_closure_scope_approval",
+  "blocked_reasons": [],
+  "accepted_blockers": [
+    "Level 2 remains authoritative because Phase 8 quality thresholds were missed: hit_rate 0.70 < 0.80, top1_relevance 0.59 < 0.90, stability 0.65 < 0.85.",
+    "Historical Phase 4 invalid Level 3 remains discarded and documented.",
+    "Several Phase 8 retrieval hits are structural headings with all-zero chunk_id; this remains a close-readiness concern.",
+    "08-VALIDATION.md is missing; Phase 8 has summary and verification artifacts, but Nyquist discovery records validation coverage as missing.",
+    "Final commit/tag/push scope requires explicit user approval after reviewing staging_plan.json."
+  ],
+  "staging_plan": "verification/phase9-milestone-close/staging_plan.json",
+  "audit_rerun_status": "verification/phase9-milestone-close/audit_rerun_status.json",
+  "state_reconciliation_report": "verification/phase9-milestone-close/state_reconciliation_report.json",
+  "classification_report": "verification/phase9-milestone-close/classification_report.json",
+  "no_raw_database_url_written": true,
+  "no_commit_tag_push_performed": true
+}

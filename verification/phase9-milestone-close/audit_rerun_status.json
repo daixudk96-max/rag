@@ -1,0 +1,50 @@
+{
+  "requirement_id": "REQ-P9-SAFE-MILESTONE-CLOSE",
+  "audit_date": "2026-06-08T11:35:00Z",
+  "audit_source": "fail_closed_fallback",
+  "authoritative_audit_command_available": false,
+  "authoritative_audit_command_blocker": "gsd-sdk program not found in this execution shell",
+  "audit_status": "gaps_found",
+  "closure_route": "accepted_blocker_close_ready",
+  "level_baseline": "Level 2 remains authoritative",
+  "quality_thresholds_met": false,
+  "phase8_metrics": {
+    "hit_rate": 0.7,
+    "top1_relevance": 0.59,
+    "stability": 0.65
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85
+  },
+  "requirements_score": {
+    "complete": 10,
+    "closed_with_blockers": 1,
+    "pending_or_partial": 1,
+    "total": 12
+  },
+  "integration_check": {
+    "source": "gsd-integration-checker",
+    "connected_cross_phase_exports": 6,
+    "orphaned_exports": 0,
+    "missing_expected_connections": 0,
+    "complete_e2e_flows": 5,
+    "broken_flows": 0,
+    "blockers_detected": 0
+  },
+  "blocking_reasons": [],
+  "accepted_blockers": [
+    "Level 2 remains authoritative because Phase 8 quality thresholds were missed: hit_rate 0.70 < 0.80, top1_relevance 0.59 < 0.90, stability 0.65 < 0.85.",
+    "Historical Phase 4 invalid Level 3 remains discarded and documented.",
+    "Final commit/tag/push scope requires explicit user approval after Plan 09-04."
+  ],
+  "close_readiness_concerns": [
+    "Several Phase 8 retrieval hits are structural headings with all-zero chunk_id; this is not a Phase 8 integrity blocker but must be visible before closure.",
+    "REQ-P9-SAFE-MILESTONE-CLOSE remains partial until Plan 09-04 writes the staging plan, final closure decision, summary, and verification artifacts.",
+    "08-VALIDATION.md is missing; Phase 8 has summary and verification artifacts, but Nyquist discovery records validation coverage as missing."
+  ],
+  "next_route": "09-04-final-staging-approval-package",
+  "no_commit_tag_push_performed": true,
+  "no_raw_database_url_written": true
+}

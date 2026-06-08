@@ -1,0 +1,101 @@
+{
+  "requirement_id": "REQ-P9-SAFE-MILESTONE-CLOSE",
+  "reconciliation_date": "2026-06-08",
+  "reconciliation_method": "documented_fallback_direct_planning_doc_edits",
+  "gsd_owned_state_mechanism_used": false,
+  "gsd_owned_state_mechanism_note": "No intermediate GSD state reconciliation mechanism was available in this execution context; direct planning-doc edits are the documented fallback in 09-02-PLAN and every changed claim is backed by listed source artifacts.",
+  "phase7_reconciled_status": "DB_EVIDENCE_READY",
+  "phase7_evidence": {
+    "active_version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+    "final_classification": "DB_EVIDENCE_READY",
+    "next_allowed_action": "proceed_to_phase8_preflight",
+    "final_stats": {
+      "canonical_spans": 54,
+      "canonical_spans_with_heading_path": 54,
+      "heading_path_rate": 1.0,
+      "vector_chunks": 54,
+      "vector_chunks_with_node_id": 54,
+      "mapped_chunks_rate": 1.0,
+      "vector_chunk_spans": 54,
+      "tree_node_spans": 54
+    }
+  },
+  "phase8_reconciled_status": "MATCHED_VALIDATION_COMPLETE",
+  "phase8_evidence": {
+    "integrity_gate_passed": true,
+    "retrieval_hit_rows": 95,
+    "judgment_rows": 95,
+    "judgment_collection_status": "JUDGMENTS_COMPLETE",
+    "next_allowed_action": "calculate_metrics",
+    "assessment_valid": true
+  },
+  "authoritative_level": "Level_2",
+  "phase8_metrics": {
+    "hit_rate": 0.7,
+    "top1_relevance": 0.59,
+    "stability": 0.65
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85
+  },
+  "thresholds_met": {
+    "hit_rate": false,
+    "top1_relevance": false,
+    "stability": false
+  },
+  "baseline_promotion": false,
+  "level_statement": "Level 2 remains authoritative because Phase 8 produced a valid matched assessment but missed all frozen quality thresholds.",
+  "docs_to_reconcile": [
+    {
+      "path": ".planning/PROJECT.md",
+      "intended_claim_changes": [
+        "Update current route/current phase from Phase 6 gap closure to Phase 9 close readiness.",
+        "Record Phase 7 DB_EVIDENCE_READY and Phase 8 MATCHED_VALIDATION_COMPLETE in baseline truth.",
+        "Preserve Level 2 authority and no Level 3/4 promotion."
+      ]
+    },
+    {
+      "path": ".planning/REQUIREMENTS.md",
+      "intended_claim_changes": [
+        "Mark REQ-P7-DB-EVIDENCE-CHAIN-PROOF complete with repaired DB_EVIDENCE_READY evidence.",
+        "Mark REQ-P8-MATCHED-VALIDATION-RERUN complete with Phase 8 summary, verification, integrity, metrics, and level assessment evidence.",
+        "Keep REQ-P9-SAFE-MILESTONE-CLOSE pending until Phase 9 completes."
+      ]
+    },
+    {
+      "path": ".planning/ROADMAP.md",
+      "intended_claim_changes": [
+        "Replace stale Phase 7 DB_EVIDENCE_BLOCKED current-state language with DB_EVIDENCE_READY repaired outcome.",
+        "Mark Phase 8 completed with MATCHED_VALIDATION_COMPLETE and Level 2 authority.",
+        "Mark Phase 9 executing while commit/tag/push remain approval-gated."
+      ]
+    },
+    {
+      "path": ".planning/STATE.md",
+      "intended_claim_changes": [
+        "Route current focus to Phase 9 close readiness.",
+        "Update pending todos and blockers so Phase 7/8 are no longer described as planned/current blockers.",
+        "Preserve historical blocker context as history, not current state."
+      ]
+    }
+  ],
+  "source_artifacts": [
+    "verification/phase7-db-backed-evidence-chain-rerun/evidence_chain_delta.json",
+    "verification/phase7-db-backed-evidence-chain-rerun/active_version_counts.after.json",
+    "verification/phase8-matched-validation-rerun/validation_integrity_report.json",
+    "verification/phase8-matched-validation-rerun/judgment_collection_status.json",
+    "verification/phase8-matched-validation-rerun/quality_metrics.json",
+    "verification/phase8-matched-validation-rerun/level_assessment.json",
+    ".planning/phases/08-matched-validation-rerun-and-level-assessment/08-SUMMARY.md",
+    ".planning/phases/08-matched-validation-rerun-and-level-assessment/08-VERIFICATION.md",
+    "verification/phase9-milestone-close/classification_report.json"
+  ],
+  "no_raw_database_url_written": true,
+  "secret_safety": {
+    "raw_database_url_written": false,
+    "connection_string_written": false,
+    "secret_sensitive_paths_read": false
+  }
+}
