@@ -39,7 +39,7 @@ updated: 2026-06-12
 | T-P10-08 | Tampering | Unbounded hotspot selection | mitigate | Hotspot selection is bounded by caller limit; demo and validation use explicit small limits, and runtime only traverses selected hotspots up to the requested retrieval limit. | closed |
 | T-P10-09 | Tampering | Embedding dimension mismatch | mitigate | `SubtreeHotspotSelector` validates positive-int tree embedding dimension against query embedding length; tests cover mismatch rejection. | closed |
 
-*Status: open · closed*  
+*Status: open · closed*
 *Disposition: mitigate (implementation required) · accept (documented risk) · transfer (third-party)*
 
 ---
