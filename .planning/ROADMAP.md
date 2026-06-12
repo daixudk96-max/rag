@@ -272,3 +272,60 @@ Level gates enforce no subjective shortcuts.
 - Next allowed action: `await_user_closure_scope_approval`.
 
 ---
+
+## Phase 10: Hotspot Semantic Retrieval Validation
+
+**Goal:** Validate a semantic change where parent nodes act as routing start points instead of content-return nodes. Ensure SubtreeHotspotSelector, hotspot-aware traversal, navigation metadata, and evidence-bearing-only final hits are verified through DB-backed whitebox testing.
+
+**Status:** Complete — semantic validation complete, Level 2 preserved, commit scope approved
+
+**Entry Point:** COMPLETE / COMMIT-SCOPE-APPROVED
+
+**Depends on:** Phase 9
+
+**Semantic Change:**
+- **Before:** Parent nodes return their own content if they have chunk_ids, or are skipped if they don't.
+- **After:** Parent nodes aggregate descendant semantics (centroid, support, dispersion) to act as subtree hotspots, but traversal only returns final evidence-bearing child nodes. Parent is routing metadata, not content hit.
+
+**Implementation Status (Staged for Commit):**
+- ✅ `SubtreeHotspotSelector` implemented with subtree aggregation + path overlap deduplication.
+- ✅ `RecursiveTreeTraversalRunner` supports `start_node_id` parameter for hotspot-scoped traversal.
+- ✅ `QueryHit` extended with `hotspot_node_id`, `navigation_node_ids`, `drill_depth` metadata.
+- ✅ Runtime integration: `SubtreeHotspotSelector` → hotspot-scoped traversal → evidence-bearing hits only.
+- ✅ Defensive fixes applied: positive-int embedding dimension validation, subtree cycle/depth guard, direct-evidence-only hit contract, consistent runtime provenance schema.
+- ✅ Fixture tests passing: `test_tree_semantic_hotspot.py` 10 passed; related traversal regression suite 5 passed.
+- ✅ Code review gate passed after fixes: 0 CRITICAL/HIGH blocking findings.
+- ✅ Security review gate passed: 0 CRITICAL/HIGH security findings; no raw `DATABASE_URL` exposure or fabricated provenance detected.
+- ✅ Whitebox demo script exists: `scripts/demo_hotspot_semantic_retrieval.py`.
+- ✅ DB-backed whitebox validation passed: Docker/PostgreSQL restored, `scripts/demo_hotspot_semantic_retrieval.py` exited 0, `zero_chunk_hits=0`, `parent_only_hits=0`, `total_hits=3`.
+- ✅ Phase 8 aligned hotspot retrieval executed: 20 queries, 80 evidence-bearing hits, 0 query failures, 0 all-zero chunks, 0 parent-only hits, 80 hits with hotspot metadata.
+- ✅ Judgment reuse assessed: Phase 8 judgments are not reusable for hotspot hits (`reuse_rate=0.0375`, 3/80 matched), so metrics are intentionally not calculated from invalid labels.
+- ✅ Level impact documented: `Level_2` preserved; hotspot-specific judgment collection required before any Level promotion claim.
+- ✅ GitNexus index refreshed successfully at commit `3891728`; impact analysis executed on a fresh index.
+- ✅ User approved narrowed Phase 10 staging/commit scope.
+- ✅ Staged GitNexus detect-changes completed for the approved Phase 10 scope: 27 files, 298 symbols, 34 affected processes, CRITICAL risk accepted for commit readiness.
+- ⚠️ Unrelated dirty-tree files remain outside the approved Phase 10 staged scope and must stay excluded unless separately approved.
+
+**Validation Artifacts:**
+- ✅ `10-RESEARCH.md`
+- ✅ `10-01-PLAN.md` through `10-04-PLAN.md`
+- ✅ `10-01-SUMMARY.md` through `10-04-SUMMARY.md`
+- ✅ `10-CODE-REVIEW.md`
+- ✅ `10-IMPACT-ANALYSIS.md`
+- ✅ `10-SECURITY.md`
+
+**Remaining Workstreams:**
+- WS1: DB-backed whitebox demo — COMPLETE.
+- WS2: DB-backed evidence-chain report proving no all-zero `chunk_id` final hits — COMPLETE.
+- WS3: Targeted hotspot retrieval on aligned Phase 8 corpus/query set — COMPLETE.
+- WS4: Level impact against Phase 8 baseline — COMPLETE: `Level_2` preserved because judgment reuse is blocked.
+- WS5: Git hygiene — COMPLETE FOR APPROVED PHASE 10 SCOPE: staged detect-changes completed with accepted CRITICAL risk; unrelated dirty-tree files remain excluded.
+
+**Success Criteria:**
+- ✅ Whitebox demo runs successfully with real DB-backed data.
+- ✅ Fixture-level and DB-backed evidence-chain integrity verified (no all-zero `chunk_id` in final hits).
+- ✅ Navigation metadata preserved in QueryHit and backend hits.
+- ✅ Level assessment impact documented honestly: `Level_2` preserved; no invalid Level 3/4 promotion because hotspot-specific judgments are required.
+- ✅ Code review passes with 0 CRITICAL/HIGH blocking findings.
+
+---

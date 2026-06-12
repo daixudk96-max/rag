@@ -1,0 +1,25 @@
+{
+  "requirement_id": "REQ-P10-LEVEL-IMPACT",
+  "validation_date": "2026-06-12T02:26:08.599660+00:00",
+  "status": "NOT_CALCULATED_REUSE_BLOCKED",
+  "reason": "Phase 8 judgments cannot be reused for Phase 10 hotspot hits because hit identity/heading/preview match rate is too low.",
+  "judgment_reuse": {
+    "status": "REUSE_BLOCKED",
+    "phase8_judgment_rows": 95,
+    "phase10_hit_rows": 80,
+    "matched_rows": 3,
+    "reuse_rate": 0.0375
+  },
+  "metrics": {
+    "hit_rate": null,
+    "top1_relevance": null,
+    "stability": null
+  },
+  "evidence_chain": {
+    "query_failures": 0,
+    "total_hits": 80,
+    "zero_chunk_hits": 0,
+    "parent_only_hits": 0,
+    "hotspot_metadata_hits": 80
+  }
+}

@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: close_ready_pending_approval
-stopped_at: Awaiting explicit closure-scope approval before commit/tag/push
-last_updated: "2026-06-08T11:45:00Z"
-last_activity: 2026-06-08 -- Phase 09 approval package complete
+status: phase10_complete_commit_scope_approved
+stopped_at: Phase 10 complete; approved Phase 10 scope staged and GitNexus staged detect-changes completed with accepted CRITICAL risk
+last_updated: "2026-06-12T00:00:00Z"
+last_activity: 2026-06-12 -- Phase 10 semantic validation complete; DB-backed demo, Phase 8 aligned hotspot retrieval, judgment reuse assessment, UAT, verification, security sign-off, approved staging, and staged GitNexus gate passed with accepted CRITICAL risk
 progress:
-  total_phases: 9
-  completed_phases: 9
-  total_plans: 18
-  completed_plans: 18
+  total_phases: 10
+  completed_phases: 10
+  total_plans: 22
+  completed_plans: 22
   percent: 100
 ---
 
@@ -21,17 +21,17 @@ progress:
 See: .planning/PROJECT.md (if exists)
 
 **Core value:** Raise PageIndex from technical integration to quality-verified main-function readiness
-**Current focus:** Phase 09 — milestone-close-readiness-and-git-hygiene
+**Current focus:** Phase 10 — hotspot-semantic-retrieval-validation
 
 ## Current Position
 
-Phase: 09 (milestone-close-readiness-and-git-hygiene) — CLOSE_READY_PENDING_APPROVAL
-Position: CLOSE
+Phase: 10 (hotspot-semantic-retrieval-validation) — COMPLETE_COMMIT_SCOPE_APPROVED
+Position: COMPLETE / COMMIT-SCOPE-APPROVED
 Plan: 4 of 4
-**Status:** Phase 09 approval package complete; awaiting closure-scope approval
-Last activity: 2026-06-08 -- Phase 09 final staging/closure approval package created
+**Status:** Phase 10 semantic validation complete. DB-backed whitebox demo passed, Phase 8 aligned hotspot retrieval produced 80 evidence-bearing hits with 0 all-zero chunks and 0 parent-only hits, Phase 8 judgment reuse was blocked honestly, and `Level_2` remains authoritative. User approved narrowed Phase 10 staging scope; staged GitNexus detect-changes completed and reported CRITICAL risk across 27 staged Phase 10 files / 298 symbols / 34 affected processes, accepted for commit readiness.
+Last activity: 2026-06-12 -- Phase 10 summaries, code review, impact analysis, validation checklist, staged scope, and staged GitNexus detect-changes completed
 
-Progress: [██████████] 100% (9 of 9 phases closed or completed; milestone closure approval pending)
+Progress: [██████████] 100% (10 of 10 phases semantically validated; Phase 10 complete with approved staged commit scope)
 
 ## Phase 4 WS0/WS1/WS2 Completion Record
 
@@ -138,11 +138,13 @@ Progress: [██████████] 100% (9 of 9 phases closed or complet
 
 ### Pending Todos
 
-- **Closure approval pending:** Review `verification/phase9-milestone-close/staging_plan.json` and `verification/phase9-milestone-close/final_closure_decision.json`.
-- **Next allowed action:** `await_user_closure_scope_approval`.
-- **Before any eventual commit:** run `gitnexus_detect_changes` or CLI equivalent and verify the affected scope is expected.
-- **Final closure gate:** no commit/tag/push/reset/clean/delete/checkout/stash until explicit final approval.
-- **Current baseline:** Level 2 (Phase 8 valid matched assessment - AUTHORITATIVE; no Level 3/4 promotion).
+- **Phase 10 DB-backed validation:** Completed. Docker Desktop was started, PostgreSQL container became healthy, and `scripts/demo_hotspot_semantic_retrieval.py` exited 0 with `zero_chunk_hits=0`, `parent_only_hits=0`, `total_hits=3`.
+- **Phase 10 quality comparison:** Completed as an honest validation gate. Hotspot retrieval over the Phase 8 active version executed 20 queries and produced 80 evidence-bearing hits with hotspot metadata. Phase 8 judgment reuse is blocked (`reuse_rate=0.0375`, 3/80 matched), so metrics are not calculated from invalid labels.
+- **Phase 10 Level impact:** `Level_2` preserved; hotspot-specific judgment collection is required before any Level 3/4 promotion claim.
+- **Phase 10 security:** Completed. `10-SECURITY.md` records 9 threats, 9 closed, 0 open, with accepted risks documented for intentional navigation metadata and Level assessment transparency.
+- **Phase 10 commit gate:** Completed for approved Phase 10 staged scope. User approved narrowed staging and commit path; `gitnexus detect-changes --scope staged --repo rag` completed with CRITICAL risk (27 files, 298 symbols, 34 affected processes) and the risk was explicitly surfaced/accepted for commit readiness.
+- **Phase 9 closure approval remains pending separately:** Review `verification/phase9-milestone-close/staging_plan.json` and `verification/phase9-milestone-close/final_closure_decision.json` when returning to milestone closure.
+- **Current baseline:** Level 2 (Phase 8 valid matched assessment remains AUTHORITATIVE; Phase 10 preserves Level 2 because hotspot-specific judgments are still required).
 
 ### Blockers/Concerns
 
@@ -151,9 +153,10 @@ Progress: [██████████] 100% (9 of 9 phases closed or complet
 - **Phase 5 COMPLETED:** Active-version diagnostics, resolver consolidation, and fail-closed integrity gates implemented.
 - **Phase 7 COMPLETED:** DB-backed evidence-chain proof repaired to `DB_EVIDENCE_READY` for active version `a376679b-3a95-4724-a31f-ece0c9fa35b8`.
 - **Phase 8 COMPLETED:** Matched validation completed with 95 matched judgment rows, passed integrity gate, and valid `Level_2` assessment.
+- **Phase 10 COMPLETED WITH APPROVED COMMIT SCOPE (2026-06-12):** DB-backed whitebox demo passed; Phase 8 aligned hotspot retrieval produced 80 evidence-bearing hits with 0 all-zero chunks and 0 parent-only hits; judgment reuse was blocked honestly (`reuse_rate=0.0375`); Level 2 remains authoritative; UAT/verification/security passed; user approved narrowed Phase 10 staging and commit path; staged GitNexus detect-changes completed with accepted CRITICAL risk for 27 staged Phase 10 files, 298 symbols, and 34 affected processes.
 - **Current quality blockers:** Level 3/4 readiness is still blocked by Phase 8 metrics below thresholds: hit_rate 0.70 < 0.80, top1_relevance 0.59 < 0.90, stability 0.65 < 0.85.
 - **Current close-readiness concerns:** Several Phase 8 retrieval hits are structural headings with all-zero `chunk_id`; Phase 9 must record this concern in audit/staging artifacts.
-- **Current git-hygiene blockers:** Dirty working tree has unrelated scratch, optional implementation changes, generated outputs, and secret-sensitive exclusions. No commit/tag/push/reset/clean/delete/checkout/stash may run without explicit final approval.
+- **Current git-hygiene concerns:** Dirty working tree still contains unrelated scratch, optional implementation changes, generated outputs, and secret-sensitive exclusions outside the approved Phase 10 staged scope. They remain excluded from this commit path and must not be swept into a future commit without separate approval.
 
 ## Deferred Items
 
@@ -163,10 +166,12 @@ Progress: [██████████] 100% (9 of 9 phases closed or complet
 
 ### Roadmap Evolution
 
+- Phase 10 updated (2026-06-12): Semantic validation complete and commit scope approved. DB-backed whitebox demo passed, Phase 8 aligned hotspot retrieval produced 80 evidence-bearing hits with hotspot metadata, judgment reuse was blocked honestly, Level 2 was preserved, UAT/verification/security passed, and approved staged GitNexus detect-changes completed with accepted CRITICAL risk for the Phase 10 staged scope.
+- Phase 10 added (2026-06-11): Hotspot Semantic Retrieval Validation. Semantic change: parent nodes act as routing hotspots, not content-return nodes. Implementation exists in working tree (uncommitted); validation phase covers DB-backed whitebox testing, evidence-chain integrity, Level assessment impact, and code review gates.
 - Phase 5 added: Evidence-Chain Verification and Resolver Consolidation. Entry point PLAN. Carries forward Phase 4 blockers: evidence-chain zeros, invalid Level 3 discarded, authoritative Level 2 baseline preserved, EvidenceContentResolver consolidation required before new judgments.
 
 ## Session Continuity
 
-Last session: Phase 09 approval package complete
-Stopped at: Awaiting explicit closure-scope approval before commit/tag/push
-Resume file: verification/phase9-milestone-close/final_closure_decision.json
+Last session: Phase 10 complete; DB-backed validation, Phase 8 aligned hotspot retrieval, UAT, verification, security, approved staging, and staged GitNexus detect-changes completed
+Stopped at: Ready to commit approved Phase 10 staged scope; do not include unrelated dirty-tree files
+Resume file: .planning/phases/10-hotspot-semantic-retrieval-validation/10-VALIDATION.md

@@ -1,0 +1,2191 @@
+{
+  "requirement_id": "REQ-P10-LEVEL-IMPACT",
+  "validation_date": "2026-06-12T02:23:23.887190+00:00",
+  "version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count": 20,
+  "top_k": 5,
+  "backend_type": "embedding",
+  "retrieval_contract": "subtree_hotspot_traversal_final_evidence_only",
+  "results": [
+    {
+      "query_id": "Q01",
+      "query_text": "文档的主要章节结构是什么？列出所有一级标题。",
+      "category": "structure",
+      "expected_answer_type": "structure",
+      "difficulty": "easy",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9961422812831994,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9950248111437918,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9943641916497286,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9924464513035691,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "哪个章节讨论了核心算法原理？",
+      "category": "structure",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9957756339612343,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 2,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9957466156265862,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9949064882704807,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9941983550467933,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "文档中是否有案例研究章节？如果有，在哪些页？",
+      "category": "structure",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9987187248605343,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9971271723614664,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9965858489844025,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9963995106664789,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "文档中提到的关键技术指标有哪些？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.989188203625896,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9879663597048365,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9865640032258882,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 4,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9847740872173322,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "如何使用这个系统进行数据处理？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9948700199546922,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9941850777625755,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9932159248385366,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9926533944443826,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "文档中列举了哪些性能优化方法？",
+      "category": "content",
+      "expected_answer_type": "cross_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9941728296152647,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9927865827235904,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9917956028607406,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.991487515867263,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "系统的架构设计原则是什么？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9940789393453626,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 2,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9940763274155844,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9932986920478817,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9900830554957843,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "文档中提到了哪些错误处理机制？",
+      "category": "content",
+      "expected_answer_type": "cross_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9928363450380638,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9927372965997444,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9910504560794572,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9908060387779563,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "文档中前后章节如何描述数据流程的完整链路？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9957502945146813,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9940190185291572,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.993770494445998,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9933075071483536,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "系统设计中如何平衡性能和准确性？不同章节的观点是否一致？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9953406243884052,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9952715826941091,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9952053194422712,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.994135211030831,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q11",
+      "query_text": "文档中技术方案的选择理由是什么？是否在不同章节有对比分析？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9982535026753313,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9978430558365431,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9972247316045291,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9971684856016425,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q12",
+      "query_text": "文档中是否有未解决的局限性或未来工作部分？",
+      "category": "edge",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9966046120753514,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9956271748823144,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9956084116834835,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9935181425846262,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q13",
+      "query_text": "如果输入数据格式不符合预期，系统会如何处理？",
+      "category": "edge",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9960375939133896,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9940124854997632,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9934051953297623,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 4,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.993362947785273,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q14",
+      "query_text": "文档中提到了哪些系统限制或约束？",
+      "category": "edge",
+      "expected_answer_type": "cross_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.990157274112849,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.988670631066619,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9880319989667792,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9878118531626182,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q15",
+      "query_text": "文档中描述的向量检索阈值是多少？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9935677378552196,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9930256469897818,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9927291398983618,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9926636122934955,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q16",
+      "query_text": "树结构构建的深度限制是什么？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9961485147843864,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9950055109225009,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9942621550426337,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9917415789096936,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q17",
+      "query_text": "文档中提到的 chunking 策略是什么？token 限制是多少？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9976475124921961,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 2,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9969827963878505,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.995474092364728,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9946350109210613,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q18",
+      "query_text": "embedding 模型的选择依据是什么？文档中使用了哪些模型？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9983740544991544,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9980357168208751,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9971495392586117,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9968404189206019,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q19",
+      "query_text": "文档中对比了哪些技术方案？各自的优缺点是什么？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.9971970221713415,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 2,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.9966779523265769,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 3,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9961675065909047,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.9946220139706694,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q20",
+      "query_text": "文档中是否提到与其他系统的集成方案？如果有，集成方式是什么？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": null,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": 0.9968345381247049,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1622d73f-1929-48b1-b71f-db47ffb02e4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/下一步："
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 2,
+          "node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "chunk_id": "1d3f4b5b-1df6-5d98-b22a-2f46d91b62ff",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "674e83ff-b650-5119-bdae-4a82ddc61df4"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算",
+          "page_no": null,
+          "text_preview": "PageIndexClient移植, 工作量 = 2天. PageIndexClient移植, 说明 = 完整移植client.py，保留workspace管理. CLI工具移植, 工作量 = 1天. CLI工具移植, 说明 = run_pageindex.py集成. get_page_content移植, 工作量 = 1天. get_page_content移植, 说明 = 页面内容提取工具. Reasoning backend, 工作量 = 2天. Reasoning backend, 说明 = Agent reasoning检索（PageIndex workflow）. Hybrid retrieval融合, 工作量 = 2天. Hybrid retrieval融合, 说明 = tree + graph + vector路由. 配置参数统一, 工作量 = 1天. 配置参数统一, 说明 = RuntimeSettings扩展. 测试验证, 工作量 = 1天. 测试验证, 说明 = 14节点markdown + 真实PDF. 总计, 工作量 = 10天（1-1.5周）. 总计, 说明 = -",
+          "score": 0.995053111068345,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "1758c2af-1cde-45f9-bf21-10a80c905888",
+          "navigation_node_ids": [
+            "1758c2af-1cde-45f9-bf21-10a80c905888"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/推荐集成方案/工程量估算"
+          ],
+          "drill_depth": 0
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": null,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": 0.994960096076201,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "navigation_node_ids": [
+            "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+            "47a11057-9696-497a-a563-d441307c4f4f"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+            "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵"
+          ],
+          "drill_depth": 1
+        },
+        {
+          "rank": 4,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": null,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": 0.994331896796416,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal",
+          "hotspot_node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "navigation_node_ids": [
+            "ab535519-e8af-434a-b52e-02910da078e6",
+            "1fe98698-a589-4ed5-9cd1-3a641fbd720a"
+          ],
+          "navigation_path": [
+            "PageIndex完整功能分析与集成方案/总结",
+            "PageIndex完整功能分析与集成方案/总结/关键发现："
+          ],
+          "drill_depth": 1
+        }
+      ],
+      "status": "completed"
+    }
+  ]
+}

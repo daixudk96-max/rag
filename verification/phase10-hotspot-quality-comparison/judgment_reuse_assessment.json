@@ -1,0 +1,17 @@
+{
+  "requirement_id": "REQ-P10-LEVEL-IMPACT",
+  "validation_date": "2026-06-12T02:23:23.900348+00:00",
+  "phase8_judgment_rows": 95,
+  "phase10_hit_rows": 80,
+  "matched_rows_by_query_rank_node_heading_preview": 3,
+  "reuse_rate": 0.0375,
+  "reuse_status": "REUSE_BLOCKED",
+  "rationale": "Phase 10 hotspot retrieval produces a different hit set and/or preview text from Phase 8 reasoning retrieval, so Phase 8 judgments cannot be reused for honest metrics.",
+  "evidence_chain": {
+    "query_failures": 0,
+    "total_hits": 80,
+    "zero_chunk_hits": 0,
+    "parent_only_hits": 0,
+    "hotspot_metadata_hits": 80
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "requirement_id": "REQ-P10-LEVEL-IMPACT",
+  "validation_date": "2026-06-12T02:26:08.599660+00:00",
+  "status": "COMPARISON_BLOCKED_BY_JUDGMENT_REUSE",
+  "baseline": {
+    "source": "verification/phase8-matched-validation-rerun/quality_metrics.json",
+    "level": {
+      "level": "Level_2",
+      "level_description": "能查但质量未验证 - retrieval works, quality not verified",
+      "passed_thresholds": {
+        "hit_rate": false,
+        "top1_relevance": false,
+        "stability": false
+      },
+      "blocking_factors": [
+        "hit_rate: 70.00% (need ≥ 80.00%)",
+        "top1_relevance: 59.00% (need ≥ 90.00%)",
+        "stability: 65.00% (need ≥ 85.00%)"
+      ]
+    },
+    "metrics": {
+      "hit_rate": 0.7,
+      "top1_relevance": 0.59,
+      "stability": 0.65
+    }
+  },
+  "hotspot": {
+    "source": "verification/phase10-hotspot-quality-comparison/phase10_hotspot_retrieval_results.json",
+    "metrics": {
+      "hit_rate": null,
+      "top1_relevance": null,
+      "stability": null
+    },
+    "evidence_chain": {
+      "query_failures": 0,
+      "total_hits": 80,
+      "zero_chunk_hits": 0,
+      "parent_only_hits": 0,
+      "hotspot_metadata_hits": 80
+    }
+  },
+  "delta": {
+    "hit_rate": null,
+    "top1_relevance": null,
+    "stability": null
+  },
+  "improved": {
+    "hit_rate": null,
+    "top1_relevance": null,
+    "stability": null
+  },
+  "threshold_passed": {
+    "hit_rate": false,
+    "top1_relevance": false,
+    "stability": false
+  },
+  "level_impact": "Level_2 preserved; no Level_3/4 promotion because Phase 10 hotspot hits require new judgments.",
+  "blocking_factors": [
+    "Phase 10 hotspot retrieval produced 80 evidence-bearing hits, but only 3 matched Phase 8 judged hit identity/heading/preview rows.",
+    "Phase 8 judgment reuse is blocked; calculating quality metrics from old judgments would be invalid.",
+    "New hotspot-specific judgment collection is required before any Level promotion claim."
+  ]
+}

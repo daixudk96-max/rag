@@ -1,0 +1,32 @@
+{
+  "requirement_id": "REQ-P10-LEVEL-IMPACT",
+  "validation_date": "2026-06-12T02:26:08.599660+00:00",
+  "status": "LEVEL_2_PRESERVED_REUSE_BLOCKED",
+  "level": "Level_2",
+  "level_description": "能查但质量未验证 - hotspot evidence-chain works, but quality metrics require hotspot-specific judgments",
+  "baseline_level": {
+    "level": "Level_2",
+    "level_description": "能查但质量未验证 - retrieval works, quality not verified",
+    "passed_thresholds": {
+      "hit_rate": false,
+      "top1_relevance": false,
+      "stability": false
+    },
+    "blocking_factors": [
+      "hit_rate: 70.00% (need ≥ 80.00%)",
+      "top1_relevance: 59.00% (need ≥ 90.00%)",
+      "stability: 65.00% (need ≥ 85.00%)"
+    ]
+  },
+  "passed_thresholds": {
+    "hit_rate": false,
+    "top1_relevance": false,
+    "stability": false
+  },
+  "blocking_factors": [
+    "Phase 10 hotspot retrieval produced 80 evidence-bearing hits, but only 3 matched Phase 8 judged hit identity/heading/preview rows.",
+    "Phase 8 judgment reuse is blocked; calculating quality metrics from old judgments would be invalid.",
+    "New hotspot-specific judgment collection is required before any Level promotion claim."
+  ],
+  "next_allowed_action": "collect_hotspot_specific_judgments_before_level_promotion"
+}
