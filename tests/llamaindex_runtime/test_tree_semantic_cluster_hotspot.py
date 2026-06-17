@@ -96,8 +96,8 @@ class TestClusterHotspotSelector:
                 "span_ids": [],  # Parent has no direct spans
                 "chunk_ids": [],  # Parent has no direct chunks
                 "subtree_chunk_ids": [chunk_id],  # Subtree has evidence
-                "centroid": [0.6, 0.0],  # Aggregated centroid
-                "prototype_embedding": [0.6, 0.0],
+                "centroid": [0.6, 0.8],  # Aggregated centroid (cosine sim ≈ 0.6 with [1.0, 0.0])
+                "prototype_embedding": [0.6, 0.8],  # Similarity 0.6 with query [1.0, 0.0]
                 "dispersion": 0.5,
                 "entropy": 0.8,
                 "support_count": 1,
@@ -799,6 +799,7 @@ class TestClusterHotspotSelector:
                 "support_count": 1,
                 "direct_support_count": 1,
                 "is_route_node": False,
+                "parent_node_id": product_characteristics_id,  # Added parent reference
             },
             {
                 "node_id": product_characteristics_id,
@@ -813,6 +814,7 @@ class TestClusterHotspotSelector:
                 "support_count": 2,
                 "direct_support_count": 1,
                 "is_route_node": True,  # Parent with subtree evidence
+                "parent_node_id": root_id,  # Added parent reference
             },
             {
                 "node_id": douyin_case_id,
@@ -827,6 +829,7 @@ class TestClusterHotspotSelector:
                 "support_count": 1,
                 "direct_support_count": 1,
                 "is_route_node": False,
+                "parent_node_id": root_id,  # Added parent reference
             },
             {
                 "node_id": data_importance_id,
@@ -841,6 +844,7 @@ class TestClusterHotspotSelector:
                 "support_count": 1,
                 "direct_support_count": 1,
                 "is_route_node": False,
+                "parent_node_id": root_id,  # Added parent reference
             },
             {
                 "node_id": tesla_case_id,
@@ -855,6 +859,7 @@ class TestClusterHotspotSelector:
                 "support_count": 1,
                 "direct_support_count": 1,
                 "is_route_node": False,
+                "parent_node_id": root_id,  # Added parent reference
             },
         ]
 

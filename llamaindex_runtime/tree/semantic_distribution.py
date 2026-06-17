@@ -613,6 +613,314 @@ class SubtreeHotspotSelector:
         return [hotspot for hotspot, _ in selected]
 
 
+class ClusterHotspotSelector:
+    """Level-agnostic cluster-based hotspot selector.
+
+    Phase 11 D-01: All eligible nodes compete equally by cosine similarity.
+    Phase 11 D-02: Hotspot is inferred post-hoc from densest shared region.
+    Phase 11 D-03: Candidate breadth uses candidate_top_n = max(limit * 4, 20).
+    Phase 11 D-04: Root is excluded or penalized unless no local region exists.
+
+    This selector does NOT apply route-node bonus, depth bonus, or support bonus
+    in the first pass. It scores all nodes equally, then infers the hotspot from
+    where semantic hits cluster structurally.
+    """
+
+    def select_hotspots(
+        self,
+        *,
+        query_embedding: list[float],
+        node_stats: Sequence[dict[str, Any]],
+        tree_signals: dict[str, Any],
+        limit: int = 3,
+    ) -> list[SubtreeHotspot]:
+        """Select hotspots by cluster inference, not route-node preselection.
+
+        Returns list[SubtreeHotspot] so runtime can switch selectors without
+        downstream type churn.
+        """
+        if limit <= 0:
+            return []
+
+        # D-01: Validate embedding dimension (identical to SubtreeHotspotSelector)
+        expected_dimension = tree_signals.get("embedding_dimension")
+        if (
+            isinstance(expected_dimension, int)
+            and expected_dimension > 0
+            and len(query_embedding) != expected_dimension
+        ):
+            raise ValueError(
+                "query embedding dimension "
+                f"{len(query_embedding)} does not match tree embedding dimension "
+                f"{expected_dimension}"
+            )
+
+        # Build node lookup for ancestor walking
+        node_by_id: dict[UUID, dict[str, Any]] = {}
+        for stats in node_stats:
+            node_id = stats.get("node_id")
+            if node_id is not None:
+                node_by_id[node_id] = stats
+
+        # D-01: Compute similarity for all eligible nodes (no route bonus)
+        semantic_hits: list[NodeSemanticHit] = []
+        for stats in node_stats:
+            node_id = stats.get("node_id")
+            if node_id is None:
+                continue
+            prototype = stats.get("prototype_embedding") or stats.get("centroid")
+            if not prototype:
+                continue
+
+            # D-01: Similarity-only scoring (no bonuses)
+            similarity = _cosine_similarity(query_embedding, prototype)
+            if similarity <= 0.0:
+                continue
+
+            # Build path_to_root by walking parent_node_id
+            parent_node_id = stats.get("parent_node_id")
+            path_to_root = _build_path_to_root(
+                node_id=node_id,
+                parent_node_id=parent_node_id,
+                node_by_id=node_by_id,
+            )
+
+            semantic_hits.append(
+                NodeSemanticHit(
+                    node_id=node_id,
+                    similarity=similarity,
+                    heading_path=stats.get("heading_path"),
+                    parent_node_id=parent_node_id,
+                    path_to_root=path_to_root,
+                )
+            )
+
+        # D-03: Select broader candidate set
+        candidate_top_n = max(limit * 4, 20)
+        semantic_hits.sort(key=lambda hit: hit.similarity, reverse=True)
+        candidates = semantic_hits[:candidate_top_n]
+
+        if not candidates:
+            return []
+
+        # D-02: Build ancestor clusters
+        cluster_candidates = _build_ancestor_clusters(
+            candidates=candidates,
+            node_by_id=node_by_id,
+        )
+
+        # D-04: Score clusters and select best
+        scored_clusters = [
+            (cluster, _score_cluster(cluster, candidate_top_n))
+            for cluster in cluster_candidates
+        ]
+        scored_clusters.sort(key=lambda pair: pair[1], reverse=True)
+
+        # D-04: Exclude or penalize root when local clusters exist
+        root_node_ids = [
+            node_id
+            for node_id, stats in node_by_id.items()
+            if stats.get("parent_node_id") is None
+        ]
+
+        # Filter out root unless it's the only option
+        non_root_clusters = [
+            (cluster, score)
+            for cluster, score in scored_clusters
+            if cluster.ancestor_node_id not in root_node_ids
+        ]
+
+        # If non-root clusters exist, prefer them over root
+        if non_root_clusters:
+            selected_cluster = non_root_clusters[0][0]
+        elif scored_clusters:
+            # Fallback to root if no other option
+            selected_cluster = scored_clusters[0][0]
+        else:
+            return []
+
+        # Return SubtreeHotspot objects (same shape as old selector)
+        hotspots: list[SubtreeHotspot] = []
+        ancestor_stats = node_by_id.get(selected_cluster.ancestor_node_id)
+        if ancestor_stats is None:
+            # Fallback: return strongest member nodes
+            for member_id in selected_cluster.member_node_ids[:limit]:
+                member_stats = node_by_id.get(member_id)
+                if member_stats:
+                    hotspots.append(
+                        SubtreeHotspot(
+                            node_id=member_id,
+                            score=selected_cluster.max_score,
+                            reason="cluster_member",
+                            support_count=selected_cluster.support_count,
+                            dispersion=float(member_stats.get("dispersion", 0.0)),
+                            entropy=float(member_stats.get("entropy", 0.0)),
+                        )
+                    )
+        else:
+            # Return inferred ancestor as hotspot
+            hotspots.append(
+                SubtreeHotspot(
+                    node_id=selected_cluster.ancestor_node_id,
+                    score=selected_cluster.max_score,
+                    reason="cluster_hotspot",
+                    support_count=selected_cluster.support_count,
+                    dispersion=float(ancestor_stats.get("dispersion", 0.0)),
+                    entropy=float(ancestor_stats.get("entropy", 0.0)),
+                )
+            )
+
+            # Add top member nodes as additional hits if space remains
+            remaining_limit = limit - len(hotspots)
+            if remaining_limit > 0:
+                for member_id in selected_cluster.member_node_ids[:remaining_limit]:
+                    member_stats = node_by_id.get(member_id)
+                    if member_stats and member_id != selected_cluster.ancestor_node_id:
+                        hotspots.append(
+                            SubtreeHotspot(
+                                node_id=member_id,
+                                score=selected_cluster.max_score,
+                                reason="cluster_member",
+                                support_count=selected_cluster.support_count,
+                                dispersion=float(member_stats.get("dispersion", 0.0)),
+                                entropy=float(member_stats.get("entropy", 0.0)),
+                            )
+                        )
+
+        return hotspots
+
+
+def _build_path_to_root(
+    *,
+    node_id: UUID,
+    parent_node_id: UUID | None,
+    node_by_id: dict[UUID, dict[str, Any]],
+) -> tuple[UUID, ...]:
+    """Walk parent chain to build path_to_root with cycle/depth guards."""
+    if parent_node_id is None:
+        return (node_id,)
+
+    path: list[UUID] = [node_id]
+    current_id = parent_node_id
+    visited: set[UUID] = {node_id}
+    depth = 0
+    max_depth = 256  # Match _MAX_TRAVERSAL_DEPTH
+
+    while current_id is not None and depth < max_depth:
+        if current_id in visited:
+            # Cycle detected, stop traversal
+            break
+        visited.add(current_id)
+        path.append(current_id)
+
+        parent_stats = node_by_id.get(current_id)
+        if parent_stats is None:
+            break
+        current_id = parent_stats.get("parent_node_id")
+        depth += 1
+
+    return tuple(path)
+
+
+def _build_ancestor_clusters(
+    *,
+    candidates: list[NodeSemanticHit],
+    node_by_id: dict[UUID, dict[str, Any]],
+) -> list[ClusterCandidate]:
+    """Group candidate hits by ancestors for cluster scoring."""
+    ancestor_to_members: dict[UUID, list[NodeSemanticHit]] = defaultdict(list)
+
+    # Each candidate contributes to all its ancestors
+    for candidate in candidates:
+        for ancestor_id in candidate.path_to_root:
+            ancestor_to_members[ancestor_id].append(candidate)
+
+    # Build cluster records
+    clusters: list[ClusterCandidate] = []
+    for ancestor_id, members in ancestor_to_members.items():
+        member_ids = tuple(m.node_id for m in members)
+        member_scores = tuple(m.similarity for m in members)
+        max_score = max(member_scores)
+        avg_score = sum(member_scores) / len(member_scores)
+        support_count = len(members)
+
+        # Count total candidates under this ancestor's subtree
+        subtree_candidate_count = _count_subtree_candidates(
+            ancestor_id=ancestor_id,
+            candidates=candidates,
+            node_by_id=node_by_id,
+        )
+
+        density = support_count / subtree_candidate_count if subtree_candidate_count > 0 else 0.0
+
+        clusters.append(
+            ClusterCandidate(
+                ancestor_node_id=ancestor_id,
+                member_node_ids=member_ids,
+                member_scores=member_scores,
+                max_score=max_score,
+                avg_score=avg_score,
+                support_count=support_count,
+                subtree_candidate_count=subtree_candidate_count,
+                density=density,
+            )
+        )
+
+    return clusters
+
+
+def _count_subtree_candidates(
+    *,
+    ancestor_id: UUID,
+    candidates: list[NodeSemanticHit],
+    node_by_id: dict[UUID, dict[str, Any]],
+) -> int:
+    """Count how many candidates are in the subtree under ancestor_id."""
+    # Build parent-to-children map for subtree traversal
+    parent_to_children: dict[UUID, list[UUID]] = defaultdict(list)
+    for node_id, stats in node_by_id.items():
+        parent_id = stats.get("parent_node_id")
+        if parent_id is not None:
+            parent_to_children[parent_id].append(node_id)
+
+    # Collect all nodes in subtree under ancestor_id
+    subtree_nodes: set[UUID] = set()
+    stack = [ancestor_id]
+    visited: set[UUID] = set()
+    while stack:
+        current_id = stack.pop()
+        if current_id in visited:
+            continue
+        visited.add(current_id)
+        subtree_nodes.add(current_id)
+        stack.extend(parent_to_children.get(current_id, []))
+
+    # Count candidates in this subtree
+    candidate_node_ids = {c.node_id for c in candidates}
+    return len(candidate_node_ids & subtree_nodes)
+
+
+def _score_cluster(
+    cluster: ClusterCandidate,
+    candidate_top_n: int,
+) -> float:
+    """D-02: Score cluster by max, avg, support, and density.
+
+    Formula:
+      cluster_score = max_score * 0.40
+                     + avg_score * 0.30
+                     + normalized_support_count * 0.20
+                     + density * 0.10
+    """
+    normalized_support = min(cluster.support_count / candidate_top_n, 1.0)
+    return (
+        cluster.max_score * 0.40
+        + cluster.avg_score * 0.30
+        + normalized_support * 0.20
+        + cluster.density * 0.10
+    )
+
+
 def _heading_path_parts(value: Any) -> tuple[str, ...]:
     if value is None:
         return ()
