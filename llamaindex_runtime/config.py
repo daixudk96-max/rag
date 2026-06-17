@@ -16,6 +16,7 @@ class RuntimeSettings:
     VALID_EMBEDDING_MODEL_NAMES: ClassVar[frozenset[str]] = frozenset(
         {"all-MiniLM-L6-v2", "paraphrase-MiniLM-L3-v2", "all-MiniLM-L12-v2", "all-mpnet-base-v2"}
     )
+    VALID_HOTSPOT_SELECTORS: ClassVar[frozenset[str]] = frozenset({"route_subtree", "cluster"})
 
     database_url: str
     vector_backend: str = "pgvector"
@@ -24,6 +25,8 @@ class RuntimeSettings:
     embedding_model_name: str = "all-MiniLM-L6-v2"
     qdrant_url: str = "http://localhost:6333"
     milvus_url: str = "http://localhost:19530"
+    # Phase 11: Hotspot selector strategy (route_subtree = Phase 10 rollback, cluster = Phase 11 level-agnostic)
+    rag_tree_hotspot_selector: str = "route_subtree"
     # Phase 2: LLM configuration fields for local .env support
     openai_api_key: str = ""
     llm_model: str = "gpt-4o-mini"
@@ -44,6 +47,8 @@ class RuntimeSettings:
             and self.embedding_model_name not in self.VALID_EMBEDDING_MODEL_NAMES
         ):
             raise ValueError(f"Unsupported embedding_model_name: {self.embedding_model_name}")
+        if self.rag_tree_hotspot_selector not in self.VALID_HOTSPOT_SELECTORS:
+            raise ValueError(f"Unsupported hotspot selector: {self.rag_tree_hotspot_selector}. Must be one of {self.VALID_HOTSPOT_SELECTORS}")
         if self.vector_backend == "qdrant":
             if not self.qdrant_url or not self.qdrant_url.strip():
                 raise ValueError("qdrant_url must be a non-empty URL when vector_backend is 'qdrant'")
@@ -83,6 +88,8 @@ class RuntimeSettings:
             embedding_model_name=os.getenv("EMBEDDING_MODEL_NAME", "all-MiniLM-L6-v2"),
             qdrant_url=os.getenv("QDRANT_URL", "http://localhost:6333"),
             milvus_url=os.getenv("MILVUS_URL", "http://localhost:19530"),
+            # Phase 11: Hotspot selector strategy (default: route_subtree for rollback safety)
+            rag_tree_hotspot_selector=os.getenv("RAG_TREE_HOTSPOT_SELECTOR", "route_subtree"),
             # Phase 2: Read LLM config from local .env
             openai_api_key=os.getenv("OPENAI_API_KEY", ""),
             llm_model=os.getenv("LLM_MODEL", "gpt-4o-mini"),

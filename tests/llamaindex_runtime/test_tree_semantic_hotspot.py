@@ -659,3 +659,33 @@ class TestHotspotNavigationIntegration:
                 version_id=uuid.uuid4(),
                 registry=registry,
             )
+
+
+class TestHotspotSelectorSwitch:
+    """Phase 11: Config-driven selector switch validation."""
+
+    def test_hotspot_selector_switch_routes_to_cluster_selector(self) -> None:
+        """Verify RAG_TREE_HOTSPOT_SELECTOR=cluster routes to ClusterHotspotSelector."""
+        from llamaindex_runtime.tree.semantic_distribution import (
+            ClusterHotspotSelector,
+            get_hotspot_selector,
+        )
+
+        selector = get_hotspot_selector("cluster")
+        assert isinstance(selector, ClusterHotspotSelector)
+        assert not isinstance(selector, SubtreeHotspotSelector)
+
+    def test_hotspot_selector_switch_routes_to_route_selector(self) -> None:
+        """Verify RAG_TREE_HOTSPOT_SELECTOR=route_subtree routes to SubtreeHotspotSelector."""
+        from llamaindex_runtime.tree.semantic_distribution import get_hotspot_selector
+
+        selector = get_hotspot_selector("route_subtree")
+        assert isinstance(selector, SubtreeHotspotSelector)
+        assert not isinstance(selector, ClusterHotspotSelector)
+
+    def test_hotspot_selector_switch_invalid_strategy_raises(self) -> None:
+        """Verify invalid strategy raises ValueError."""
+        from llamaindex_runtime.tree.semantic_distribution import get_hotspot_selector
+
+        with pytest.raises(ValueError, match="Unknown hotspot selector strategy"):
+            get_hotspot_selector("invalid_strategy")
