@@ -487,6 +487,48 @@ class SubtreeHotspot:
     entropy: float
 
 
+@dataclass(frozen=True)
+class NodeSemanticHit:
+    """Level-agnostic semantic candidate node before cluster inference.
+
+    Phase 11 D-01: All eligible nodes compete equally by cosine similarity.
+    This record preserves the raw similarity score before any route-node bonus,
+    depth bonus, or parent preference is applied.
+
+    The path_to_root enables ancestor aggregation for cluster scoring.
+    """
+
+    node_id: UUID
+    similarity: float
+    heading_path: str | None
+    parent_node_id: UUID | None
+    path_to_root: tuple[UUID, ...]
+
+
+@dataclass(frozen=True)
+class ClusterCandidate:
+    """Ancestor/local subtree region with aggregated semantic hits.
+
+    Phase 11 D-02: Hotspot is inferred post-hoc from densest shared region,
+    not predeclared as route/hotspot node.
+
+    Scoring formula (D-02, D-04):
+      cluster_score = max_score * 0.40
+                     + avg_score * 0.30
+                     + normalized_support_count * 0.20
+                     + density * 0.10
+    """
+
+    ancestor_node_id: UUID
+    member_node_ids: tuple[UUID, ...]
+    member_scores: tuple[float, ...]
+    max_score: float
+    avg_score: float
+    support_count: int
+    subtree_candidate_count: int
+    density: float
+
+
 class SubtreeHotspotSelector:
     """Select route nodes whose subtrees are semantically close to a query.
 
