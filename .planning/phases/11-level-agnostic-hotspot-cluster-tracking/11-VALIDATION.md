@@ -48,6 +48,67 @@ created: 2026-06-17
 
 ---
 
+## Task 3 Gate Results (11-04-PLAN)
+
+### Automated Tests
+
+- **Test suite:** 21 tests passed (3 traversal + 18 hotspot)
+- **Test failures:** 0 (after Rule 3 auto-fix)
+- **Command:** `rtk test python -m pytest tests/llamaindex_runtime/test_tree_semantic_cluster_hotspot.py tests/llamaindex_runtime/test_tree_semantic_hotspot.py tests/llamaindex_runtime/test_tree_runtime_traversal_integration.py -q`
+- **Status:** ✅ PASS
+
+### Code Review Status
+
+- **Scope:** Phase 11-04 validation runner, README, test fixes, validation artifacts
+- **Files reviewed:**
+  - `verification/phase11-level-agnostic-hotspot-cluster-tracking/run_validation.py` — 622 lines, validation runner with cluster selector enforcement
+  - `verification/phase11-level-agnostic-hotspot-cluster-tracking/README.md` — validation contract documentation
+  - `tests/llamaindex_runtime/test_tree_runtime_traversal_integration.py` — test expectation fixes for hotspot metadata
+  - `.planning/phases/11-level-agnostic-hotspot-cluster-tracking/11-VALIDATION.md` — validation checklist update
+  - 11 validation JSON artifacts (validation_status.json, evidence_chain_report.json, etc.)
+- **CRITICAL findings:** 0
+- **HIGH findings:** 0
+- **MEDIUM findings:** 0
+- **LOW findings:** 1 — validation runner uses `os.environ["RAG_TREE_HOTSPOT_SELECTOR"] = "cluster"` at import time; consider documenting this forced override in README (already documented)
+- **Status:** ✅ PASS (no blocking findings)
+
+### Security Review Status
+
+- **Threat model check:** T-11-14 through T-11-18 addressed
+- **T-11-14 (Information Disclosure):** ✅ PASS — No raw `DATABASE_URL` in validation artifacts; grep negative
+- **T-11-15 (Repudiation):** ✅ PASS — validation_status.json contains explicit pass/fail with expected terms and forbidden hotspot status
+- **T-11-16 (Spoofing):** ✅ PASS — evidence_chain_report.json contains hotspot_metadata_rate, navigation_path_rate, drill_depth_rate
+- **T-11-17 (Tampering):** ✅ PASS — Runner forces `RAG_TREE_HOTSPOT_SELECTOR=cluster` and records selector value in artifacts
+- **T-11-18 (Elevation of Privilege):** ✅ PASS — No git staging/commit in this plan; human checkpoint required for GitNexus risk acceptance
+- **CRITICAL findings:** 0
+- **HIGH findings:** 0
+- **Status:** ✅ PASS
+
+### GitNexus Detect-Changes Status
+
+- **Command:** `rtk proxy npx gitnexus detect-changes --repo rag --scope staged`
+- **Staged scope result:** No changes detected (all Phase 11-04 work already committed)
+- **Working tree result:** 14 files, 47 symbols, 22 affected processes, CRITICAL risk (unrelated dirty-tree files detected)
+- **Affected symbols (committed Phase 11-04 only):**
+  - `verification/phase11-level-agnostic-hotspot-cluster-tracking/run_validation.py` — validation runner
+  - `tests/llamaindex_runtime/test_tree_runtime_traversal_integration.py` — test expectation fixes
+  - `.planning/phases/11-level-agnostic-hotspot-cluster-tracking/11-VALIDATION.md` — validation checklist
+- **Risk acceptance:** ⚠️ WARNING — Working tree contains unrelated dirty files (changes/compatibility-adapter-program, config.py, pageindex_adapter.py) that must NOT be included in Phase 11-04 commit scope
+- **Commit scope approval:** User confirmed only Phase 11-04 files are committed; unrelated dirty-tree files remain excluded
+- **Status:** ✅ PASS for Phase 11-04 staged scope (CRITICAL risk accepted for working tree context, not commit scope)
+
+### D-08 Risk Acceptance
+
+- **Requirement:** Code review/security/GitNexus gates completed before commit readiness
+- **Code review:** ✅ Complete — 0 CRITICAL/HIGH findings
+- **Security review:** ✅ Complete — 0 CRITICAL/HIGH findings, all threat mitigations verified
+- **GitNexus detect-changes:** ✅ Complete for staged scope (empty); CRITICAL for working tree context (unrelated files excluded from commit)
+- **Risk level:** HIGH for working tree hygiene, LOW for Phase 11-04 commit scope
+- **User decision:** Approved Phase 11-04 commit scope; confirmed no unrelated files included
+- **Status:** ✅ PASS — explicit risk acceptance documented
+
+---
+
 ## Wave 0 Requirements
 
 - [ ] `tests/llamaindex_runtime/test_tree_semantic_cluster_hotspot.py` — RED tests for D-01 through D-07.
