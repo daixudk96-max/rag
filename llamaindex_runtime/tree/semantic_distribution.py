@@ -1306,3 +1306,25 @@ def _build_hits_from_node(
             )
 
     return hits
+
+
+def get_hotspot_selector(strategy: str):
+    """Factory function for hotspot selector instantiation.
+
+    Phase 11: Config-driven selector switch for rollback safety.
+
+    Args:
+        strategy: "route_subtree" (Phase 10 route-node bonus) or "cluster" (Phase 11 level-agnostic)
+
+    Returns:
+        SubtreeHotspotSelector or ClusterHotspotSelector instance
+
+    Raises:
+        ValueError: if strategy is not recognized
+    """
+    if strategy == "route_subtree":
+        return SubtreeHotspotSelector()
+    elif strategy == "cluster":
+        return ClusterHotspotSelector()
+    else:
+        raise ValueError(f"Unknown hotspot selector strategy: {strategy}")
