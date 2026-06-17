@@ -329,3 +329,40 @@ Level gates enforce no subjective shortcuts.
 - ✅ Code review passes with 0 CRITICAL/HIGH blocking findings.
 
 ---
+
+## Phase 11: Level-Agnostic Hotspot Cluster Tracking
+
+**Goal:** Replace pre-ranked route-node hotspot selection with a level-agnostic, post-hoc cluster-based hotspot tracking algorithm: compare all eligible nodes equally, observe semantic-hit distribution, infer the densest shared local region, and return evidence-bearing nodes from that inferred hotspot.
+
+**Status:** Planning
+
+**Entry Point:** PLAN
+
+**Depends on:** Phase 10
+
+**Corrective Scope:**
+- Correct the Phase 10 semantic mismatch where route-like parent nodes are preselected with route bonuses before evidence traversal.
+- Preserve Phase 10 evidence-chain metadata (`hotspot_node_id`, `navigation_path`, `drill_depth`) while changing hotspot meaning from preclassified route node to post-hoc inferred cluster region.
+- Keep `route_subtree` behavior as a rollback path while introducing `cluster` behavior behind `RAG_TREE_HOTSPOT_SELECTOR=cluster`.
+
+**Mandatory Safety Gates:**
+- GitNexus impact analysis is required before editing symbols in `llamaindex_runtime/tree/semantic_distribution.py` or `llamaindex_runtime/tree/runtime.py`.
+- Already-surfaced Phase 11 impact risks: `SubtreeHotspotSelector` HIGH, `RecursiveTreeTraversalRunner` HIGH, `QueryHit` HIGH, `_retrieve_tree_hits_from_backend` CRITICAL, `_map_query_hits_to_backend_hits` CRITICAL.
+- CRITICAL runtime-path edits must be incremental and switch-gated; no deletion of the old selector in this phase.
+
+**Planned Workstreams:**
+- WS1: Formalize cluster-selector tests and contracts using TDD.
+- WS2: Implement `ClusterHotspotSelector`, `NodeSemanticHit`, and `ClusterCandidate` without route-node bonuses.
+- WS3: Wire selector switch and preserve `route_subtree` fallback.
+- WS4: Run p6 DNA validation proving `AI产品经理的核心DNA是什么？` returns `数据驱动`, `非确定性`, and `持续性` from the expected local region.
+- WS5: Review, security check, GitNexus detect-changes, and safe git hygiene.
+
+**Success Criteria:**
+- Cluster selector tests pass, including no-route-bonus, densest-shared-ancestor, root-avoidance, short-exact-node, and p6 DNA regression cases.
+- `RAG_TREE_HOTSPOT_SELECTOR=cluster` enables the new level-agnostic path.
+- `RAG_TREE_HOTSPOT_SELECTOR=route_subtree` restores the Phase 10 fallback path.
+- p6 DNA query returns evidence containing `数据驱动`, `非确定性`, and `持续性`.
+- Hotspot metadata and navigation path rates remain at or above 0.90 in validation artifacts.
+- Code review and security review find 0 CRITICAL/HIGH findings before commit readiness.
+
+---
