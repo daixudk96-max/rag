@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 from typing import Any, Sequence
@@ -23,7 +24,10 @@ from .semantic_distribution import (
     QueryHit,
     RecursiveTreeTraversalRunner,
     SubtreeHotspotSelector,
+    get_hotspot_selector,
 )
+
+logger = logging.getLogger(__name__)
 
 
 # Reserved sentinel for hits that cannot be resolved to a persisted vector chunk.
@@ -39,6 +43,7 @@ def _retrieve_tree_hits_from_backend(
     embed_model: BaseEmbedding | None = None,
     decision_policy: str = "baseline",
     backend_type: str = "reasoning",
+    hotspot_strategy: str = "route_subtree",  # Phase 11: Selector strategy
 ) -> list[dict[str, Any]]:
     nodes = registry.query_tree_nodes_by_version(version_id)
     if not nodes:
@@ -90,7 +95,11 @@ def _retrieve_tree_hits_from_backend(
             entropy_threshold=0.5,
         )
     runner = RecursiveTreeTraversalRunner()
-    hotspots = SubtreeHotspotSelector().select_hotspots(
+    # Phase 11: Config-driven hotspot selector
+    import os
+    logger.info(f"Using hotspot selector strategy: {hotspot_strategy}")
+    hotspot_selector = get_hotspot_selector(hotspot_strategy)
+    hotspots = hotspot_selector.select_hotspots(
         query_embedding=query_embedding,
         node_stats=distribution_report["node_stats"],
         tree_signals=distribution_report["tree_signals"],
@@ -174,6 +183,8 @@ def retrieve_tree_hits_from_pdf(
         decision_policy = env_policy
     if backend_type is None:
         backend_type = os.environ.get("RAG_TREE_BACKEND_TYPE", "reasoning")
+    # Phase 11: Resolve hotspot selector strategy from environment or default
+    hotspot_strategy = os.environ.get("RAG_TREE_HOTSPOT_SELECTOR", "route_subtree")
     if version_id is not None and registry is not None:
         return _retrieve_tree_hits_from_backend(
             query,
@@ -183,6 +194,7 @@ def retrieve_tree_hits_from_pdf(
             embed_model=embed_model,
             decision_policy=decision_policy,
             backend_type=backend_type,
+            hotspot_strategy=hotspot_strategy,
         )
 
     bundle = build_docling_bundle(source_path)
