@@ -185,6 +185,14 @@ None - test fixtures contain no secrets, no production code modified.
 
 None - tests are complete fixtures with full assertions.
 
+## Self-Check: PASSED
+
+- [x] Created files exist: test_tree_semantic_cluster_hotspot.py, 11-01-SUMMARY.md
+- [x] Commits exist: 4f26ad0 (test), 2d4b87a (docs)
+- [x] No deletions in test commit
+- [x] All 5 tests present with exact required names
+- [x] RED state validated via ImportError
+
 ---
 
 **Phase**: 11-level-agnostic-hotspot-cluster-tracking
