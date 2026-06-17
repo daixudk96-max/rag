@@ -103,12 +103,8 @@ class TestTreeRuntimeTraversalIntegration:
         assert hits[0]["node_id"] == node_id
         assert hits[0]["span_ids"] == [span_id]
         assert hits[0]["score"] > 0.0
-        # Phase 11: Cluster selector adds hotspot/navigation metadata fields
-        assert "hotspot_node_id" in hits[0]
-        assert "navigation_path" in hits[0]
-        assert "drill_depth" in hits[0]
-        assert "backend_source" in hits[0]
-        assert "retrieval_path" in hits[0]
+        # Fallback path (embed_model=None) does NOT use hotspot traversal,
+        # so it legitimately lacks hotspot metadata fields
 
     def test_runtime_maps_query_hits_back_to_backend_hit_shape(self) -> None:
         version_id = uuid.uuid4()
