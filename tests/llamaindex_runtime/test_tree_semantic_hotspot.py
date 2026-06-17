@@ -19,6 +19,7 @@ import pytest
 from llamaindex_runtime.tree.runtime import _map_query_hits_to_backend_hits
 from llamaindex_runtime.tree.semantic_distribution import (
     BaselineTreeBranchDecisionPolicy,
+    ClusterHotspotSelector,
     PersistedTreeSemanticDistributionAdapter,
     QueryHit,
     RecursiveTreeTraversalRunner,
