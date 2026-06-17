@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-17T16:17:28Z",
+  "status": "NOT_CALCULATED_PENDING_JUDGMENTS",
+  "reason": "Hotspot-specific human judgments are required before hit_rate/top1/stability can be calculated honestly.",
+  "judgment_template": "07_judgment_template.csv",
+  "metrics": {
+    "hit_rate": null,
+    "top1_relevance": null,
+    "top3_has_relevant": null,
+    "top5_has_relevant": null,
+    "stability": null
+  }
+}

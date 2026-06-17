@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-06-17T16:17:10Z",
+  "validation_script_version": "2026-06-17-v1",
+  "git_commit_sha": "5d76b02a0013d22fbff9c8866c95624378be0bb5",
+  "source_document": "p6_validation_corpus",
+  "source_document_location": "verification\\p6_validation\\p6_final_sample_structured.md",
+  "hotspot_selector": "cluster",
+  "document_exists": true,
+  "database_url_configured": true,
+  "database_url_raw_value_printed": false,
+  "db_reachable": true,
+  "registry_check": "PASS",
+  "document_sha256": "ceca40d582ea6c90fbbe128591367f6f18442a15ca81bceee8a1a08ef07b9562"
+}

@@ -1,0 +1,168 @@
+{
+  "generated_at": "2026-06-17T16:17:20Z",
+  "validation_script_version": "2026-06-17-v1",
+  "git_commit_sha": "5d76b02a0013d22fbff9c8866c95624378be0bb5",
+  "source_document": "p6_validation_corpus",
+  "source_document_location": "verification\\p6_validation\\p6_final_sample_structured.md",
+  "hotspot_selector": "cluster",
+  "doc_id": "6d742c06-3c5a-4996-ac36-614510bd729f",
+  "version_id": "a287ec5a-604b-416e-8ec5-a541d3d23cbe",
+  "tree_nodes_count": 47,
+  "root_nodes_count": 1,
+  "non_root_nodes_count": 46,
+  "tree_node_spans_count": 34,
+  "vector_loader_result": {
+    "chunk_ids": [
+      "dd9c0981-c420-573d-b22e-ec96c9e5dcd5",
+      "279378a5-5b16-59f0-b6c1-194173f87ddb",
+      "529cf726-c82c-56d1-b6be-14dd82f30c92",
+      "9299a5da-504c-5fc4-bda3-a5e704665165",
+      "fb5e8a51-883f-5a77-a5d8-71aad6bb8a38",
+      "018ca81f-5b9c-5fb8-a23d-de939e8a9b75",
+      "753bf351-dba1-5469-b65e-649406ed7469",
+      "fa556058-f5eb-5f4c-a7bc-364f31002e5b",
+      "1072cdb7-d81d-523c-a3de-a374f47a6753",
+      "28772dad-6f1f-518b-83d2-beacc6ce7f70",
+      "dee183de-cd37-5197-b4fe-1f71728f8c94",
+      "96330682-6c6f-57c5-bf1f-cd715ba9f02b",
+      "993a99f0-bea6-58af-9139-66c6ee98f82c",
+      "0eda6f11-fc76-5064-8a6f-a0a71c9d6b63",
+      "998b0e87-9af3-5459-b8b0-25ec283f7516",
+      "be1c831c-a90c-526e-ab07-18693ddc489d",
+      "cc21a3ce-b8a0-511d-bfc8-b223e4f6b61b",
+      "c1f2270f-c134-5a70-b98e-9130c49c3471",
+      "b777cba2-a24e-5ef6-8c68-60279453f3a6",
+      "7beb8934-e325-56d1-8696-f74be689cb88",
+      "8e2cb449-fc1f-58dd-a637-f0871a5e657e",
+      "24ccf9c6-fb53-5c5a-9038-590479a31bb5",
+      "da93e4df-2af0-5d5d-b0e3-1a82ab832bad",
+      "67a0fac0-1fc5-5932-94f4-6bfcde50de99",
+      "f6248cbd-67aa-53ce-a8b8-439f59f03ad3",
+      "b32df2d6-ad45-5731-a164-488915c021f3",
+      "13233104-bf9b-5fdd-a92f-f3b24475ecf2",
+      "d2e550d3-cf9a-5555-8174-007edb911729",
+      "8a31c57b-ec70-51a6-a7c6-46caa8ab28ec",
+      "110ad8de-8430-510f-ada8-570347597f21",
+      "237cf346-9016-5347-9ee8-73559a8c7e8a",
+      "6b5c83d1-6818-5bda-aa76-4eecff166a8d",
+      "1d28c13e-5b78-5cf7-aa6a-e9667e1ab794",
+      "3b4cb64c-ecae-52a0-8cf6-34a6dd58e435"
+    ],
+    "count": 34
+  },
+  "vector_chunks_count": 34,
+  "vector_chunk_spans_count": 34,
+  "vector_chunks_with_node_id": 34,
+  "vector_chunks_with_embedding": 34,
+  "heading_path_non_empty_count": 47,
+  "mapped_chunks_rate": 1.0,
+  "embedding_rate": 1.0,
+  "sample_nodes": [
+    {
+      "node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "parent_node_id": null,
+      "level_no": 0,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析",
+      "summary_preview": "- AI产品经理后续的流程 - 整体AI产品的样貌 - 关注点 - 目前市面上的分类 - 哪些方面学习AI产品经理 - 学习流程 - 数据驱动 - 非确定性 - 持续性 - 产出不稳定 - 像一个刚刚学会走路的孩子 - 调教方式 - 给予方法 - 输入想要的东西 - 输出想要的东西 - 慢慢调教 - 理解为一个计算器 - 输出特点 - 用户的点击 - 屏幕的反馈 - 非常固定 - 非常精准 - 可靠 - 一加一等于2 - 不是凭空拥有 - 基于网络公开数据 - 基于海量数据喂"
+    },
+    {
+      "node_id": "dee28c2e-cbbb-58f2-a42a-3468f137b5a1",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始",
+      "summary_preview": "- AI产品经理后续的流程 - 整体AI产品的样貌 - 关注点 - 目前市面上的分类 - 哪些方面学习AI产品经理 - 学习流程"
+    },
+    {
+      "node_id": "55dec5dd-ef48-5246-b540-1b485fb9019e",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比",
+      "summary_preview": "- 数据驱动 - 非确定性 - 持续性 - 产出不稳定 - 像一个刚刚学会走路的孩子 - 调教方式 - 给予方法 - 输入想要的东西 - 输出想要的东西 - 慢慢调教 - 理解为一个计算器 - 输出特点 - 用户的点击 - 屏幕的反馈 - 非常固定 - 非常精准 - 可靠 - 一加一等于2"
+    },
+    {
+      "node_id": "9aa8b550-c33d-5bab-b43a-d5ad18fa097a",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 01:41 - 智能来源",
+      "summary_preview": "- 不是凭空拥有 - 基于网络公开数据 - 基于海量数据喂养 - 特点 - 聪明 - 什么都知道 - 能力不来自基因 - 随着年纪上升能力提升 - 吐出读过的书 - 吐出看过的资料"
+    },
+    {
+      "node_id": "226e1ed0-c7e9-58ab-9599-542a250cfb87",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 02:16 - 传统产品关注点",
+      "summary_preview": "- 执着于设计完美的功能逻辑 - 非常固定 - 按照流程走即可完成 - 缺乏边界操作 - 搜索 - 找到想要的东西 - 购物车 - 下单 - 支付 - 支付反馈 - 发货 - 流程反馈闭环"
+    },
+    {
+      "node_id": "48ff2992-2e3e-5bd5-a551-fc1f546cab92",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:02 - 角色转变",
+      "summary_preview": "- 功能逻辑的设计者 - 数据驱动的设计者 - 数据逻辑的设计者 - 不在于画产品原型 - 注重数据飞轮"
+    },
+    {
+      "node_id": "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源",
+      "summary_preview": "- 思考数据从哪里来 - 数据来源分类 - 公开数据 - 用户使用过程中产生的数据 - 关注原材料来自哪里 - 独家数据是真正的护城河 - 公开数据不具备竞争优势"
+    },
+    {
+      "node_id": "84d80c5e-a5f6-59d5-8330-20b44e862647",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理",
+      "summary_preview": "- 判断数据是否在这里 - 判断数据是否干净 - 针对不干净数据的处理 - 菜买回来带有淤泥 - 洗掉菜上的淤泥"
+    },
+    {
+      "node_id": "f1ff6543-ff8b-59b2-8200-7eb9cb86dd02",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性",
+      "summary_preview": "- 浪费大量时间 - 过程枯燥 - 决定最后产出的准确率 - AI产品部门的命门 - AI 1.0 时代 - 困惑点 - 没有数据 - 解决手段 - 造数据 - 做dirty work - 做笨拙的数据工作"
+    },
+    {
+      "node_id": "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例",
+      "summary_preview": "- 数据飞轮是什么 - 让用户心甘情愿打工的巧妙机制 - 收集所有行为数据 - 训练推荐模型 - 用户提供数据 - 系统清洗数据 - 系统做优化 - 推荐变得懂用户 - 划走 - 点赞 - 评论 - 停留几秒钟"
+    },
+    {
+      "node_id": "c1f27051-5dad-5124-b1d1-6d0a0a7dc9d8",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例",
+      "summary_preview": "- AI预演 - 怎么开 - 急转弯 - 对比逻辑 - 用户操作与AI相反 - 用户操作与AI有出入 - 隐藏的摄像头 - 不介入驾驶 - 收集数据 - 数据闭环飞轮思维 - 后台记录系统 - 完成数据标注 - 完成数据采集 - 工程师分析原因 - 飞轮运转"
+    },
+    {
+      "node_id": "4c5231c2-1948-5007-807f-a09e9769ca15",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 07:27 - 传统客服",
+      "summary_preview": "- 传统chat vote - 客服类 - 知识库类 - 意图识别 - 反馈"
+    },
+    {
+      "node_id": "c71ab9a3-812f-53cd-a1eb-b1d7b3015e24",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 07:40 - 设计拆解",
+      "summary_preview": "（完整流程验证文档 - 200 行样本，12 个 ## heading，30+ ### heading） - 数据输入 - 数据清洗 - 洗淤泥的过程 - 大模型生成 - 数据产出 - 用户反馈 - 点赞 - 点踩 - 闭环逻辑 - 反馈回到数据端"
+    },
+    {
+      "node_id": "b16e1912-4214-5b85-9e05-31a6dc0a3a20",
+      "parent_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+      "level_no": 1,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 课程信息",
+      "summary_preview": "- p (6)_原文 - 2026年02月06日"
+    },
+    {
+      "node_id": "88e6b1bc-2c42-5b46-926a-b3f5b6a7981d",
+      "parent_node_id": "dee28c2e-cbbb-58f2-a42a-3468f137b5a1",
+      "level_no": 2,
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 本节课讲解重点",
+      "summary_preview": "- AI产品经理后续的流程 - 整体AI产品的样貌 - 关注点 - 目前市面上的分类"
+    }
+  ],
+  "status": "PASS"
+}

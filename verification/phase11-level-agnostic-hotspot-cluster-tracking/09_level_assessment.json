@@ -1,0 +1,7 @@
+{
+  "generated_at": "2026-06-17T16:17:28Z",
+  "status": "LEVEL_2_PRESERVED_FUNCTIONAL_VALIDATION_FAILED",
+  "level": "Level_2",
+  "reason": "DNA query did not return expected evidence strings: 数据驱动, 非确定性, 持续性.",
+  "next_allowed_action": "fix_hotspot_selector_or_corpus_hierarchy_then_rerun"
+}

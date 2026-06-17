@@ -1,0 +1,33 @@
+{
+  "generated_at": "2026-06-17T16:17:28Z",
+  "validation_script_version": "2026-06-17-v1",
+  "git_commit_sha": "5d76b02a0013d22fbff9c8866c95624378be0bb5",
+  "source_document": "p6_validation_corpus",
+  "source_document_location": "verification\\p6_validation\\p6_final_sample_structured.md",
+  "hotspot_selector": "cluster",
+  "doc_id": "6d742c06-3c5a-4996-ac36-614510bd729f",
+  "version_id": "a287ec5a-604b-416e-8ec5-a541d3d23cbe",
+  "query_count": 10,
+  "query_failures": 0,
+  "total_hits": 19,
+  "zero_chunk_hits": 0,
+  "parent_only_hits": 0,
+  "missing_span_hits": 0,
+  "missing_node_hits": 0,
+  "empty_preview_hits": 0,
+  "hotspot_metadata_hits": 19,
+  "navigation_path_hits": 19,
+  "subtree_hotspot_traversal_hits": 19,
+  "hotspot_metadata_rate": 1.0,
+  "navigation_path_rate": 1.0,
+  "subtree_hotspot_traversal_rate": 1.0,
+  "drill_depth_rate": 0.9473684210526315,
+  "functional_status": "FAIL",
+  "hierarchy_precondition_status": "PASS",
+  "rationale": "DNA query did not return expected evidence strings: 数据驱动, 非确定性, 持续性.",
+  "failure_samples": {
+    "zero_chunk_hits": [],
+    "parent_only_hits": [],
+    "empty_preview_hits": []
+  }
+}

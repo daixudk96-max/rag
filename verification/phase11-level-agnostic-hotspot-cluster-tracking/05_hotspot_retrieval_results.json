@@ -1,0 +1,575 @@
+{
+  "generated_at": "2026-06-17T16:17:10Z",
+  "validation_script_version": "2026-06-17-v1",
+  "git_commit_sha": "5d76b02a0013d22fbff9c8866c95624378be0bb5",
+  "source_document": "p6_validation_corpus",
+  "source_document_location": "verification\\p6_validation\\p6_final_sample_structured.md",
+  "hotspot_selector": "cluster",
+  "queries": [
+    {
+      "query_id": "Q01",
+      "query_text": "AI产品经理的核心DNA是什么？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q01",
+          "query_text": "AI产品经理的核心DNA是什么？",
+          "rank": 1,
+          "score": 0.6902953840908038,
+          "node_id": "285a0439-62a4-5e18-adbe-c0067831099c",
+          "chunk_id": "f6248cbd-67aa-53ce-a8b8-439f59f03ad3",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "86f31a24-e6a7-536c-868b-b4eb2644c232"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向",
+          "text_preview": "- 数据飞轮是什么 - 让用户心甘情愿打工的巧妙机制",
+          "hotspot_node_id": "285a0439-62a4-5e18-adbe-c0067831099c",
+          "navigation_node_ids": [
+            "285a0439-62a4-5e18-adbe-c0067831099c"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向"
+          ],
+          "drill_depth": 0,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "传统软件和AI产品的输出特点有什么区别？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q02",
+          "query_text": "传统软件和AI产品的输出特点有什么区别？",
+          "rank": 1,
+          "score": 0.7509984255023696,
+          "node_id": "fc4c3adf-7512-599a-89ac-00fa53d0713b",
+          "chunk_id": "d2e550d3-cf9a-5555-8174-007edb911729",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "493cdc6e-41ee-56c9-bc4e-5a65d101027b"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > AB test 预演",
+          "text_preview": "- AI预演 - 怎么开 - 急转弯 - 对比逻辑 - 用户操作与AI相反 - 用户操作与AI有出入",
+          "hotspot_node_id": "fc4c3adf-7512-599a-89ac-00fa53d0713b",
+          "navigation_node_ids": [
+            "fc4c3adf-7512-599a-89ac-00fa53d0713b"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > AB test 预演"
+          ],
+          "drill_depth": 0,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "AI产品的智能来源是什么？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q03",
+          "query_text": "AI产品的智能来源是什么？",
+          "rank": 1,
+          "score": 0.6625781452218975,
+          "node_id": "fc4c3adf-7512-599a-89ac-00fa53d0713b",
+          "chunk_id": "d2e550d3-cf9a-5555-8174-007edb911729",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "493cdc6e-41ee-56c9-bc4e-5a65d101027b"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > AB test 预演",
+          "text_preview": "- AI预演 - 怎么开 - 急转弯 - 对比逻辑 - 用户操作与AI相反 - 用户操作与AI有出入",
+          "hotspot_node_id": "fc4c3adf-7512-599a-89ac-00fa53d0713b",
+          "navigation_node_ids": [
+            "fc4c3adf-7512-599a-89ac-00fa53d0713b"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > AB test 预演"
+          ],
+          "drill_depth": 0,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "什么是数据闭环飞轮？为什么它重要？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q04",
+          "query_text": "什么是数据闭环飞轮？为什么它重要？",
+          "rank": 1,
+          "score": 0.6375990926173278,
+          "node_id": "c69416c6-ef46-5cc3-ae5d-6499c453332d",
+          "chunk_id": "da93e4df-2af0-5d5d-b0e3-1a82ab832bad",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "dcf8b36f-0356-5f02-a599-ee34ee167eba"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 用户行为数据",
+          "text_preview": "- 划走 - 点赞 - 评论 - 停留几秒钟",
+          "hotspot_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+          "navigation_node_ids": [
+            "e6714778-8b48-58f2-a625-2f4466b7972c",
+            "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+            "c69416c6-ef46-5cc3-ae5d-6499c453332d"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 用户行为数据"
+          ],
+          "drill_depth": 2,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q04",
+          "query_text": "什么是数据闭环飞轮？为什么它重要？",
+          "rank": 2,
+          "score": 0.6133028849339327,
+          "node_id": "15fcc5be-8347-5845-8268-60ed9512eb34",
+          "chunk_id": "110ad8de-8430-510f-ada8-570347597f21",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "523cf76e-ab0e-522c-a631-d7a1fded7bbf"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > 核心思维要求",
+          "text_preview": "- 数据闭环飞轮思维",
+          "hotspot_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+          "navigation_node_ids": [
+            "e6714778-8b48-58f2-a625-2f4466b7972c",
+            "c1f27051-5dad-5124-b1d1-6d0a0a7dc9d8",
+            "15fcc5be-8347-5845-8268-60ed9512eb34"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析",
+            "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例",
+            "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > 核心思维要求"
+          ],
+          "drill_depth": 2,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q04",
+          "query_text": "什么是数据闭环飞轮？为什么它重要？",
+          "rank": 3,
+          "score": 0.5712111134143787,
+          "node_id": "419f55a6-c0f8-5dbd-bef9-c542726f94d7",
+          "chunk_id": "018ca81f-5b9c-5fb8-a23d-de939e8a9b75",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "701c722b-28f9-5f8a-81c5-322e439da1f5"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比 > AI产品经理核心DNA",
+          "text_preview": "- 数据驱动 - 非确定性 - 持续性",
+          "hotspot_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+          "navigation_node_ids": [
+            "e6714778-8b48-58f2-a625-2f4466b7972c",
+            "55dec5dd-ef48-5246-b540-1b485fb9019e",
+            "419f55a6-c0f8-5dbd-bef9-c542726f94d7"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析",
+            "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比",
+            "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比 > AI产品经理核心DNA"
+          ],
+          "drill_depth": 2,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q04",
+          "query_text": "什么是数据闭环飞轮？为什么它重要？",
+          "rank": 4,
+          "score": 0.5698083737261085,
+          "node_id": "40f5228c-cd3b-57b2-bd59-89460cc3a910",
+          "chunk_id": "237cf346-9016-5347-9ee8-73559a8c7e8a",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "67e18cf5-ae81-59ba-b071-7ee5ccc9227b"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 07:27 - 传统客服 > 传统客服产品流程",
+          "text_preview": "- 意图识别 - 反馈",
+          "hotspot_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+          "navigation_node_ids": [
+            "e6714778-8b48-58f2-a625-2f4466b7972c",
+            "4c5231c2-1948-5007-807f-a09e9769ca15",
+            "40f5228c-cd3b-57b2-bd59-89460cc3a910"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析",
+            "AI产品经理项目实战与深度思考架构分析 > 07:27 - 传统客服",
+            "AI产品经理项目实战与深度思考架构分析 > 07:27 - 传统客服 > 传统客服产品流程"
+          ],
+          "drill_depth": 2,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q04",
+          "query_text": "什么是数据闭环飞轮？为什么它重要？",
+          "rank": 5,
+          "score": 0.5596907276907398,
+          "node_id": "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3",
+          "chunk_id": "67a0fac0-1fc5-5932-94f4-6bfcde50de99",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "fc243af9-43dc-5b7c-9de8-4deb836bab74"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制",
+          "text_preview": "- 收集所有行为数据 - 训练推荐模型 - 用户提供数据 - 系统清洗数据 - 系统做优化 - 推荐变得懂用户",
+          "hotspot_node_id": "e6714778-8b48-58f2-a625-2f4466b7972c",
+          "navigation_node_ids": [
+            "e6714778-8b48-58f2-a625-2f4466b7972c",
+            "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+            "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制"
+          ],
+          "drill_depth": 2,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "抖音如何利用用户行为数据优化推荐？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q05",
+          "query_text": "抖音如何利用用户行为数据优化推荐？",
+          "rank": 1,
+          "score": 0.8017986812489026,
+          "node_id": "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3",
+          "chunk_id": "67a0fac0-1fc5-5932-94f4-6bfcde50de99",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "fc243af9-43dc-5b7c-9de8-4deb836bab74"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制",
+          "text_preview": "- 收集所有行为数据 - 训练推荐模型 - 用户提供数据 - 系统清洗数据 - 系统做优化 - 推荐变得懂用户",
+          "hotspot_node_id": "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3",
+          "navigation_node_ids": [
+            "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制"
+          ],
+          "drill_depth": 0,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "特斯拉如何收集自动驾驶数据？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q06",
+          "query_text": "特斯拉如何收集自动驾驶数据？",
+          "rank": 1,
+          "score": 0.7190370823506209,
+          "node_id": "c69416c6-ef46-5cc3-ae5d-6499c453332d",
+          "chunk_id": "da93e4df-2af0-5d5d-b0e3-1a82ab832bad",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "dcf8b36f-0356-5f02-a599-ee34ee167eba"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 用户行为数据",
+          "text_preview": "- 划走 - 点赞 - 评论 - 停留几秒钟",
+          "hotspot_node_id": "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+          "navigation_node_ids": [
+            "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+            "c69416c6-ef46-5cc3-ae5d-6499c453332d"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 用户行为数据"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q06",
+          "query_text": "特斯拉如何收集自动驾驶数据？",
+          "rank": 2,
+          "score": 0.6080865181536496,
+          "node_id": "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3",
+          "chunk_id": "67a0fac0-1fc5-5932-94f4-6bfcde50de99",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "fc243af9-43dc-5b7c-9de8-4deb836bab74"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制",
+          "text_preview": "- 收集所有行为数据 - 训练推荐模型 - 用户提供数据 - 系统清洗数据 - 系统做优化 - 推荐变得懂用户",
+          "hotspot_node_id": "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+          "navigation_node_ids": [
+            "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+            "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q06",
+          "query_text": "特斯拉如何收集自动驾驶数据？",
+          "rank": 3,
+          "score": 0.49591865433880505,
+          "node_id": "285a0439-62a4-5e18-adbe-c0067831099c",
+          "chunk_id": "f6248cbd-67aa-53ce-a8b8-439f59f03ad3",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "86f31a24-e6a7-536c-868b-b4eb2644c232"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向",
+          "text_preview": "- 数据飞轮是什么 - 让用户心甘情愿打工的巧妙机制",
+          "hotspot_node_id": "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+          "navigation_node_ids": [
+            "49e4d965-d020-536f-ac27-e9a783ee4bb9",
+            "285a0439-62a4-5e18-adbe-c0067831099c"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例",
+            "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "AI产品落地时第一个要思考的问题是什么？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q07",
+          "query_text": "AI产品落地时第一个要思考的问题是什么？",
+          "rank": 1,
+          "score": 0.6310009125965784,
+          "node_id": "bb40b84d-11b5-5cac-be3a-27ac6bb596e9",
+          "chunk_id": "279378a5-5b16-59f0-b6c1-194173f87ddb",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "3246ee8a-2fcb-55bf-bef6-f9ee630b8095"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 课程回顾",
+          "text_preview": "- 哪些方面学习AI产品经理 - 学习流程",
+          "hotspot_node_id": "dee28c2e-cbbb-58f2-a42a-3468f137b5a1",
+          "navigation_node_ids": [
+            "dee28c2e-cbbb-58f2-a42a-3468f137b5a1",
+            "bb40b84d-11b5-5cac-be3a-27ac6bb596e9"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始",
+            "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 课程回顾"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q07",
+          "query_text": "AI产品落地时第一个要思考的问题是什么？",
+          "rank": 2,
+          "score": 0.6232368268254335,
+          "node_id": "88e6b1bc-2c42-5b46-926a-b3f5b6a7981d",
+          "chunk_id": "529cf726-c82c-56d1-b6be-14dd82f30c92",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b664dda7-ae6a-53c9-85c9-0aaaae0aad57"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 本节课讲解重点",
+          "text_preview": "- AI产品经理后续的流程 - 整体AI产品的样貌 - 关注点 - 目前市面上的分类",
+          "hotspot_node_id": "dee28c2e-cbbb-58f2-a42a-3468f137b5a1",
+          "navigation_node_ids": [
+            "dee28c2e-cbbb-58f2-a42a-3468f137b5a1",
+            "88e6b1bc-2c42-5b46-926a-b3f5b6a7981d"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始",
+            "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 本节课讲解重点"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "如何处理不干净的数据？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q08",
+          "query_text": "如何处理不干净的数据？",
+          "rank": 1,
+          "score": 0.885518941301256,
+          "node_id": "15a6e7e1-83d0-5c47-b327-df786c20f430",
+          "chunk_id": "c1f2270f-c134-5a70-b98e-9130c49c3471",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "997d74b7-b83a-5f9d-8b05-fed9ef8722b2"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 数据清洗标注",
+          "text_preview": "- 针对不干净数据的处理",
+          "hotspot_node_id": "15a6e7e1-83d0-5c47-b327-df786c20f430",
+          "navigation_node_ids": [
+            "15a6e7e1-83d0-5c47-b327-df786c20f430"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 数据清洗标注"
+          ],
+          "drill_depth": 0,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "李菲菲在AI 1.0时代遇到了什么数据问题？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q09",
+          "query_text": "李菲菲在AI 1.0时代遇到了什么数据问题？",
+          "rank": 1,
+          "score": 0.5886459926296431,
+          "node_id": "5ff424aa-d35a-5eb2-b197-e45430d95bbc",
+          "chunk_id": "be1c831c-a90c-526e-ab07-18693ddc489d",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b5f548cd-83f1-5567-a7a8-35b986f9071a"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论",
+          "text_preview": "- 独家数据是真正的护城河 - 公开数据不具备竞争优势",
+          "hotspot_node_id": "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+          "navigation_node_ids": [
+            "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+            "5ff424aa-d35a-5eb2-b197-e45430d95bbc"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源",
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q09",
+          "query_text": "李菲菲在AI 1.0时代遇到了什么数据问题？",
+          "rank": 2,
+          "score": 0.5740936358844545,
+          "node_id": "362dc937-b4ba-59f6-ba68-a85cf52c5efe",
+          "chunk_id": "998b0e87-9af3-5459-b8b0-25ec283f7516",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "4eede4a7-4da2-570c-8adc-5710b01c28cb"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节",
+          "text_preview": "- 思考数据从哪里来 - 数据来源分类 - 公开数据 - 用户使用过程中产生的数据",
+          "hotspot_node_id": "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+          "navigation_node_ids": [
+            "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+            "362dc937-b4ba-59f6-ba68-a85cf52c5efe"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源",
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        },
+        {
+          "query_id": "Q09",
+          "query_text": "李菲菲在AI 1.0时代遇到了什么数据问题？",
+          "rank": 3,
+          "score": 0.5123050429495682,
+          "node_id": "d877d90c-1d74-5227-b969-a8f0bfd61d4f",
+          "chunk_id": "0eda6f11-fc76-5064-8a6f-a0a71c9d6b63",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "0ad80651-be80-5ea6-9805-598273f0b6f7"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 厨师比喻",
+          "text_preview": "- 关注原材料来自哪里",
+          "hotspot_node_id": "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+          "navigation_node_ids": [
+            "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+            "d877d90c-1d74-5227-b969-a8f0bfd61d4f"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源",
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 厨师比喻"
+          ],
+          "drill_depth": 1,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "独家数据为什么是真正的护城河？",
+      "status": "PASS",
+      "hits": [
+        {
+          "query_id": "Q10",
+          "query_text": "独家数据为什么是真正的护城河？",
+          "rank": 1,
+          "score": 0.8879084272631996,
+          "node_id": "5ff424aa-d35a-5eb2-b197-e45430d95bbc",
+          "chunk_id": "be1c831c-a90c-526e-ab07-18693ddc489d",
+          "chunk_id_missing": false,
+          "span_ids": [
+            "b5f548cd-83f1-5567-a7a8-35b986f9071a"
+          ],
+          "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论",
+          "text_preview": "- 独家数据是真正的护城河 - 公开数据不具备竞争优势",
+          "hotspot_node_id": "5ff424aa-d35a-5eb2-b197-e45430d95bbc",
+          "navigation_node_ids": [
+            "5ff424aa-d35a-5eb2-b197-e45430d95bbc"
+          ],
+          "navigation_path": [
+            "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论"
+          ],
+          "drill_depth": 0,
+          "backend_source": "tree_semantic",
+          "retrieval_path": "subtree_hotspot_traversal"
+        }
+      ]
+    }
+  ],
+  "query_count": 10,
+  "query_failures": 0,
+  "total_hits": 19
+}

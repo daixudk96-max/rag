@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-06-17T16:17:28Z",
+  "field_rules": {
+    "relevance": [
+      "relevant",
+      "partially_relevant",
+      "irrelevant"
+    ],
+    "evidence_quality": [
+      "strong",
+      "weak",
+      "none"
+    ],
+    "answer_support": [
+      "supports_answer",
+      "context_only",
+      "no_support"
+    ],
+    "comment": "free text"
+  },
+  "note": "Phase 11 validation uses cluster selector; judgment collection is optional unless Level promotion is pursued."
+}

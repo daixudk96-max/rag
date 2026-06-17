@@ -498,6 +498,8 @@ def run_validation(*, doc_path: Path, db_url: str, env_payload: dict[str, Any]) 
             },
         }
         write_json("06_evidence_chain_report.json", evidence_payload)
+        # Write duplicate with expected filename for 11-04-PLAN.md acceptance criteria
+        write_json("evidence_chain_report.json", evidence_payload)
 
         validation_status_payload = {
             **build_base_payload(doc_path),
