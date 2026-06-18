@@ -723,18 +723,23 @@ class ClusterHotspotSelector:
             if stats.get("parent_node_id") is None
         ]
 
-        # Filter out root unless it's the only option
-        non_root_clusters = [
-            (cluster, score)
-            for cluster, score in scored_clusters
-            if cluster.ancestor_node_id not in root_node_ids
-        ]
+        # D-04: Root penalty - prefer local clusters, but allow root when it's the only option
+        # Check if we have non-root alternatives before filtering
+        has_non_root_alternatives = (
+            len(scored_clusters) > 1
+            and any(c.ancestor_node_id not in root_node_ids for c, _ in scored_clusters)
+        )
 
-        # If non-root clusters exist, prefer them over root
-        if non_root_clusters:
+        if has_non_root_alternatives:
+            # Prefer non-root when alternatives exist
+            non_root_clusters = [
+                (cluster, score)
+                for cluster, score in scored_clusters
+                if cluster.ancestor_node_id not in root_node_ids
+            ]
             selected_cluster = non_root_clusters[0][0]
         elif scored_clusters:
-            # Fallback to root if no other option
+            # Fallback to root OR single local cluster
             selected_cluster = scored_clusters[0][0]
         else:
             return []
