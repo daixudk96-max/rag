@@ -864,7 +864,15 @@ def _build_ancestor_clusters(
             node_by_id=node_by_id,
         )
 
-        density = support_count / subtree_candidate_count if subtree_candidate_count > 0 else 0.0
+        # WR-03: Skip clusters with invalid subtree scope (zero density denominator)
+        if subtree_candidate_count == 0:
+            logger.warning(
+                "cluster ancestor %s has subtree_candidate_count=0 with support_count=%d, skipping",
+                ancestor_id, support_count
+            )
+            continue
+
+        density = support_count / subtree_candidate_count
 
         clusters.append(
             ClusterCandidate(
