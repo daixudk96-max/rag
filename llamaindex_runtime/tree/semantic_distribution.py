@@ -1302,6 +1302,10 @@ class RecursiveTreeTraversalRunner:
 def _cosine_similarity(vector_a: Sequence[float], vector_b: Sequence[float]) -> float:
     """Compute cosine similarity between same-dimensional vectors."""
     if not vector_a or not vector_b:
+        logger.warning(
+            "cosine_similarity received empty vector: len(a)=%d, len(b)=%d",
+            len(vector_a), len(vector_b)
+        )
         return 0.0
     if len(vector_a) != len(vector_b):
         raise ValueError(
