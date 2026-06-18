@@ -912,6 +912,163 @@ class TestClusterHotspotSelector:
         # EvidenceContentResolver. For now, we validate node selection.)
         # Full evidence validation happens in Phase 11 validation runner.
 
+    def test_p6_dna_query_selects_expected_hotspot_not_forbidden(
+        self,
+    ) -> None:
+        """DNA query must select 产品特性对比 region, not forbidden 抖音案例.
+
+        Root cause: max_score 40% weight caused isolated high-similarity node
+        (抖音案例 0.69) to win over correct cluster (产品特性对比 0.57).
+
+        After weight adjustment (max 20%, avg 35%, support 30%, density 15%),
+        dense cluster with correct content should win.
+
+        This is a regression test for Phase 11 gap closure WR-01.
+        """
+        version_id = uuid.uuid4()
+        expected_hotspot_node_id = uuid.uuid4()  # 产品特性对比 region
+        forbidden_hotspot_node_id = uuid.uuid4()  # 抖音案例 region
+        dna_child_id = uuid.uuid4()  # DNA evidence node under expected hotspot
+
+        span_expected = uuid.uuid4()
+        span_forbidden = uuid.uuid4()
+        span_dna = uuid.uuid4()
+
+        chunk_expected = uuid.uuid4()
+        chunk_forbidden = uuid.uuid4()
+        chunk_dna = uuid.uuid4()
+
+        registry = MagicMock()
+        registry.query_tree_nodes_by_version.return_value = [
+            {
+                "node_id": forbidden_hotspot_node_id,
+                "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向",
+                "level_no": 2,
+                "parent_node_id": uuid.uuid4(),  # 抖音案例 parent
+            },
+            {
+                "node_id": expected_hotspot_node_id,
+                "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比",
+                "level_no": 1,
+                "parent_node_id": uuid.uuid4(),  # Root parent
+            },
+            {
+                "node_id": dna_child_id,
+                "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比 > AI产品经理核心DNA",
+                "level_no": 2,
+                "parent_node_id": expected_hotspot_node_id,
+            },
+        ]
+
+        # Forbidden cluster: single node with high similarity (0.69)
+        # Expected cluster: two nodes with moderate similarity (0.57 avg) but better density
+        registry.query_vector_chunks_by_version.return_value = [
+            {
+                "chunk_id": chunk_forbidden,
+                "node_id": forbidden_hotspot_node_id,
+                "embedding": [0.69, 0.31],  # Highest single similarity
+            },
+            {
+                "chunk_id": chunk_expected,
+                "node_id": expected_hotspot_node_id,
+                "embedding": [0.57, 0.43],  # Moderate similarity
+            },
+            {
+                "chunk_id": chunk_dna,
+                "node_id": dna_child_id,
+                "embedding": [0.57, 0.43],  # Same similarity as parent (dense cluster)
+            },
+        ]
+
+        registry.query_vector_chunk_spans_by_version.return_value = [
+            {"chunk_id": chunk_forbidden, "span_id": span_forbidden, "ordinal_no": 0},
+            {"chunk_id": chunk_expected, "span_id": span_expected, "ordinal_no": 0},
+            {"chunk_id": chunk_dna, "span_id": span_dna, "ordinal_no": 0},
+        ]
+
+        registry.query_doc_id_by_version.return_value = uuid.uuid4()
+
+        # Node stats with competing clusters
+        node_stats = [
+            {
+                "node_id": forbidden_hotspot_node_id,
+                "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向",
+                "span_ids": [span_forbidden],
+                "chunk_ids": [chunk_forbidden],
+                "subtree_chunk_ids": [chunk_forbidden],
+                "centroid": [0.69, 0.31],
+                "prototype_embedding": [0.69, 0.31],
+                "dispersion": 0.05,
+                "entropy": 0.2,
+                "support_count": 1,
+                "direct_support_count": 1,
+                "is_route_node": False,
+                "parent_node_id": uuid.uuid4(),
+            },
+            {
+                "node_id": expected_hotspot_node_id,
+                "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比",
+                "span_ids": [span_expected],
+                "chunk_ids": [chunk_expected],
+                "subtree_chunk_ids": [chunk_expected, chunk_dna],  # Parent aggregates child
+                "centroid": [0.57, 0.43],
+                "prototype_embedding": [0.57, 0.43],
+                "dispersion": 0.05,
+                "entropy": 0.2,
+                "support_count": 2,  # Dense cluster: 2 nodes
+                "direct_support_count": 1,
+                "is_route_node": True,
+                "parent_node_id": uuid.uuid4(),
+            },
+            {
+                "node_id": dna_child_id,
+                "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比 > AI产品经理核心DNA",
+                "span_ids": [span_dna],
+                "chunk_ids": [chunk_dna],
+                "subtree_chunk_ids": [chunk_dna],
+                "centroid": [0.57, 0.43],
+                "prototype_embedding": [0.57, 0.43],
+                "dispersion": 0.05,
+                "entropy": 0.2,
+                "support_count": 1,
+                "direct_support_count": 1,
+                "is_route_node": False,
+                "parent_node_id": expected_hotspot_node_id,
+            },
+        ]
+
+        tree_signals = {
+            "node_count": 3,
+            "analyzed_node_count": 3,
+            "skipped_chunk_count": 0,
+            "embedding_dimension": 2,
+        }
+
+        # Query embedding producing 0.69 similarity with forbidden, 0.57 with expected
+        query_embedding = [0.65, 0.35]
+
+        selector = ClusterHotspotSelector()
+        hotspots = selector.select_hotspots(
+            query_embedding=query_embedding,
+            node_stats=node_stats,
+            tree_signals=tree_signals,
+            limit=1,
+        )
+
+        # CRITICAL: hotspot must be expected region, NOT forbidden
+        assert hotspots, "Selector should return at least one hotspot"
+        assert hotspots[0].node_id != forbidden_hotspot_node_id, (
+            f"Hotspot must NOT be forbidden region (抖音案例). "
+            f"Expected 产品特性对比 or its child, got {hotspots[0].node_id}"
+        )
+
+        # Either expected hotspot node OR its child (DNA evidence node) should be selected
+        expected_region_ids = {expected_hotspot_node_id, dna_child_id}
+        assert hotspots[0].node_id in expected_region_ids, (
+            f"Hotspot must be expected region (产品特性对比 or DNA child). "
+            f"Got {hotspots[0].node_id}, expected one of {expected_region_ids}"
+        )
+
 
 # NOTE: This file is in RED phase.
 # All tests will fail because ClusterHotspotSelector does not exist yet.
