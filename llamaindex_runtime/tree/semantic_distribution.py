@@ -252,6 +252,8 @@ def _build_node_stats(
             {
                 "node_id": node_id,
                 "heading_path": node.get("heading_path"),
+                "parent_node_id": node.get("parent_node_id"),
+                "level_no": node.get("level_no"),
                 "span_ids": node_to_span_ids.get(node_id, []),
                 "chunk_ids": direct_chunk_ids,
                 "subtree_chunk_ids": subtree_chunk_ids,
@@ -489,6 +491,38 @@ class SubtreeHotspot:
     support_count: int
     dispersion: float
     entropy: float
+
+
+@dataclass(frozen=True)
+class KeywordSpanHit:
+    """Keyword/BM25 span hit with node mapping.
+
+    Phase 11 11-07: Generic keyword hit for hybrid fusion scoring.
+    Captures BM25 or other keyword retrieval results with span-to-node mapping.
+    """
+
+    span_id: UUID
+    node_id: UUID
+    score: float
+    matched_terms: tuple[str, ...]
+    source: str  # "bm25", "exact_match", etc.
+
+
+@dataclass(frozen=True)
+class HotspotSelectionContext:
+    """V2 selection context for hybrid hotspot selector.
+
+    Phase 11 11-07: Unified context for vector + keyword + optional rerank fusion.
+    Enables generic cross-domain selector without hardcoded domain-specific terms.
+    """
+
+    query_text: str
+    query_embedding: list[float]
+    node_stats: dict[UUID, dict[str, Any]]
+    tree_signals: dict[str, Any]
+    vector_candidates: list[NodeSemanticHit]
+    keyword_hits: list[KeywordSpanHit]
+    rerank_scores: dict[UUID, float] | None = None
 
 
 @dataclass(frozen=True)
@@ -799,6 +833,154 @@ class ClusterHotspotSelector:
         return hotspots
 
 
+class HybridClusterHotspotSelector:
+    """Hybrid hotspot selector using vector + keyword + optional rerank fusion.
+
+    Phase 11 11-07: Generic cross-domain selector without hardcoded domain-specific terms.
+
+    Fusion weights (documented, not magic):
+      _VECTOR_WEIGHT = 0.40: Primary semantic similarity
+      _KEYWORD_WEIGHT = 0.30: BM25/exact match evidence
+      _RERANK_WEIGHT = 0.20: Optional reranker scores (default-off when None)
+      _DISTRIBUTION_WEIGHT = 0.10: Child-node distribution bonus
+
+    Child distribution scoring rewards multi-child evidence over isolated high-score nodes.
+    Default-off reranker seam: works correctly when rerank_scores is None.
+    """
+
+    # Documented weight constants (not magic numbers)
+    _VECTOR_WEIGHT: float = 0.40
+    _KEYWORD_WEIGHT: float = 0.30
+    _RERANK_WEIGHT: float = 0.20
+    _DISTRIBUTION_WEIGHT: float = 0.10
+
+    def select_hotspots(
+        self,
+        *,
+        context: HotspotSelectionContext,
+        limit: int = 3,
+    ) -> list[SubtreeHotspot]:
+        """Select hotspots by hybrid fusion scoring.
+
+        Args:
+            context: V2 selection context with vector_candidates, keyword_hits, optional rerank_scores
+            limit: Maximum hotspots to return
+
+        Returns:
+            List of SubtreeHotspot objects (same shape as other selectors)
+        """
+        if limit <= 0:
+            return []
+
+        # Validate embedding dimension
+        expected_dimension = context.tree_signals.get("embedding_dimension")
+        if (
+            isinstance(expected_dimension, int)
+            and expected_dimension > 0
+            and len(context.query_embedding) != expected_dimension
+        ):
+            raise ValueError(
+                f"query embedding dimension {len(context.query_embedding)} "
+                f"does not match tree embedding dimension {expected_dimension}"
+            )
+
+        if not context.node_stats:
+            return []
+
+        # Build node lookup
+        node_by_id = context.node_stats
+
+        # Collect vector candidates (already computed similarity)
+        vector_candidates = context.vector_candidates or []
+
+        # Build keyword hit map by node
+        keyword_hits_by_node: dict[UUID, list[KeywordSpanHit]] = defaultdict(list)
+        for hit in context.keyword_hits or []:
+            keyword_hits_by_node[hit.node_id].append(hit)
+
+        # Normalize vector scores
+        vector_scores_raw = [c.similarity for c in vector_candidates]
+        vector_scores_normalized = _normalize_scores(vector_scores_raw)
+        vector_by_node = {c.node_id: s for c, s in zip(vector_candidates, vector_scores_normalized)}
+
+        # Normalize keyword scores
+        keyword_scores_raw = [h.score for h in context.keyword_hits or []]
+        keyword_scores_normalized = _normalize_scores(keyword_scores_raw)
+        keyword_by_node: dict[UUID, float] = {}
+        for hit, norm_score in zip(context.keyword_hits or [], keyword_scores_normalized):
+            # Take max keyword score per node
+            existing = keyword_by_node.get(hit.node_id, 0.0)
+            keyword_by_node[hit.node_id] = max(existing, norm_score)
+
+        # Normalize rerank scores if present
+        rerank_by_node: dict[UUID, float] | None = None
+        if context.rerank_scores:
+            rerank_scores_raw = list(context.rerank_scores.values())
+            rerank_scores_normalized = _normalize_scores(rerank_scores_raw)
+            rerank_by_node = {
+                node_id: norm_score
+                for node_id, norm_score in zip(
+                    context.rerank_scores.keys(), rerank_scores_normalized
+                )
+            }
+
+        # Compute distribution scores for all candidate nodes
+        candidate_node_ids = set(vector_by_node.keys()) | set(keyword_by_node.keys())
+        all_hits = [
+            {"node_id": node_id, "score": vector_by_node.get(node_id, 0.0)}
+            for node_id in candidate_node_ids
+        ]
+        distribution_scores: dict[UUID, float] = {}
+        for node_id in candidate_node_ids:
+            distribution_scores[node_id] = _compute_child_distribution_score(
+                target_node_id=node_id,
+                hits=all_hits,
+                node_stats=node_by_id,
+            )
+
+        # Compute fusion scores for all candidate nodes
+        fusion_scores: list[tuple[UUID, float]] = []
+        for node_id in candidate_node_ids:
+            vector_score = vector_by_node.get(node_id, 0.0)
+            keyword_score = keyword_by_node.get(node_id, 0.0)
+            rerank_score = rerank_by_node.get(node_id) if rerank_by_node else None
+            distribution_score = distribution_scores.get(node_id, 0.0)
+
+            fusion = _compute_fusion_score(
+                vector_score=vector_score,
+                keyword_score=keyword_score,
+                rerank_score=rerank_score,
+                distribution_score=distribution_score,
+                vector_weight=self._VECTOR_WEIGHT,
+                keyword_weight=self._KEYWORD_WEIGHT,
+                rerank_weight=self._RERANK_WEIGHT,
+                distribution_weight=self._DISTRIBUTION_WEIGHT,
+            )
+            fusion_scores.append((node_id, fusion))
+
+        # Sort by fusion score and select top
+        fusion_scores.sort(key=lambda pair: pair[1], reverse=True)
+        selected = fusion_scores[:limit]
+
+        # Build SubtreeHotspot objects
+        hotspots: list[SubtreeHotspot] = []
+        for node_id, score in selected:
+            stats = node_by_id.get(node_id)
+            if stats:
+                hotspots.append(
+                    SubtreeHotspot(
+                        node_id=node_id,
+                        score=score,
+                        reason="hybrid_fusion",
+                        support_count=stats.get("support_count", 0),
+                        dispersion=float(stats.get("dispersion", 0.0)),
+                        entropy=float(stats.get("entropy", 0.0)),
+                    )
+                )
+
+        return hotspots
+
+
 def _build_path_to_root(
     *,
     node_id: UUID,
@@ -921,6 +1103,123 @@ def _count_subtree_candidates(
     return len(candidate_node_ids & subtree_nodes)
 
 
+def _normalize_scores(scores: list[float]) -> list[float]:
+    """Normalize scores to [0.0, 1.0] range preserving ranking.
+
+    Phase 11 11-07: Generic normalization for hybrid fusion scoring.
+    Handles vector scores [0-1], BM25 scores [0-20+], rerank scores [0-100].
+    """
+    if not scores:
+        return []
+
+    min_score = min(scores)
+    max_score = max(scores)
+
+    # All same value: return midpoint
+    if max_score == min_score:
+        return [0.5 for _ in scores]
+
+    # Min-max normalization
+    return [(s - min_score) / (max_score - min_score) for s in scores]
+
+
+def _compute_child_distribution_score(
+    *,
+    target_node_id: UUID,
+    hits: list[dict[str, Any]],
+    node_stats: dict[UUID, dict[str, Any]],
+) -> float:
+    """Compute child distribution score for multi-child evidence bonus.
+
+    Phase 11 11-07: Reward nodes with distributed child hits over isolated high-score nodes.
+    Uses parent_node_id from hit dicts or node_stats to compute distribution breadth.
+
+    Parent nodes WITHOUT direct hits can still score high when they have descendant evidence.
+    This enables cluster-style scoring where parent aggregation beats isolated leaf hits.
+    """
+    # Count direct hits on target
+    direct_hits = [h for h in hits if h.get("node_id") == target_node_id]
+
+    # Get target's parent from node_stats or hit dict
+    target_stats = node_stats.get(target_node_id, {})
+    target_parent_id = target_stats.get("parent_node_id")
+    if target_parent_id is None and direct_hits:
+        # Try to get from first direct hit
+        target_parent_id = direct_hits[0].get("parent_node_id")
+
+    # Count sibling hits (same parent as target)
+    sibling_hits = []
+    for h in hits:
+        h_parent_id = h.get("parent_node_id") or node_stats.get(h.get("node_id"), {}).get("parent_node_id")
+        if h_parent_id == target_parent_id and h.get("node_id") != target_node_id:
+            sibling_hits.append(h)
+
+    # Count child hits (target is parent of hit)
+    child_hits = []
+    for h in hits:
+        h_parent_id = h.get("parent_node_id") or node_stats.get(h.get("node_id"), {}).get("parent_node_id")
+        if h_parent_id == target_node_id:
+            child_hits.append(h)
+
+    # If no direct hits but has child hits: score based on child aggregation
+    if not direct_hits:
+        if child_hits:
+            # Parent with child evidence: use average child score + breadth bonus
+            avg_child_score = sum(h.get("score", 0.0) for h in child_hits) / len(child_hits)
+            # Breadth bonus: more children = higher score
+            breadth_bonus = min(len(child_hits) / 5.0, 1.0)  # Cap at 5 children
+            return avg_child_score * 0.80 + breadth_bonus * 0.20
+        # No direct hits and no child hits: zero score
+        return 0.0
+
+    # Direct hit exists: compute full distribution score
+    # Direct hit contributes base score
+    direct_score = sum(h.get("score", 0.0) for h in direct_hits) / len(direct_hits)
+
+    # Sibling breadth bonus: reward distributed evidence across siblings
+    sibling_breadth = len(sibling_hits) / max(len(sibling_hits) + 1, 1)
+
+    # Child depth bonus: reward nodes with descendant evidence
+    child_depth = len(child_hits) / max(len(child_hits) + 1, 1)
+
+    return direct_score * 0.60 + sibling_breadth * 0.25 + child_depth * 0.15
+
+
+def _compute_fusion_score(
+    *,
+    vector_score: float,
+    keyword_score: float,
+    rerank_score: float | None = None,
+    distribution_score: float = 0.0,
+    vector_weight: float = 0.40,
+    keyword_weight: float = 0.30,
+    rerank_weight: float = 0.20,
+    distribution_weight: float = 0.10,
+) -> float:
+    """Compute weighted fusion score for hybrid hotspot selection.
+
+    Phase 11 11-07: Weighted sum of normalized scores.
+    Rerank score is optional (default-off seam).
+    """
+    # Normalize weights if rerank is None
+    if rerank_score is None:
+        # Distribute rerank weight to other components
+        total_weight = vector_weight + keyword_weight + distribution_weight
+        vector_weight = vector_weight / total_weight
+        keyword_weight = keyword_weight / total_weight
+        distribution_weight = distribution_weight / total_weight
+        rerank_contribution = 0.0
+    else:
+        rerank_contribution = rerank_weight * rerank_score
+
+    return (
+        vector_weight * vector_score
+        + keyword_weight * keyword_score
+        + distribution_weight * distribution_score
+        + rerank_contribution
+    )
+
+
 def _score_cluster_base(
     cluster: ClusterCandidate,
     candidate_top_n: int,
@@ -947,32 +1246,16 @@ def _score_cluster_base(
 def _score_cluster(
     cluster: ClusterCandidate,
     candidate_top_n: int,
-    node_by_id: dict[UUID, dict[str, Any]],
+    node_by_id: dict[UUID, dict[str, Any]],  # noqa: ARG001 - kept for API compatibility
 ) -> float:
-    """D-02: Score cluster with heading semantic relevance awareness.
+    """D-02: Score cluster by distribution statistics.
 
-    Phase 11 gap closure extension: heading_path semantic filtering.
-    Extends base scoring with bonus for expected headings and penalty for forbidden headings.
+    Phase 11 11-07: Removed hardcoded expected_keywords/forbidden_keywords.
+    Selector is now generic across domains - no project-specific keyword constants.
+    Heading semantic relevance is handled by fusion scoring, not hardcoded bonuses.
     """
-    # Base scoring from weight-adjusted formula
-    base_score = _score_cluster_base(cluster, candidate_top_n)
-
-    # Heading semantic relevance (Phase 11 semantic fix)
-    ancestor_stats = node_by_id.get(cluster.ancestor_node_id)
-    if ancestor_stats and ancestor_stats.get("heading_path"):
-        heading_path = ancestor_stats["heading_path"]
-
-        # Expected headings (semantic relevance to AI product DNA query)
-        expected_keywords = ["产品特性对比", "核心DNA", "数据驱动", "非确定性", "持续性"]
-        expected_bonus = 0.10 * sum(1 for kw in expected_keywords if kw in heading_path)
-
-        # Forbidden headings (semantically irrelevant for DNA query)
-        forbidden_keywords = ["抖音案例", "05:40", "数据工作重要性", "04:40"]
-        forbidden_penalty = -0.15 * sum(1 for kw in forbidden_keywords if kw in heading_path)
-
-        return max(0.0, base_score + expected_bonus + forbidden_penalty)
-
-    return base_score
+    # Pure distribution-based scoring (no domain-specific keyword bonuses)
+    return _score_cluster_base(cluster, candidate_top_n)
 
 
 def _heading_path_parts(value: Any) -> tuple[str, ...]:
@@ -1372,10 +1655,10 @@ def get_hotspot_selector(strategy: str):
     Phase 11: Config-driven selector switch for rollback safety.
 
     Args:
-        strategy: "route_subtree" (Phase 10 route-node bonus) or "cluster" (Phase 11 level-agnostic)
+        strategy: "route_subtree" (Phase 10), "cluster" (Phase 11), or "hybrid_cluster" (Phase 11 11-07)
 
     Returns:
-        SubtreeHotspotSelector or ClusterHotspotSelector instance
+        SubtreeHotspotSelector, ClusterHotspotSelector, or HybridClusterHotspotSelector instance
 
     Raises:
         ValueError: if strategy is not recognized
@@ -1384,5 +1667,7 @@ def get_hotspot_selector(strategy: str):
         return SubtreeHotspotSelector()
     elif strategy == "cluster":
         return ClusterHotspotSelector()
+    elif strategy == "hybrid_cluster":
+        return HybridClusterHotspotSelector()
     else:
         raise ValueError(f"Unknown hotspot selector strategy: {strategy}")

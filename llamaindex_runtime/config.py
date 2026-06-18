@@ -16,7 +16,7 @@ class RuntimeSettings:
     VALID_EMBEDDING_MODEL_NAMES: ClassVar[frozenset[str]] = frozenset(
         {"all-MiniLM-L6-v2", "paraphrase-MiniLM-L3-v2", "all-MiniLM-L12-v2", "all-mpnet-base-v2"}
     )
-    VALID_HOTSPOT_SELECTORS: ClassVar[frozenset[str]] = frozenset({"route_subtree", "cluster"})
+    VALID_HOTSPOT_SELECTORS: ClassVar[frozenset[str]] = frozenset({"route_subtree", "cluster", "hybrid_cluster"})
 
     database_url: str
     vector_backend: str = "pgvector"
