@@ -291,6 +291,17 @@ def _map_query_hits_to_backend_hits(
                 fallback_text=fallback_text,
                 chunk_id=hit.chunk_id,
             )
+        # WR-05: Validate navigation completeness before mapping
+        missing_nav_ids = [
+            node_id for node_id in hit.navigation_node_ids
+            if node_id not in node_by_id
+        ]
+        if missing_nav_ids:
+            logger.warning(
+                "QueryHit has navigation_node_ids not in node_by_id: %s",
+                missing_nav_ids
+            )
+
         navigation_path = [
             node_by_id[node_id].get("heading_path") or node_by_id[node_id].get("title")
             for node_id in hit.navigation_node_ids
