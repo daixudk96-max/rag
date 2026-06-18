@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import logging
 import math
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Protocol, Sequence, runtime_checkable
 from uuid import UUID
+
+
+logger = logging.getLogger(__name__)
 
 
 @runtime_checkable
@@ -813,7 +817,11 @@ def _build_path_to_root(
 
     while current_id is not None and depth < max_depth:
         if current_id in visited:
-            # Cycle detected, stop traversal
+            # Cycle detected - log warning and return partial path
+            logger.warning(
+                "ancestor path cycle detected: node_id=%s, cycle_at=%s, path_so_far=%s",
+                node_id, current_id, path
+            )
             break
         visited.add(current_id)
         path.append(current_id)
