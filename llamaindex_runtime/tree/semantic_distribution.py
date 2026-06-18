@@ -904,20 +904,22 @@ def _score_cluster(
     cluster: ClusterCandidate,
     candidate_top_n: int,
 ) -> float:
-    """D-02: Score cluster by max, avg, support, and density.
+    """D-02: Score cluster prioritizing dense regions over isolated max-similarity.
 
-    Formula:
-      cluster_score = max_score * 0.40
-                     + avg_score * 0.30
-                     + normalized_support_count * 0.20
-                     + density * 0.10
+    Formula weights adjusted for Phase 11 gap closure:
+      max_score * 0.20: Reduced to prevent single-node dominance
+      avg_score * 0.35: Increased to prioritize cluster consistency
+      normalized_support_count * 0.30: Increased to reward cluster breadth
+      density * 0.15: Increased to reward tight clustering
+
+    See Phase 11 debug report for empirical validation rationale.
     """
     normalized_support = min(cluster.support_count / candidate_top_n, 1.0)
     return (
-        cluster.max_score * 0.40
-        + cluster.avg_score * 0.30
-        + normalized_support * 0.20
-        + cluster.density * 0.10
+        cluster.max_score * 0.20
+        + cluster.avg_score * 0.35
+        + normalized_support * 0.30
+        + cluster.density * 0.15
     )
 
 

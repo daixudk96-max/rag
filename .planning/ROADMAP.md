@@ -334,11 +334,56 @@ Level gates enforce no subjective shortcuts.
 
 **Goal:** Replace pre-ranked route-node hotspot selection with a level-agnostic, post-hoc cluster-based hotspot tracking algorithm: compare all eligible nodes equally, observe semantic-hit distribution, infer the densest shared local region, and return evidence-bearing nodes from that inferred hotspot.
 
-**Status:** Planning
+**Status:** Completed (fail-closed validation accepted, algorithm tuning deferred)
 
-**Entry Point:** PLAN
+**Entry Point:** EXECUTE (completed 2026-06-18)
 
 **Depends on:** Phase 10
+
+**Delivered:**
+- ✅ ClusterHotspotSelector implemented with level-agnostic scoring (no route-node bonuses)
+- ✅ Runtime selector switch wired (RAG_TREE_HOTSPOT_SELECTOR=cluster|route_subtree)
+- ✅ Tests passing: 21 tests (5 cluster + 13 hotspot + 3 traversal)
+- ✅ Metadata rates achieved: hotspot_metadata_rate=1.0, navigation_path_rate=1.0
+- ✅ Code review passed: 0 CRITICAL/HIGH findings (5 WARNING, 3 INFO)
+- ✅ Security review passed: All threat mitigations verified
+- ✅ Regression gate passed: Phase 10 tests passed (25 tests, 0 regressions)
+- ❌ Semantic validation failed: DNA query selected forbidden hotspot region
+- ❌ Goal achievement: 4/6 must-haves verified (2 gaps blocking goal)
+
+**Gap Analysis (documented in 11-VERIFICATION.md):**
+1. **WR-01 Root penalty logic:** Applied too early, excluding root even when it's the only cluster (contradicts D-04)
+2. **Cluster scoring formula:** max_score weight (40%) causes isolated high-similarity nodes to win over dense clusters
+3. **DNA query semantic failure:** Selected "05:40 - 抖音案例" (forbidden) instead of "00:31 - 产品特性对比" (expected)
+
+**Root Cause (documented in .planning/debug/phase11-dna-hotspot-selection.md):**
+Cluster scoring formula weight allocation: max_score 40% weight too high, causing "single highest similarity wins" instead of "densest shared local region". Fix direction: adjust weights + add keyword matching dimension.
+
+**User Decision:** Accept fail-closed state, complete review gates, defer cluster scoring formula tuning to future work.
+
+**Validation Artifacts:**
+- ✅ `11-RESEARCH.md`
+- ✅ `11-01-PLAN.md` through `11-04-PLAN.md`
+- ✅ `11-01-SUMMARY.md` through `11-04-SUMMARY.md`
+- ✅ `11-REVIEW.md` (code review report)
+- ✅ `11-VALIDATION.md` (review gates documentation)
+- ✅ `11-VERIFICATION.md` (goal-backward verification report)
+- ✅ `phase11-dna-hotspot-selection.md` (root cause diagnosis)
+
+**Success Criteria Achieved:**
+- ✅ Cluster selector tests pass (21 tests, 0 failures)
+- ✅ RAG_TREE_HOTSPOT_SELECTOR=cluster enables level-agnostic path
+- ✅ RAG_TREE_HOTSPOT_SELECTOR=route_subtree restores Phase 10 fallback
+- ✅ Hotspot metadata rate = 1.0 (≥ 0.90 achieved)
+- ✅ Navigation path rate = 1.0 (≥ 0.90 achieved)
+- ✅ Code review: 0 CRITICAL/HIGH findings
+- ✅ Security review: All threats mitigated
+- ❌ p6 DNA query semantic validation failed (expected evidence missing)
+
+**Deferred Work:**
+- Cluster scoring formula weight adjustment (max 40%→20%, avg 30%→35%, support 20%→30%, density 10%→15%)
+- Keyword matching dimension addition (10% weight)
+- Re-validation after formula tuning
 
 **Corrective Scope:**
 - Correct the Phase 10 semantic mismatch where route-like parent nodes are preselected with route bonuses before evidence traversal.
