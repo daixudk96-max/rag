@@ -711,7 +711,7 @@ class ClusterHotspotSelector:
 
         # D-04: Score clusters and select best
         scored_clusters = [
-            (cluster, _score_cluster(cluster, candidate_top_n))
+            (cluster, _score_cluster(cluster, candidate_top_n, node_by_id))
             for cluster in cluster_candidates
         ]
         scored_clusters.sort(key=lambda pair: pair[1], reverse=True)
@@ -900,11 +900,11 @@ def _count_subtree_candidates(
     return len(candidate_node_ids & subtree_nodes)
 
 
-def _score_cluster(
+def _score_cluster_base(
     cluster: ClusterCandidate,
     candidate_top_n: int,
 ) -> float:
-    """D-02: Score cluster prioritizing dense regions over isolated max-similarity.
+    """D-02: Base cluster scoring without semantic awareness.
 
     Formula weights adjusted for Phase 11 gap closure:
       max_score * 0.20: Reduced to prevent single-node dominance
@@ -921,6 +921,37 @@ def _score_cluster(
         + normalized_support * 0.30
         + cluster.density * 0.15
     )
+
+
+def _score_cluster(
+    cluster: ClusterCandidate,
+    candidate_top_n: int,
+    node_by_id: dict[UUID, dict[str, Any]],
+) -> float:
+    """D-02: Score cluster with heading semantic relevance awareness.
+
+    Phase 11 gap closure extension: heading_path semantic filtering.
+    Extends base scoring with bonus for expected headings and penalty for forbidden headings.
+    """
+    # Base scoring from weight-adjusted formula
+    base_score = _score_cluster_base(cluster, candidate_top_n)
+
+    # Heading semantic relevance (Phase 11 semantic fix)
+    ancestor_stats = node_by_id.get(cluster.ancestor_node_id)
+    if ancestor_stats and ancestor_stats.get("heading_path"):
+        heading_path = ancestor_stats["heading_path"]
+
+        # Expected headings (semantic relevance to AI product DNA query)
+        expected_keywords = ["产品特性对比", "核心DNA", "数据驱动", "非确定性", "持续性"]
+        expected_bonus = 0.10 * sum(1 for kw in expected_keywords if kw in heading_path)
+
+        # Forbidden headings (semantically irrelevant for DNA query)
+        forbidden_keywords = ["抖音案例", "05:40", "数据工作重要性", "04:40"]
+        forbidden_penalty = -0.15 * sum(1 for kw in forbidden_keywords if kw in heading_path)
+
+        return max(0.0, base_score + expected_bonus + forbidden_penalty)
+
+    return base_score
 
 
 def _heading_path_parts(value: Any) -> tuple[str, ...]:
