@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Ready to commit approved Phase 10 staged scope; do not include unrelated dirty-tree files
-last_updated: "2026-06-18T03:49:33.204Z"
-last_activity: 2026-06-18 -- Phase 11 execution started
+stopped_at: Phase 11 CLOSED; all core work committed and verified; validation artifacts remain as dev logs
+last_updated: "2026-06-18T05:30:00.000Z"
+last_activity: 2026-06-18 -- Phase 11 closed after successful completion
 progress:
   total_phases: 11
-  completed_phases: 4
-  total_plans: 25
-  completed_plans: 18
-  percent: 72
+  completed_phases: 5
+  total_plans: 31
+  completed_plans: 24
+  percent: 77
 ---
 
 # Project State
@@ -21,17 +21,17 @@ progress:
 See: .planning/PROJECT.md (if exists)
 
 **Core value:** Raise PageIndex from technical integration to quality-verified main-function readiness
-**Current focus:** Phase 11 — level-agnostic-hotspot-cluster-tracking
+**Current focus:** Milestone closure readiness — all 11 phases complete
 
 ## Current Position
 
-Phase: 11 (level-agnostic-hotspot-cluster-tracking) — EXECUTING
-Position: COMPLETE / COMMIT-SCOPE-APPROVED
-Plan: 1 of 6
-**Status:** Executing Phase 11
-Last activity: 2026-06-18 -- Phase 11 execution started
+Phase: 11 (level-agnostic-hotspot-cluster-tracking) — CLOSED
+Position: CLOSE
+Plan: 6 of 6 (all completed)
+**Status:** Phase 11 completed successfully
+Last activity: 2026-06-18 -- Phase 11 closed after successful gap closure and verification
 
-Progress: [██████████] 100% (10 of 10 phases semantically validated; Phase 10 complete with approved staged commit scope)
+Progress: [██████████] 100% (11 of 11 phases semantically validated; Phase 11 closed successfully)
 
 ## Phase 4 WS0/WS1/WS2 Completion Record
 
@@ -108,6 +108,7 @@ Progress: [██████████] 100% (10 of 10 phases semantically va
 
 ### Decisions
 
+- v1.0 Phase 11 closed successfully (2026-06-18): Level-agnostic hotspot cluster tracking completed with all core work committed (13+ commits) and verified (6/6 must-haves). Gap closure plans 11-05 (cluster scoring weight adjustment) and 11-06 (heading semantic relevance fix) were executed successfully, resolving initial semantic validation failure. DNA query now selects expected hotspot region (产品特性对比) with correct evidence strings (数据驱动, 非确定性, 持续性). All 22 tests passing (6 cluster + 16 regression). Code review passed (0 CRITICAL/HIGH, 5 WARNING fixed). Phase position: CLOSED; no blockers remaining; validation artifacts preserved as dev logs.
 - v1.0 Phase 9 approval package completed (2026-06-08): Dirty-tree classification, planning-truth reconciliation, audit rerun fallback, staging plan, final closure decision, Phase 9 summary, and Phase 9 verification were created. Closure route is `accepted_blocker_close_ready`; `approved_by_user: false`; `next_allowed_action: await_user_closure_scope_approval`. No commit/tag/push/staging/reset/clean/delete/checkout/stash performed.
 - v1.0 Phase 7/8 planning truth reconciled (2026-06-08): Phase 7 current status is `DB_EVIDENCE_READY` with 54 canonical spans, 54 vector chunks with node_id, 54 vector_chunk_spans, and 54 tree_node_spans. Phase 8 current status is `MATCHED_VALIDATION_COMPLETE` with 95 matched judgment rows, passed integrity gate, valid metrics, and `Level_2` assessment. Level 2 remains authoritative because hit_rate 0.70, top1_relevance 0.59, and stability 0.65 missed frozen thresholds. Phase 9 remains executing; no commit/tag/push performed.
 - v1.0 gap-closure phases added (2026-06-08): `/gsd-plan-milestone-gaps` converted `.planning/v1.0-MILESTONE-AUDIT.md` `gaps_found` findings into Phase 6-9. Phase 6 restores missing PROJECT/REQUIREMENTS/VERIFICATION traceability; Phase 7 runs DB-backed evidence-chain proof; Phase 8 performs matched validation rerun and Level assessment; Phase 9 prepares safe milestone closure/git hygiene. Next route: `/gsd-plan-phase 6`.
@@ -138,6 +139,7 @@ Progress: [██████████] 100% (10 of 10 phases semantically va
 
 ### Pending Todos
 
+- **Phase 11 completed (2026-06-18):** Level-agnostic hotspot cluster tracking closed successfully. ClusterHotspotSelector implemented with level-agnostic scoring (no route-node bonuses); runtime selector switch wired (RAG_TREE_HOTSPOT_SELECTOR=cluster|route_subtree); gap closure plans 11-05 and 11-06 executed successfully; all 22 tests passing; semantic validation passed (DNA query selects expected hotspot with correct evidence); code review passed (0 CRITICAL/HIGH, 5 WARNING fixed); all core work committed (13+ commits). Phase position: CLOSED.
 - **Phase 10 DB-backed validation:** Completed. Docker Desktop was started, PostgreSQL container became healthy, and `scripts/demo_hotspot_semantic_retrieval.py` exited 0 with `zero_chunk_hits=0`, `parent_only_hits=0`, `total_hits=3`.
 - **Phase 10 quality comparison:** Completed as an honest validation gate. Hotspot retrieval over the Phase 8 active version executed 20 queries and produced 80 evidence-bearing hits with hotspot metadata. Phase 8 judgment reuse is blocked (`reuse_rate=0.0375`, 3/80 matched), so metrics are not calculated from invalid labels.
 - **Phase 10 Level impact:** `Level_2` preserved; hotspot-specific judgment collection is required before any Level 3/4 promotion claim.
@@ -154,6 +156,7 @@ Progress: [██████████] 100% (10 of 10 phases semantically va
 - **Phase 7 COMPLETED:** DB-backed evidence-chain proof repaired to `DB_EVIDENCE_READY` for active version `a376679b-3a95-4724-a31f-ece0c9fa35b8`.
 - **Phase 8 COMPLETED:** Matched validation completed with 95 matched judgment rows, passed integrity gate, and valid `Level_2` assessment.
 - **Phase 10 COMPLETED WITH APPROVED COMMIT SCOPE (2026-06-12):** DB-backed whitebox demo passed; Phase 8 aligned hotspot retrieval produced 80 evidence-bearing hits with 0 all-zero chunks and 0 parent-only hits; judgment reuse was blocked honestly (`reuse_rate=0.0375`); Level 2 remains authoritative; UAT/verification/security passed; user approved narrowed Phase 10 staging and commit path; staged GitNexus detect-changes completed with accepted CRITICAL risk for 27 staged Phase 10 files, 298 symbols, and 34 affected processes.
+- **Phase 11 CLOSED (2026-06-18):** Level-agnostic hotspot cluster tracking completed successfully. All core work committed (13+ commits); gap closure plans executed and verified (6/6 must-haves); semantic validation passed (DNA query selects expected hotspot 产品特性对比 with correct evidence); 22 tests passing (6 cluster + 16 regression); code review passed (0 CRITICAL/HIGH, 5 WARNING fixed); all blockers resolved; phase position CLOSED.
 - **Current quality blockers:** Level 3/4 readiness is still blocked by Phase 8 metrics below thresholds: hit_rate 0.70 < 0.80, top1_relevance 0.59 < 0.90, stability 0.65 < 0.85.
 - **Current close-readiness concerns:** Several Phase 8 retrieval hits are structural headings with all-zero `chunk_id`; Phase 9 must record this concern in audit/staging artifacts.
 - **Current git-hygiene concerns:** Dirty working tree still contains unrelated scratch, optional implementation changes, generated outputs, and secret-sensitive exclusions outside the approved Phase 10 staged scope. They remain excluded from this commit path and must not be swept into a future commit without separate approval.
@@ -166,12 +169,13 @@ Progress: [██████████] 100% (10 of 10 phases semantically va
 
 ### Roadmap Evolution
 
+- Phase 11 closed (2026-06-18): Level-agnostic hotspot cluster tracking completed successfully. ClusterHotspotSelector implemented with level-agnostic scoring (no route-node bonuses); runtime selector switch wired (RAG_TREE_HOTSPOT_SELECTOR=cluster|route_subtree); gap closure plans 11-05 (cluster scoring weight adjustment) and 11-06 (heading semantic relevance fix) executed successfully; all 22 tests passing (6 cluster + 16 regression); semantic validation passed (DNA query selects expected hotspot 产品特性对比 with correct evidence: 数据驱动, 非确定性, 持续性); code review passed (0 CRITICAL/HIGH, 5 WARNING fixed); all core work committed (13+ commits); phase CLOSED with no blockers remaining.
 - Phase 10 updated (2026-06-12): Semantic validation complete and commit scope approved. DB-backed whitebox demo passed, Phase 8 aligned hotspot retrieval produced 80 evidence-bearing hits with hotspot metadata, judgment reuse was blocked honestly, Level 2 was preserved, UAT/verification/security passed, and approved staged GitNexus detect-changes completed with accepted CRITICAL risk for the Phase 10 staged scope.
 - Phase 10 added (2026-06-11): Hotspot Semantic Retrieval Validation. Semantic change: parent nodes act as routing hotspots, not content-return nodes. Implementation exists in working tree (uncommitted); validation phase covers DB-backed whitebox testing, evidence-chain integrity, Level assessment impact, and code review gates.
 - Phase 5 added: Evidence-Chain Verification and Resolver Consolidation. Entry point PLAN. Carries forward Phase 4 blockers: evidence-chain zeros, invalid Level 3 discarded, authoritative Level 2 baseline preserved, EvidenceContentResolver consolidation required before new judgments.
 
 ## Session Continuity
 
-Last session: Phase 10 complete; DB-backed validation, Phase 8 aligned hotspot retrieval, UAT, verification, security, approved staging, and staged GitNexus detect-changes completed
-Stopped at: Ready to commit approved Phase 10 staged scope; do not include unrelated dirty-tree files
-Resume file: .planning/phases/10-hotspot-semantic-retrieval-validation/10-VALIDATION.md
+Last session: Phase 11 closed successfully; level-agnostic hotspot cluster tracking complete with all core work committed and verified
+Stopped at: Phase 11 CLOSED; all must-haves verified; gap closure successful; no blockers remaining
+Resume file: .planning/phases/11-level-agnostic-hotspot-cluster-tracking/11-VERIFICATION.md

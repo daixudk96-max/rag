@@ -1,12 +1,12 @@
 {
   "last_skill": "navigator",
-  "last_task": "User approved Phase 10 commit after staged GitNexus CRITICAL risk was surfaced",
+  "last_task": "Wrote 11-07 systematic hybrid hotspot selector implementation plan",
   "key_decisions": [
-    "Phase 10 roadmap workflow is complete for semantic validation, UAT, verification, security, staged scope, and staged GitNexus gate",
-    "User accepted the CRITICAL staged GitNexus risk for the approved Phase 10 scope",
-    "Next action is committing only the approved staged Phase 10 scope; unrelated dirty-tree files remain excluded"
+    "Accepted design decision: add hybrid_cluster/retrieval_distribution selector instead of replacing ClusterHotspotSelector",
+    "Plan requires vector + keyword/BM25 + optional rerank + child distribution scoring",
+    "Plan forbids production hardcoded project keywords and preserves route_subtree/cluster rollback paths"
   ],
-  "last_date": "2026-06-12T00:00:00Z",
-  "next_recommended": "Commit approved Phase 10 staged scope only; do not push/tag/reset/clean/delete/checkout/stash without separate approval.",
+  "last_date": "2026-06-19T00:00:00Z",
+  "next_recommended": "Review .planning/phases/11-level-agnostic-hotspot-cluster-tracking/11-07-PLAN.md, then execute it only after approval",
   "branch": "master"
 }

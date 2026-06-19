@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-06-17T16:17:20Z",
+  "generated_at": "2026-06-19T02:51:22Z",
   "validation_script_version": "2026-06-17-v1",
-  "git_commit_sha": "5d76b02a0013d22fbff9c8866c95624378be0bb5",
+  "git_commit_sha": "39d542525fd085f97101ce2db288018fec193dc8",
   "source_document": "p6_validation_corpus",
   "source_document_location": "verification\\p6_validation\\p6_final_sample_structured.md",
-  "hotspot_selector": "cluster",
+  "hotspot_selector": "hybrid_cluster",
   "query_count": 10,
   "queries": [
     {

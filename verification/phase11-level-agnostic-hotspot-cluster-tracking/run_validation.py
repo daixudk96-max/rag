@@ -13,8 +13,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-# Force cluster selector before any imports that might use it
-os.environ["RAG_TREE_HOTSPOT_SELECTOR"] = "cluster"
+# Force hybrid_cluster selector before any imports that might use it
+os.environ["RAG_TREE_HOTSPOT_SELECTOR"] = "hybrid_cluster"
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = Path(__file__).resolve().parent

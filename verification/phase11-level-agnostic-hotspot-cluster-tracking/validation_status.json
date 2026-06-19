@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-06-18T04:38:30Z",
+  "generated_at": "2026-06-19T02:51:31Z",
   "validation_script_version": "2026-06-17-v1",
-  "git_commit_sha": "d30c431dadbe0d762c0db21477d53ff20572638a",
+  "git_commit_sha": "39d542525fd085f97101ce2db288018fec193dc8",
   "source_document": "p6_validation_corpus",
   "source_document_location": "verification\\p6_validation\\p6_final_sample_structured.md",
-  "hotspot_selector": "cluster",
+  "hotspot_selector": "hybrid_cluster",
   "doc_id": "6d742c06-3c5a-4996-ac36-614510bd729f",
   "version_id": "a287ec5a-604b-416e-8ec5-a541d3d23cbe",
   "query_count": 10,
   "query_failures": 0,
-  "total_hits": 10,
+  "total_hits": 48,
   "dna_query": {
     "query_id": "Q01",
     "query_text": "AI产品经理的核心DNA是什么？",
@@ -25,8 +25,8 @@
       "06:29 - 特斯拉案例"
     ]
   },
-  "dna_expected_terms_found": true,
-  "dna_primary_hotspot_heading": "AI产品经理项目实战与深度思考架构分析 > 00:31 - 产品特性对比 > AI产品经理核心DNA",
-  "dna_forbidden_hotspot_selected": false,
-  "passed": true
+  "dna_expected_terms_found": false,
+  "dna_primary_hotspot_heading": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > AI产品经理的思考方向",
+  "dna_forbidden_hotspot_selected": true,
+  "passed": false
 }

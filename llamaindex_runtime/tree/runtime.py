@@ -20,6 +20,9 @@ from .hiro_decision_policy import HIROEnhancedTreeBranchDecisionPolicy
 from .reasoning_backend import ReasoningTreeBackend
 from .semantic_distribution import (
     BaselineTreeBranchDecisionPolicy,
+    HotspotSelectionContext,
+    KeywordSpanHit,
+    NodeSemanticHit,
     PersistedTreeSemanticDistributionAdapter,
     QueryHit,
     RecursiveTreeTraversalRunner,
@@ -32,6 +35,64 @@ logger = logging.getLogger(__name__)
 
 # Reserved sentinel for hits that cannot be resolved to a persisted vector chunk.
 MISSING_CHUNK_ID = UUID(int=0)
+
+
+def _extract_keywords_from_query(query_text: str) -> list[str]:
+    """Extract meaningful keywords from query text.
+
+    Phase 11 11-07: Simple keyword extraction for heading matching.
+    """
+    # Split by common delimiters
+    import re
+    # Remove punctuation and split
+    words = re.findall(r'\w+', query_text)
+    # Filter short words and common stopwords
+    stopwords = {"的", "是", "什么", "有", "在", "和", "了", "与", "及", "等"}
+    keywords = [w for w in words if len(w) >= 2 and w not in stopwords]
+    return keywords
+
+
+def _cosine_similarity(vec1: Sequence[float], vec2: Sequence[float]) -> float:
+    """Compute cosine similarity between two vectors."""
+    if len(vec1) != len(vec2):
+        raise ValueError(f"Vector dimension mismatch: {len(vec1)} vs {len(vec2)}")
+    dot_product = sum(a * b for a, b in zip(vec1, vec2))
+    norm1 = sum(a * a for a in vec1) ** 0.5
+    norm2 = sum(b * b for b in vec2) ** 0.5
+    if norm1 == 0.0 or norm2 == 0.0:
+        return 0.0
+    return dot_product / (norm1 * norm2)
+
+
+def _build_path_to_root_from_stats(
+    *,
+    node_id: UUID,
+    parent_node_id: UUID | None,
+    node_by_id: dict[UUID, dict[str, Any]],
+) -> tuple[UUID, ...]:
+    """Walk parent chain to build path_to_root."""
+    if parent_node_id is None:
+        return (node_id,)
+
+    path: list[UUID] = [node_id]
+    current_id = parent_node_id
+    visited: set[UUID] = {node_id}
+    max_depth = 256
+
+    while current_id is not None and len(path) < max_depth:
+        if current_id in visited:
+            # Cycle detected
+            logger.warning("Path cycle detected at node_id=%s", current_id)
+            break
+        visited.add(current_id)
+        path.append(current_id)
+
+        parent_stats = node_by_id.get(current_id)
+        if parent_stats is None:
+            break
+        current_id = parent_stats.get("parent_node_id")
+
+    return tuple(path)
 
 
 def _retrieve_tree_hits_from_backend(
@@ -99,12 +160,91 @@ def _retrieve_tree_hits_from_backend(
     import os
     logger.info(f"Using hotspot selector strategy: {hotspot_strategy}")
     hotspot_selector = get_hotspot_selector(hotspot_strategy)
-    hotspots = hotspot_selector.select_hotspots(
-        query_embedding=query_embedding,
-        node_stats=distribution_report["node_stats"],
-        tree_signals=distribution_report["tree_signals"],
-        limit=max(limit, 1),
-    )
+
+    # Phase 11 11-07: Build V2 context for hybrid selector if applicable
+    if hotspot_strategy == "hybrid_cluster":
+        # Build vector candidates from node_stats
+        node_by_id_lookup = {stats["node_id"]: stats for stats in distribution_report["node_stats"]}
+        vector_candidates: list[NodeSemanticHit] = []
+        for stats in distribution_report["node_stats"]:
+            node_id = stats.get("node_id")
+            if node_id is None:
+                continue
+            prototype = stats.get("prototype_embedding") or stats.get("centroid")
+            if not prototype:
+                continue
+            similarity = _cosine_similarity(query_embedding, prototype)
+            if similarity <= 0.0:
+                continue
+            parent_node_id = stats.get("parent_node_id")
+            path_to_root = _build_path_to_root_from_stats(
+                node_id=node_id,
+                parent_node_id=parent_node_id,
+                node_by_id=node_by_id_lookup,
+            )
+            vector_candidates.append(
+                NodeSemanticHit(
+                    node_id=node_id,
+                    similarity=similarity,
+                    heading_path=stats.get("heading_path"),
+                    parent_node_id=parent_node_id,
+                    path_to_root=path_to_root,
+                )
+            )
+
+        # Build keyword hits (simple heading keyword matching)
+        # Phase 11 11-07: Extract keywords from query and match against headings
+        query_keywords = _extract_keywords_from_query(query_text)
+        keyword_hits: list[KeywordSpanHit] = []
+
+        for stats in distribution_report["node_stats"]:
+            node_id = stats.get("node_id")
+            if node_id is None:
+                continue
+            heading_path = stats.get("heading_path", "")
+            if not heading_path:
+                continue
+
+            # Simple keyword matching: check if any query keyword appears in heading
+            matched_keywords = tuple(kw for kw in query_keywords if kw.lower() in heading_path.lower())
+            if matched_keywords:
+                # Assign span_ids for this node
+                span_ids = span_ids_by_node.get(node_id, [])
+                if span_ids:
+                    # Create keyword hit for first span (simplified)
+                    keyword_hits.append(
+                        KeywordSpanHit(
+                            span_id=span_ids[0],
+                            node_id=node_id,
+                            score=0.6,  # Fixed score for heading keyword match
+                            matched_terms=matched_keywords,
+                            source="heading_keyword_match",
+                        )
+                    )
+
+        # Build V2 context
+        context = HotspotSelectionContext(
+            query_text=query_text,
+            query_embedding=query_embedding,
+            node_stats=node_by_id_lookup,
+            tree_signals=distribution_report["tree_signals"],
+            vector_candidates=vector_candidates,
+            keyword_hits=keyword_hits,
+            rerank_scores=None,
+        )
+
+        hotspots = hotspot_selector.select_hotspots(
+            context=context,
+            limit=max(limit, 1),
+        )
+    else:
+        # Phase 11 legacy: Use old selector interface for route_subtree and cluster
+        hotspots = hotspot_selector.select_hotspots(
+            query_embedding=query_embedding,
+            node_stats=distribution_report["node_stats"],
+            tree_signals=distribution_report["tree_signals"],
+            limit=max(limit, 1),
+        )
 
     query_hits: list[QueryHit] = []
     if hotspots:
