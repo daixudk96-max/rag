@@ -14,9 +14,6 @@ Anti-hardcode: No expected_keywords/forbidden_keywords in production scoring
 from __future__ import annotations
 
 import uuid
-from typing import Any
-from unittest.mock import MagicMock
-
 import pytest
 
 
@@ -125,7 +122,9 @@ class TestHotspotSelectionContextContract:
 
     def test_hotspot_selection_context_optional_rerank_scores(self) -> None:
         """Context must work when rerank_scores is None (default-off behavior)."""
-        from llamaindex_runtime.tree.semantic_distribution import HotspotSelectionContext
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HotspotSelectionContext,
+        )
 
         context = HotspotSelectionContext(
             query_text="test query",
@@ -196,7 +195,9 @@ class TestScoreNormalization:
 class TestChildDistributionScoring:
     """Child-node hit distribution scoring tests."""
 
-    def test_parent_with_multiple_child_hits_beats_isolated_high_score_node(self) -> None:
+    def test_parent_with_multiple_child_hits_beats_isolated_high_score_node(
+        self,
+    ) -> None:
         """Distribution scoring must reward multi-child evidence over isolated high score."""
         # NOTE: distribution scoring helper does not exist yet - RED phase
         from llamaindex_runtime.tree.semantic_distribution import (
@@ -220,7 +221,11 @@ class TestChildDistributionScoring:
         ]
         # Isolated node B with high score
         isolated_node_id = uuid.uuid4()
-        isolated_hit = {"node_id": isolated_node_id, "parent_node_id": None, "score": 0.90}
+        isolated_hit = {
+            "node_id": isolated_node_id,
+            "parent_node_id": None,
+            "score": 0.90,
+        }
 
         # Compute distribution scores
         parent_a_dist = _compute_child_distribution_score(
@@ -247,7 +252,11 @@ class TestChildDistributionScoring:
         child_id = uuid.uuid4()
         tree_nodes = [
             {"node_id": root_id, "heading_path": "Root", "parent_node_id": None},
-            {"node_id": child_id, "heading_path": "Root > Child", "parent_node_id": root_id},
+            {
+                "node_id": child_id,
+                "heading_path": "Root > Child",
+                "parent_node_id": root_id,
+            },
         ]
         # Mock minimal vectors
         node_to_vectors = {child_id: [[1.0, 0.0]]}
@@ -272,8 +281,18 @@ class TestChildDistributionScoring:
         root_id = uuid.uuid4()
         child_id = uuid.uuid4()
         tree_nodes = [
-            {"node_id": root_id, "heading_path": "Root", "level_no": 0, "parent_node_id": None},
-            {"node_id": child_id, "heading_path": "Root > Child", "level_no": 1, "parent_node_id": root_id},
+            {
+                "node_id": root_id,
+                "heading_path": "Root",
+                "level_no": 0,
+                "parent_node_id": None,
+            },
+            {
+                "node_id": child_id,
+                "heading_path": "Root > Child",
+                "level_no": 1,
+                "parent_node_id": root_id,
+            },
         ]
         node_to_vectors = {child_id: [[1.0, 0.0]]}
         node_to_span_ids = {child_id: [uuid.uuid4()]}
@@ -295,14 +314,22 @@ class TestHybridFusionScoring:
 
     def test_fusion_weights_are_documented_not_magic(self) -> None:
         """HybridClusterHotspotSelector must have named weight constants."""
-        from llamaindex_runtime.tree.semantic_distribution import HybridClusterHotspotSelector
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HybridClusterHotspotSelector,
+        )
 
         selector = HybridClusterHotspotSelector()
         # Weight constants must exist and be documented
         assert hasattr(selector, "_VECTOR_WEIGHT") or hasattr(selector, "VECTOR_WEIGHT")
-        assert hasattr(selector, "_KEYWORD_WEIGHT") or hasattr(selector, "KEYWORD_WEIGHT")
+        assert hasattr(selector, "_KEYWORD_WEIGHT") or hasattr(
+            selector, "KEYWORD_WEIGHT"
+        )
         # Optional rerank weight (default 0 when rerank_scores is None)
-        assert hasattr(selector, "_RERANK_WEIGHT") or hasattr(selector, "RERANK_WEIGHT") or hasattr(selector, "_DISTRIBUTION_WEIGHT")
+        assert (
+            hasattr(selector, "_RERANK_WEIGHT")
+            or hasattr(selector, "RERANK_WEIGHT")
+            or hasattr(selector, "_DISTRIBUTION_WEIGHT")
+        )
 
     def test_fusion_scores_sum_correctly(self) -> None:
         """Fusion score must correctly weight normalized components."""
@@ -328,6 +355,182 @@ class TestHybridFusionScoring:
         # Fusion must be weighted sum
         expected = 0.40 * 0.85 + 0.30 * 0.6 + 0.20 * 0.7 + 0.10 * 0.5
         assert abs(fusion - expected) < 0.001
+
+    def test_selector_prefers_multi_term_heading_match_over_broad_single_term(
+        self,
+    ) -> None:
+        """Multi-term heading matches must beat broad one-term heading matches."""
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HybridClusterHotspotSelector,
+            HotspotSelectionContext,
+            KeywordSpanHit,
+            NodeSemanticHit,
+        )
+
+        strong_heading_id = uuid.uuid4()
+        broad_heading_id = uuid.uuid4()
+        baseline_id = uuid.uuid4()
+        selector = HybridClusterHotspotSelector()
+        context = HotspotSelectionContext(
+            query_text="AI产品经理的核心DNA是什么？",
+            query_embedding=[1.0, 0.0],
+            node_stats={
+                strong_heading_id: {
+                    "node_id": strong_heading_id,
+                    "heading_path": "Root > 产品特性对比 > AI产品经理核心DNA",
+                    "parent_node_id": None,
+                    "level_no": 2,
+                    "support_count": 1,
+                },
+                broad_heading_id: {
+                    "node_id": broad_heading_id,
+                    "heading_path": "Root > 抖音案例 > AI产品经理的思考方向",
+                    "parent_node_id": None,
+                    "level_no": 2,
+                    "support_count": 1,
+                },
+                baseline_id: {
+                    "node_id": baseline_id,
+                    "heading_path": "Root > Generic",
+                    "parent_node_id": None,
+                    "level_no": 2,
+                    "support_count": 1,
+                },
+            },
+            tree_signals={"embedding_dimension": 2},
+            vector_candidates=[
+                NodeSemanticHit(
+                    node_id=strong_heading_id,
+                    similarity=0.70,
+                    heading_path="Root > 产品特性对比 > AI产品经理核心DNA",
+                    parent_node_id=None,
+                    path_to_root=(strong_heading_id,),
+                ),
+                NodeSemanticHit(
+                    node_id=broad_heading_id,
+                    similarity=0.90,
+                    heading_path="Root > 抖音案例 > AI产品经理的思考方向",
+                    parent_node_id=None,
+                    path_to_root=(broad_heading_id,),
+                ),
+                NodeSemanticHit(
+                    node_id=baseline_id,
+                    similarity=0.40,
+                    heading_path="Root > Generic",
+                    parent_node_id=None,
+                    path_to_root=(baseline_id,),
+                ),
+            ],
+            keyword_hits=[
+                KeywordSpanHit(
+                    span_id=uuid.uuid4(),
+                    node_id=strong_heading_id,
+                    score=0.6,
+                    matched_terms=("AI产品经理", "核心DNA"),
+                    source="heading_keyword_match",
+                ),
+                KeywordSpanHit(
+                    span_id=uuid.uuid4(),
+                    node_id=broad_heading_id,
+                    score=0.6,
+                    matched_terms=("AI产品经理",),
+                    source="heading_keyword_match",
+                ),
+            ],
+            rerank_scores=None,
+        )
+
+        hotspots = selector.select_hotspots(context=context, limit=1)
+
+        assert hotspots[0].node_id == strong_heading_id
+
+    def test_selector_prioritizes_exact_heading_match_over_high_vector_broad_match(
+        self,
+    ) -> None:
+        """Full term coverage in a heading is stronger than a broad one-term vector hit."""
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HybridClusterHotspotSelector,
+            HotspotSelectionContext,
+            KeywordSpanHit,
+            NodeSemanticHit,
+        )
+
+        exact_heading_id = uuid.uuid4()
+        broad_heading_id = uuid.uuid4()
+        baseline_id = uuid.uuid4()
+        selector = HybridClusterHotspotSelector()
+        context = HotspotSelectionContext(
+            query_text="AI产品经理的核心DNA是什么？",
+            query_embedding=[1.0, 0.0],
+            node_stats={
+                exact_heading_id: {
+                    "node_id": exact_heading_id,
+                    "heading_path": "Root > 产品特性对比 > AI产品经理核心DNA",
+                    "parent_node_id": None,
+                    "level_no": 2,
+                    "support_count": 1,
+                },
+                broad_heading_id: {
+                    "node_id": broad_heading_id,
+                    "heading_path": "Root > 抖音案例 > AI产品经理的思考方向",
+                    "parent_node_id": None,
+                    "level_no": 2,
+                    "support_count": 1,
+                },
+                baseline_id: {
+                    "node_id": baseline_id,
+                    "heading_path": "Root > Generic",
+                    "parent_node_id": None,
+                    "level_no": 2,
+                    "support_count": 1,
+                },
+            },
+            tree_signals={"embedding_dimension": 2},
+            vector_candidates=[
+                NodeSemanticHit(
+                    node_id=exact_heading_id,
+                    similarity=0.10,
+                    heading_path="Root > 产品特性对比 > AI产品经理核心DNA",
+                    parent_node_id=None,
+                    path_to_root=(exact_heading_id,),
+                ),
+                NodeSemanticHit(
+                    node_id=broad_heading_id,
+                    similarity=0.99,
+                    heading_path="Root > 抖音案例 > AI产品经理的思考方向",
+                    parent_node_id=None,
+                    path_to_root=(broad_heading_id,),
+                ),
+                NodeSemanticHit(
+                    node_id=baseline_id,
+                    similarity=0.01,
+                    heading_path="Root > Generic",
+                    parent_node_id=None,
+                    path_to_root=(baseline_id,),
+                ),
+            ],
+            keyword_hits=[
+                KeywordSpanHit(
+                    span_id=uuid.uuid4(),
+                    node_id=exact_heading_id,
+                    score=0.6,
+                    matched_terms=("AI产品经理", "核心DNA"),
+                    source="heading_keyword_match",
+                ),
+                KeywordSpanHit(
+                    span_id=uuid.uuid4(),
+                    node_id=broad_heading_id,
+                    score=0.6,
+                    matched_terms=("AI产品经理",),
+                    source="heading_keyword_match",
+                ),
+            ],
+            rerank_scores=None,
+        )
+
+        hotspots = selector.select_hotspots(context=context, limit=1)
+
+        assert hotspots[0].node_id == exact_heading_id
 
 
 class TestDefaultOffRerankerSeam:
@@ -368,13 +571,17 @@ class TestDefaultOffRerankerSeam:
     def test_no_external_rerank_service_required(self) -> None:
         """Selector must not have HTTP client or external rerank calls."""
         import inspect
-        from llamaindex_runtime.tree.semantic_distribution import HybridClusterHotspotSelector
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HybridClusterHotspotSelector,
+        )
 
         # Check class source does not contain HTTP client imports
         source = inspect.getsource(HybridClusterHotspotSelector)
         forbidden_patterns = ["requests.", "httpx.", "urllib.", "aiohttp."]
         for pattern in forbidden_patterns:
-            assert pattern not in source, f"HybridClusterHotspotSelector must not use {pattern}"
+            assert (
+                pattern not in source
+            ), f"HybridClusterHotspotSelector must not use {pattern}"
 
 
 class TestCrossDomainAntiHardcode:
@@ -382,7 +589,9 @@ class TestCrossDomainAntiHardcode:
 
     def test_selector_no_p6_specific_keyword_constants(self) -> None:
         """HybridClusterHotspotSelector must not have p6-specific keyword constants."""
-        from llamaindex_runtime.tree.semantic_distribution import HybridClusterHotspotSelector
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HybridClusterHotspotSelector,
+        )
 
         selector = HybridClusterHotspotSelector()
         forbidden_attrs = [
@@ -429,6 +638,100 @@ class TestCrossDomainAntiHardcode:
         hotspots = selector.select_hotspots(context=context, limit=1)
         # Must return hotspots without requiring p6 terms
         assert isinstance(hotspots, list)
+
+
+class TestHybridRuntimeKeywordExtraction:
+    """Runtime keyword extraction tests for general jieba heading matching."""
+
+    def test_extract_keywords_splits_mixed_cjk_latin_query(self) -> None:
+        """CJK/Latin terms use jieba built-in general dictionary only."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        keywords = _extract_keywords_from_query("AI产品经理的核心DNA是什么？")
+
+        assert "AI" in keywords
+        assert "产品" in keywords
+        assert "经理" in keywords
+        assert "核心" in keywords
+        assert "DNA" in keywords
+        assert "AI产品经理" not in keywords
+        assert "核心DNA" not in keywords
+        assert "AI产品经理的核心DNA是什么" not in keywords
+
+    def test_extract_keywords_match_expected_dna_heading(self) -> None:
+        """Extracted Q01 jieba tokens must match the DNA heading path."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        heading_path = (
+            "AI产品经理项目实战与深度思考架构分析 > "
+            "00:31 - 产品特性对比 > AI产品经理核心DNA"
+        )
+        keywords = _extract_keywords_from_query("AI产品经理的核心DNA是什么？")
+        matched_keywords = [
+            kw for kw in keywords if kw.lower() in heading_path.lower()
+        ]
+
+        assert matched_keywords == ["AI", "产品", "经理", "核心", "DNA"]
+
+    def test_extract_keywords_splits_glued_why_query(self) -> None:
+        """为什么-query terms must not collapse into one glued token."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        keywords = _extract_keywords_from_query("为什么数据对AI产品如此重要？")
+
+        assert "数据" in keywords
+        assert "AI" in keywords
+        assert "产品" in keywords
+        assert "重要" in keywords
+        assert "数据对AI产品如此重要" not in keywords
+        assert "为什么数据对AI产品如此重要" not in keywords
+
+    def test_extract_keywords_handles_pure_latin_unchanged(self) -> None:
+        """Pure Latin query terms must keep existing token behavior."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        keywords = _extract_keywords_from_query("cardiac arrhythmia diagnosis")
+
+        assert keywords == ["cardiac", "arrhythmia", "diagnosis"]
+
+    def test_extract_keywords_uses_jieba_builtin_general_dictionary_only(self) -> None:
+        """Generic CJK compounds must split without a custom user dictionary."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        keywords = _extract_keywords_from_query("什么是供应链飞轮？")
+
+        assert "供应链" in keywords
+        assert "飞轮" in keywords
+        assert "供应链飞轮" not in keywords
+
+    def test_extract_keywords_handles_empty_or_invalid_query(self) -> None:
+        """Malformed empty query input must fail closed to no keywords."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        assert _extract_keywords_from_query("") == []
+        assert _extract_keywords_from_query("   ") == []
+        assert _extract_keywords_from_query(None) == []  # type: ignore[arg-type]
+
+    def test_extract_keywords_filters_control_characters(self) -> None:
+        """Control and zero-width characters must not survive as keyword text."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        keywords = _extract_keywords_from_query("数据​飞轮\x00重要")
+        joined_keywords = "".join(keywords)
+
+        assert "​" not in joined_keywords
+        assert "\x00" not in joined_keywords
+        assert "数据" in keywords
+        assert "飞轮" in keywords
+        assert "重要" in keywords
+
+    def test_extract_keywords_bounds_extremely_long_query(self) -> None:
+        """Very long query text must be bounded before jieba segmentation."""
+        from llamaindex_runtime.tree.runtime import _extract_keywords_from_query
+
+        keywords = _extract_keywords_from_query("数据" * 5000)
+
+        assert keywords == ["数据"]
 
 
 class TestConfigRegistration:

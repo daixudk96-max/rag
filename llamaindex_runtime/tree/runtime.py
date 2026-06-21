@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import logging
 import os
+import re
+import unicodedata
 from pathlib import Path
 from typing import Any, Sequence
 from uuid import UUID
@@ -26,11 +28,58 @@ from .semantic_distribution import (
     PersistedTreeSemanticDistributionAdapter,
     QueryHit,
     RecursiveTreeTraversalRunner,
-    SubtreeHotspotSelector,
+    SubtreeHotspot,
     get_hotspot_selector,
 )
 
 logger = logging.getLogger(__name__)
+
+_KEYWORD_QUERY_MAX_CHARS = 4096
+_KEYWORD_TOKEN_RE = re.compile(r"[A-Za-z0-9一-鿿]")
+_KEYWORD_STOPWORDS = frozenset(
+    {
+        "的",
+        "是",
+        "什么",
+        "有",
+        "在",
+        "和",
+        "了",
+        "与",
+        "及",
+        "等",
+        "为什么",
+        "有哪些",
+        "哪些",
+        "如何",
+        "怎么",
+        "如此",
+        "对",
+        "这个",
+        "那个",
+        "之",
+        "中",
+        "吗",
+        "呢",
+        "会",
+        "被",
+        "并",
+        "也",
+    }
+)
+_FILTERED_UNICODE_CATEGORIES = frozenset({"Cc", "Cf", "Co"})
+
+
+def _normalize_keyword_query(query_text: str) -> str:
+    """Normalize query text before keyword segmentation."""
+    normalized_query = unicodedata.normalize(
+        "NFKC", query_text[:_KEYWORD_QUERY_MAX_CHARS]
+    )
+    return "".join(
+        char
+        for char in normalized_query
+        if unicodedata.category(char) not in _FILTERED_UNICODE_CATEGORIES
+    )
 
 
 # Reserved sentinel for hits that cannot be resolved to a persisted vector chunk.
@@ -38,17 +87,29 @@ MISSING_CHUNK_ID = UUID(int=0)
 
 
 def _extract_keywords_from_query(query_text: str) -> list[str]:
-    """Extract meaningful keywords from query text.
+    """Extract meaningful keywords from query text using jieba.
 
-    Phase 11 11-07: Simple keyword extraction for heading matching.
+    Phase 11 11-07: jieba keyword extraction for heading matching.
+    Uses only jieba's built-in general dictionary; no custom user dictionary.
     """
-    # Split by common delimiters
-    import re
-    # Remove punctuation and split
-    words = re.findall(r'\w+', query_text)
-    # Filter short words and common stopwords
-    stopwords = {"的", "是", "什么", "有", "在", "和", "了", "与", "及", "等"}
-    keywords = [w for w in words if len(w) >= 2 and w not in stopwords]
+    import jieba
+
+    if not isinstance(query_text, str) or not query_text.strip():
+        return []
+
+    jieba.setLogLevel(logging.WARNING)
+    normalized_query = _normalize_keyword_query(query_text)
+
+    seen: set[str] = set()
+    keywords: list[str] = []
+    for word in jieba.cut(normalized_query):
+        token = word.strip()
+        if len(token) < 2 or token in _KEYWORD_STOPWORDS or token in seen:
+            continue
+        if _KEYWORD_TOKEN_RE.search(token) is None:
+            continue
+        seen.add(token)
+        keywords.append(token)
     return keywords
 
 
@@ -93,6 +154,32 @@ def _build_path_to_root_from_stats(
         current_id = parent_stats.get("parent_node_id")
 
     return tuple(path)
+
+
+def _rank_backend_hits_for_hotspot_strategy(
+    *,
+    backend_hits: list[dict[str, Any]],
+    hotspot_strategy: str,
+    hotspots: Sequence[SubtreeHotspot],
+) -> list[dict[str, Any]]:
+    """Rank mapped backend hits while preserving hybrid hotspot fusion order."""
+    if hotspot_strategy != "hybrid_cluster":
+        return sorted(
+            backend_hits,
+            key=lambda item: item.get("score") or 0.0,
+            reverse=True,
+        )
+
+    hotspot_rank = {hotspot.node_id: index for index, hotspot in enumerate(hotspots)}
+    fallback_rank = len(hotspot_rank)
+
+    return sorted(
+        backend_hits,
+        key=lambda item: (
+            hotspot_rank.get(item.get("hotspot_node_id"), fallback_rank),
+            -(item.get("score") or 0.0),
+        ),
+    )
 
 
 def _retrieve_tree_hits_from_backend(
@@ -157,14 +244,15 @@ def _retrieve_tree_hits_from_backend(
         )
     runner = RecursiveTreeTraversalRunner()
     # Phase 11: Config-driven hotspot selector
-    import os
     logger.info(f"Using hotspot selector strategy: {hotspot_strategy}")
     hotspot_selector = get_hotspot_selector(hotspot_strategy)
 
     # Phase 11 11-07: Build V2 context for hybrid selector if applicable
     if hotspot_strategy == "hybrid_cluster":
         # Build vector candidates from node_stats
-        node_by_id_lookup = {stats["node_id"]: stats for stats in distribution_report["node_stats"]}
+        node_by_id_lookup = {
+            stats["node_id"]: stats for stats in distribution_report["node_stats"]
+        }
         vector_candidates: list[NodeSemanticHit] = []
         for stats in distribution_report["node_stats"]:
             node_id = stats.get("node_id")
@@ -206,7 +294,9 @@ def _retrieve_tree_hits_from_backend(
                 continue
 
             # Simple keyword matching: check if any query keyword appears in heading
-            matched_keywords = tuple(kw for kw in query_keywords if kw.lower() in heading_path.lower())
+            matched_keywords = tuple(
+                kw for kw in query_keywords if kw.lower() in heading_path.lower()
+            )
             if matched_keywords:
                 # Assign span_ids for this node
                 span_ids = span_ids_by_node.get(node_id, [])
@@ -286,8 +376,12 @@ def _retrieve_tree_hits_from_backend(
             span_ids_by_node=span_ids_by_node,
             limit=limit,
         )
-    backend_hits.sort(key=lambda item: item["score"], reverse=True)
-    return backend_hits[:limit]
+    ranked_hits = _rank_backend_hits_for_hotspot_strategy(
+        backend_hits=backend_hits,
+        hotspot_strategy=hotspot_strategy,
+        hotspots=hotspots,
+    )
+    return ranked_hits[:limit]
 
 
 def retrieve_tree_hits_from_pdf(
@@ -433,13 +527,12 @@ def _map_query_hits_to_backend_hits(
             )
         # WR-05: Validate navigation completeness before mapping
         missing_nav_ids = [
-            node_id for node_id in hit.navigation_node_ids
-            if node_id not in node_by_id
+            node_id for node_id in hit.navigation_node_ids if node_id not in node_by_id
         ]
         if missing_nav_ids:
             logger.warning(
                 "QueryHit has navigation_node_ids not in node_by_id: %s",
-                missing_nav_ids
+                missing_nav_ids,
             )
 
         navigation_path = [
