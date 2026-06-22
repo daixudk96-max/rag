@@ -177,6 +177,7 @@ class TestLeafFallback:
             vector_by_node=vector_by_node,
             keyword_by_node=keyword_by_node,
             node_by_id=node_by_id,
+            parent_to_children={},  # Flat fixture (no hierarchy)
             limit=1,
         )
 

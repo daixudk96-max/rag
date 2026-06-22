@@ -409,7 +409,7 @@ Level gates enforce no subjective shortcuts.
 
 **Goal:** Replace the post-Phase-11 `hybrid_cluster` selector's single-node Top-K fusion with true cluster-hot semantics. A parent becomes a hotspot only when a coherent group of its direct children are hot — where "hot" requires both vector similarity AND keyword match (dual-hot gate) — instead of any single high-scoring node ranking to the top.
 
-**Status:** EXECUTE (wave 2 complete, proceeding to wave 3)
+**Status:** EXECUTE (wave 3 complete with D-10 regression fixed, proceeding to wave 4)
 
 **Entry Point:** EXECUTE
 
@@ -418,8 +418,7 @@ Level gates enforce no subjective shortcuts.
 **Plans:** 4 plans across 4 waves
 - [x] 12-01-PLAN.md — Extend HotspotSelectionContext + report/runtime with parent_to_children child denominator (D-07) [wave 1 COMPLETE]
 - [x] 12-02-PLAN.md — RED tests: coverage 1/3·2/3·3/3, dual-hot intersection, configurable θ, leaf fallback (D-01/D-02/D-05/D-06/D-10) [wave 2 COMPLETE]
-- [ ] 12-03-PLAN.md — Implement cluster-hot coverage + dual-hot gate + θ + leaf fallback in HybridClusterHotspotSelector → GREEN (D-01..D-06, D-08/D-09) [wave 3]
-- [ ] 12-03-PLAN.md — Implement cluster-hot coverage + dual-hot gate + θ + leaf fallback in HybridClusterHotspotSelector → GREEN (D-01..D-06, D-08/D-09) [wave 3]
+- [x] 12-03-PLAN.md — Implement cluster-hot coverage + dual-hot gate + θ + leaf fallback in HybridClusterHotspotSelector → GREEN (D-01..D-06, D-08/D-09) + fix D-10 leaf fallback regression [wave 3 COMPLETE]
 - [ ] 12-04-PLAN.md — p6 DNA regression + full suite + rollback verify + GitNexus detect-changes + safe commit (D-09/D-10) [wave 4]
 
 **Research:** Complete — `.planning/hotspot-cluster-redesign-EXPLORATION/00-SUMMARY.md` (E1–E7) with code anchors and the p6 tree reality check.

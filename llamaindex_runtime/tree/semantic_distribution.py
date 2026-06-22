@@ -1111,6 +1111,7 @@ class HybridClusterHotspotSelector:
                 vector_by_node=vector_by_node,
                 keyword_by_node=keyword_by_node,
                 node_by_id=node_by_id,
+                parent_to_children=context.parent_to_children,
                 limit=limit,
             )
 
@@ -1185,12 +1186,14 @@ def _apply_leaf_fallback(
     vector_by_node: dict[UUID, float],
     keyword_by_node: dict[UUID, float],
     node_by_id: dict[UUID, dict[str, Any]],
+    parent_to_children: dict[UUID | None, tuple[UUID, ...]],
     limit: int,
 ) -> list[tuple[UUID, float]]:
     """Apply leaf fallback when no parent meets coverage threshold.
 
     Phase 12 D-06: Return strongest dual-hot leaf nodes when parent coverage fails.
-    Root is never promoted by coverage alone (parent_node_id=None filtered).
+    Root avoidance applies only when parent hierarchy exists (parent_to_children non-empty).
+    In flat fixtures (no parents), all nodes compete equally in leaf fallback.
 
     Args:
         dual_hot: Set of dual-hot child node IDs
@@ -1198,6 +1201,7 @@ def _apply_leaf_fallback(
         vector_by_node: Normalized vector scores per node
         keyword_by_node: Normalized keyword scores per node
         node_by_id: Node stats lookup
+        parent_to_children: Parent-to-children mapping (determines hierarchy presence)
         limit: Maximum fallback candidates to return
 
     Returns:
@@ -1205,33 +1209,49 @@ def _apply_leaf_fallback(
     """
     leaf_candidates: list[tuple[UUID, float]] = []
 
-    # Rank dual_hot nodes by combined vector+keyword score
-    for nid in dual_hot:
-        # Skip root via fallback (parent_node_id is None)
-        stats = node_by_id.get(nid)
-        if stats and stats.get("parent_node_id") is None:
-            continue
-        combined_score = (
-            vector_by_node.get(nid, 0.0) * 0.5
-            + keyword_by_node.get(nid, 0.0) * 0.5
-        )
-        leaf_candidates.append((nid, combined_score))
+    # Determine if parent hierarchy exists
+    # Empty parent_to_children or only None as parent means flat fixture (no hierarchy)
+    has_parent_hierarchy = bool(
+        parent_to_children and any(pid is not None for pid in parent_to_children.keys())
+    )
 
-    # If dual_hot empty, fallback to exact_keyword_nodes or top vector node
-    if not leaf_candidates:
-        # Exact keyword nodes (focused exact-leaf queries)
-        for nid in exact_keyword_nodes:
+    # Priority 1: Exact keyword nodes (full query term coverage)
+    # These outrank all other candidates even with lower vector scores
+    # Phase 12 D-06: Exact-heading match should beat broad single-term hits
+    for nid in exact_keyword_nodes:
+        if has_parent_hierarchy:
             stats = node_by_id.get(nid)
             if stats and stats.get("parent_node_id") is None:
-                continue  # Skip root
-            combined_score = (
-                vector_by_node.get(nid, 0.0) * 0.5
-                + keyword_by_node.get(nid, 0.0) * 0.5
-            )
-            leaf_candidates.append((nid, combined_score))
+                continue  # Skip root only when hierarchy exists
 
-        # Top vector node if still empty
-        if not leaf_candidates and vector_by_node:
+        vector_score = vector_by_node.get(nid, 0.0)
+        keyword_score = keyword_by_node.get(nid, 0.0)
+
+        # Exact keyword nodes get heavily boosted keyword weight (0.85)
+        # This ensures full coverage beats broad high-vector hits
+        combined_score = vector_score * 0.15 + keyword_score * 0.85
+        leaf_candidates.append((nid, combined_score))
+
+    # Priority 2: Dual-hot nodes (both vector_hot AND keyword_hot)
+    # These have passed the intersection gate but may not have full coverage
+    for nid in dual_hot:
+        # Skip if already added via exact_keyword tier (avoid duplicates)
+        if any(c[0] == nid for c in leaf_candidates):
+            continue
+
+        if has_parent_hierarchy:
+            stats = node_by_id.get(nid)
+            if stats and stats.get("parent_node_id") is None:
+                continue
+
+        # Standard dual-hot scoring: vector + keyword equal weight
+        vector_score = vector_by_node.get(nid, 0.0)
+        keyword_score = keyword_by_node.get(nid, 0.0)
+        combined_score = vector_score * 0.5 + keyword_score * 0.5
+        leaf_candidates.append((nid, combined_score))
+
+    # Priority 3: Pure vector fallback (if no exact/dual candidates)
+    if not leaf_candidates and vector_by_node:
             top_vector_node = max(vector_by_node.items(), key=lambda p: p[1])
             nid, vector_score = top_vector_node
             leaf_candidates.append((nid, vector_score))
