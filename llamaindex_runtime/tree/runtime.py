@@ -321,6 +321,7 @@ def _retrieve_tree_hits_from_backend(
             vector_candidates=vector_candidates,
             keyword_hits=keyword_hits,
             rerank_scores=None,
+            parent_to_children=distribution_report.get("parent_to_children", {}),
         )
 
         hotspots = hotspot_selector.select_hotspots(
