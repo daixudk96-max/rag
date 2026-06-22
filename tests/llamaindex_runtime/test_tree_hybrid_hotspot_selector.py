@@ -137,6 +137,53 @@ class TestHotspotSelectionContextContract:
         )
         assert context.rerank_scores is None
 
+    def test_hotspot_selection_context_accepts_parent_to_children(self) -> None:
+        """Phase 12 D-07: HotspotSelectionContext must accept parent_to_children denominator.
+
+        This field enables true direct-child coverage computation.
+        """
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HotspotSelectionContext,
+        )
+
+        parent_id = uuid.uuid4()
+        child_1_id = uuid.uuid4()
+        child_2_id = uuid.uuid4()
+        child_3_id = uuid.uuid4()  # no-vector child (E2 gap closure)
+
+        context = HotspotSelectionContext(
+            query_text="test query",
+            query_embedding=[1.0, 0.0],
+            node_stats={},  # child_3 NOT in node_stats (no vector)
+            tree_signals={},
+            vector_candidates=[],
+            keyword_hits=[],
+            rerank_scores=None,
+            parent_to_children={
+                parent_id: (child_1_id, child_2_id, child_3_id),
+            },
+        )
+        assert context.parent_to_children
+        assert context.parent_to_children[parent_id] == (child_1_id, child_2_id, child_3_id)
+
+    def test_hotspot_selection_context_parent_to_children_defaults_empty(self) -> None:
+        """Phase 12 D-07: parent_to_children must default to empty dict for backward compat."""
+        from llamaindex_runtime.tree.semantic_distribution import (
+            HotspotSelectionContext,
+        )
+
+        # Old call site without parent_to_children kwarg must still work
+        context = HotspotSelectionContext(
+            query_text="test query",
+            query_embedding=[1.0, 0.0],
+            node_stats={},
+            tree_signals={},
+            vector_candidates=[],
+            keyword_hits=[],
+            rerank_scores=None,
+        )
+        assert context.parent_to_children == {}
+
 
 class TestKeywordSpanHitContract:
     """KeywordSpanHit dataclass tests."""
@@ -307,6 +354,72 @@ class TestChildDistributionScoring:
 
         for entry in stats:
             assert "level_no" in entry
+
+
+class TestParentToChildrenReportKey:
+    """Phase 12 D-07: _build_report must emit parent_to_children key from full tree_nodes."""
+
+    def test_build_report_includes_parent_to_children_key(self) -> None:
+        """_build_report output must have parent_to_children built from complete tree_nodes."""
+        from llamaindex_runtime.tree.semantic_distribution import _build_report
+
+        parent_id = uuid.uuid4()
+        child_1_id = uuid.uuid4()
+        child_2_id = uuid.uuid4()
+        child_3_id = uuid.uuid4()  # no-vector child (E2 gap)
+
+        tree_nodes = [
+            {"node_id": parent_id, "heading_path": "Parent", "parent_node_id": None},
+            {"node_id": child_1_id, "heading_path": "Parent > Child1", "parent_node_id": parent_id},
+            {"node_id": child_2_id, "heading_path": "Parent > Child2", "parent_node_id": parent_id},
+            {"node_id": child_3_id, "heading_path": "Parent > Child3", "parent_node_id": parent_id},
+        ]
+
+        # node_stats only contains child_1 and child_2 (child_3 has no vectors)
+        node_stats = [
+            {"node_id": child_1_id, "parent_node_id": parent_id, "centroid": [0.5, 0.5]},
+            {"node_id": child_2_id, "parent_node_id": parent_id, "centroid": [0.6, 0.4]},
+        ]
+
+        report = _build_report(
+            tree_nodes=tree_nodes,
+            node_stats=node_stats,
+            skipped_chunk_count=0,
+        )
+
+        assert "parent_to_children" in report
+        assert report["parent_to_children"][parent_id] == (child_1_id, child_2_id, child_3_id)
+
+    def test_parent_to_children_includes_no_vector_child_absent_from_node_stats(self) -> None:
+        """E2 gap closure: parent_to_children denominator includes children missing from node_stats."""
+        from llamaindex_runtime.tree.semantic_distribution import _build_report
+
+        parent_id = uuid.uuid4()
+        child_with_vector_id = uuid.uuid4()
+        child_no_vector_id = uuid.uuid4()  # absent from node_stats
+
+        tree_nodes = [
+            {"node_id": parent_id, "heading_path": "Parent", "parent_node_id": None},
+            {"node_id": child_with_vector_id, "heading_path": "Parent > Child1", "parent_node_id": parent_id},
+            {"node_id": child_no_vector_id, "heading_path": "Parent > Child2", "parent_node_id": parent_id},
+        ]
+
+        # node_stats only has child_with_vector (child_no_vector skipped by _build_node_stats)
+        node_stats = [
+            {"node_id": child_with_vector_id, "parent_node_id": parent_id, "centroid": [1.0, 0.0]},
+        ]
+
+        report = _build_report(
+            tree_nodes=tree_nodes,
+            node_stats=node_stats,
+            skipped_chunk_count=0,
+        )
+
+        # parent_to_children must include BOTH children (proves E2 gap closed)
+        parent_children = report["parent_to_children"][parent_id]
+        assert child_with_vector_id in parent_children
+        assert child_no_vector_id in parent_children  # E2 gap closure proof
+        assert len(parent_children) == 2
 
 
 class TestHybridFusionScoring:
