@@ -242,52 +242,10 @@ class TestScoreNormalization:
 class TestChildDistributionScoring:
     """Child-node hit distribution scoring tests."""
 
-    def test_parent_with_multiple_child_hits_beats_isolated_high_score_node(
-        self,
-    ) -> None:
-        """Distribution scoring must reward multi-child evidence over isolated high score."""
-        # NOTE: distribution scoring helper does not exist yet - RED phase
-        from llamaindex_runtime.tree.semantic_distribution import (
-            _compute_child_distribution_score,
-        )
-
-        # Parent A: 3 children with moderate scores
-        parent_a_id = uuid.uuid4()
-        node_stats = {
-            parent_a_id: {
-                "node_id": parent_a_id,
-                "parent_node_id": None,
-                "level_no": 0,
-            },
-        }
-        # Child hits under parent A
-        child_hits = [
-            {"node_id": uuid.uuid4(), "parent_node_id": parent_a_id, "score": 0.75},
-            {"node_id": uuid.uuid4(), "parent_node_id": parent_a_id, "score": 0.70},
-            {"node_id": uuid.uuid4(), "parent_node_id": parent_a_id, "score": 0.65},
-        ]
-        # Isolated node B with high score
-        isolated_node_id = uuid.uuid4()
-        isolated_hit = {
-            "node_id": isolated_node_id,
-            "parent_node_id": None,
-            "score": 0.90,
-        }
-
-        # Compute distribution scores
-        parent_a_dist = _compute_child_distribution_score(
-            target_node_id=parent_a_id,
-            hits=child_hits + [isolated_hit],
-            node_stats=node_stats,
-        )
-        isolated_dist = _compute_child_distribution_score(
-            target_node_id=isolated_node_id,
-            hits=child_hits + [isolated_hit],
-            node_stats=node_stats,
-        )
-
-        # Parent with distributed child hits should beat isolated high-score node
-        assert parent_a_dist > isolated_dist
+    # D-10: Old union-semantics distribution test removed.
+    # Replaced by coverage+dual-hot tests in test_tree_hybrid_hotspot_selector_coverage_red.py
+    # Old test asserted parent beats isolated node using _compute_child_distribution_score (union semantics).
+    # New coverage tests use dual-hot intersection + coverage ratio + θ threshold (D-01/D-02).
 
     def test_node_stats_requires_parent_node_id_for_distribution(self) -> None:
         """node_stats must include parent_node_id for distribution scoring."""
@@ -469,6 +427,11 @@ class TestHybridFusionScoring:
         expected = 0.40 * 0.85 + 0.30 * 0.6 + 0.20 * 0.7 + 0.10 * 0.5
         assert abs(fusion - expected) < 0.001
 
+    # D-10 classification: PRESERVE-AS-IS.
+    # This test asserts exact-heading leaf wins, which leaf fallback in 12-03 preserves.
+    # The exact-heading node remains a valid result via leaf fallback even when parent coverage < θ.
+    # No rewrite needed - test will stay GREEN after 12-03 implementation.
+
     def test_selector_prefers_multi_term_heading_match_over_broad_single_term(
         self,
     ) -> None:
@@ -556,6 +519,11 @@ class TestHybridFusionScoring:
         hotspots = selector.select_hotspots(context=context, limit=1)
 
         assert hotspots[0].node_id == strong_heading_id
+
+    # D-10 classification: PRESERVE-AS-IS.
+    # This test asserts exact-heading leaf wins with low vector score, which leaf fallback preserves.
+    # The exact-heading node remains a valid result via leaf fallback even when parent coverage < θ.
+    # No rewrite needed - test will stay GREEN after 12-03 implementation.
 
     def test_selector_prioritizes_exact_heading_match_over_high_vector_broad_match(
         self,
