@@ -851,24 +851,71 @@ class HybridClusterHotspotSelector:
     """Hybrid hotspot selector using vector + keyword + optional rerank fusion.
 
     Phase 11 11-07: Generic cross-domain selector without hardcoded domain-specific terms.
+    Phase 12 12-03: Cluster-hot coverage selection with dual-hot gate.
 
     Fusion weights (documented, not magic):
       _VECTOR_WEIGHT = 0.40: Primary semantic similarity
       _KEYWORD_WEIGHT = 0.30: BM25/exact match evidence
       _EXACT_KEYWORD_WEIGHT = 2.00: Full heading term coverage promotion tuned to beat broad single-term vector hits
       _RERANK_WEIGHT = 0.20: Optional reranker scores (default-off when None)
-      _DISTRIBUTION_WEIGHT = 0.10: Child-node distribution bonus
+      _DISTRIBUTION_WEIGHT = 0.10: Child-node distribution bonus (preserved for helper tests)
 
-    Child distribution scoring rewards multi-child evidence over isolated high-score nodes.
-    Default-off reranker seam: works correctly when rerank_scores is None.
+    Cluster-hot coverage weights (Phase 12, separate from fusion):
+      _COVERAGE_THETA = 0.5: Coverage ratio threshold (configurable)
+      _MIN_SUPPORT = 2: Minimum dual-hot children for cluster hotspot
+      _VECTOR_HOT_THRESHOLD = 0.5: Normalized vector score threshold for child hotness
+      _KEYWORD_HOT_MIN_TERMS = 1: Minimum matched query terms for child hotness
+      _ROOT_CHILD_BREADTH_CAP = 8: Maximum direct children for root-avoidance
+      _COVERAGE_WEIGHT = 0.50: Coverage ratio weight in parent scoring
+      _COVERAGE_VECTOR_WEIGHT = 0.30: Average child vector weight in parent scoring
+      _COVERAGE_SUPPORT_WEIGHT = 0.20: Support count weight in parent scoring
+
+    Coverage definition (Phase 12 D-01):
+      Parent is hotspot iff coverage(P) >= theta AND dual_hot_child_count >= min_support,
+      where child_hot(c) = vector_hot(c) AND keyword_hot(c).
+
+    Leaf fallback (Phase 12 D-06):
+      When no parent meets coverage, return strongest dual-hot leaf nodes.
+      Root is never promoted by coverage alone.
     """
 
     # Documented weight constants (not magic numbers)
+    # Fusion weights (Phase 11 - preserved for helper tests)
     _VECTOR_WEIGHT: float = 0.40
     _KEYWORD_WEIGHT: float = 0.30
     _EXACT_KEYWORD_WEIGHT: float = 2.00
     _RERANK_WEIGHT: float = 0.20
     _DISTRIBUTION_WEIGHT: float = 0.10
+
+    # Cluster-hot coverage weights (Phase 12 - separate from fusion)
+    _COVERAGE_THETA: float = 0.5
+    _MIN_SUPPORT: int = 2
+    _VECTOR_HOT_THRESHOLD: float = 0.5
+    _KEYWORD_HOT_MIN_TERMS: int = 1
+    _ROOT_CHILD_BREADTH_CAP: int = 8
+    _COVERAGE_WEIGHT: float = 0.50
+    _COVERAGE_VECTOR_WEIGHT: float = 0.30
+    _COVERAGE_SUPPORT_WEIGHT: float = 0.20
+
+    def __init__(
+        self,
+        *,
+        coverage_theta: float = _COVERAGE_THETA,
+        min_support: int = _MIN_SUPPORT,
+        theta: float | None = None,  # Alias for coverage_theta (backward compat for tests)
+    ) -> None:
+        """Initialize cluster-hot selector with configurable thresholds.
+
+        Args:
+            coverage_theta: Coverage ratio threshold for parent hotspots (default 0.5)
+            min_support: Minimum dual-hot children for cluster hotspot (default 2)
+            theta: Alias for coverage_theta (backward compatibility)
+        """
+        # Support theta alias for backward compatibility
+        if theta is not None:
+            coverage_theta = theta
+        self._coverage_theta = coverage_theta
+        self._min_support = min_support
 
     def select_hotspots(
         self,
@@ -966,66 +1013,264 @@ class HybridClusterHotspotSelector:
                 )
             }
 
-        # Compute distribution scores for all candidate nodes
-        candidate_node_ids = set(vector_by_node.keys()) | set(keyword_by_node.keys())
-        all_hits = [
-            {"node_id": node_id, "score": vector_by_node.get(node_id, 0.0)}
-            for node_id in candidate_node_ids
-        ]
-        distribution_scores: dict[UUID, float] = {}
-        for node_id in candidate_node_ids:
-            distribution_scores[node_id] = _compute_child_distribution_score(
-                target_node_id=node_id,
-                hits=all_hits,
-                node_stats=node_by_id,
+        # Phase 12: Cluster-hot coverage selection
+        # Step 2: Compute hotness sets (dual-hot intersection gate)
+        vector_hot = {
+            nid for nid, s in vector_by_node.items()
+            if s >= self._VECTOR_HOT_THRESHOLD
+        }
+        keyword_hot = {
+            nid for nid, terms in terms_by_node.items()
+            if len(terms) >= self._KEYWORD_HOT_MIN_TERMS
+        }
+        dual_hot = vector_hot & keyword_hot  # INTERSECTION (D-02)
+
+        # Step 3: Build candidate PARENTS from dual_hot children (D-01)
+        # Direct parent lookup via node_stats - no fallback scan (B5)
+        candidate_parents = set()
+        for child_id in dual_hot:
+            child_stats = node_by_id.get(child_id)
+            if child_stats:
+                parent_id = child_stats.get("parent_node_id")
+                if parent_id is not None:
+                    candidate_parents.add(parent_id)
+
+        # Step 4: Select parents passing coverage + support + root-avoidance
+        parent_scores: list[tuple[UUID, float, float, int]] = []
+        for parent_id in candidate_parents:
+            coverage_ratio, hot_count = _compute_child_coverage_score(
+                parent_id=parent_id,
+                parent_to_children=context.parent_to_children,
+                dual_hot=dual_hot,
             )
 
-        # Compute fusion scores for all candidate nodes
-        fusion_scores: list[tuple[UUID, float]] = []
-        for node_id in candidate_node_ids:
-            vector_score = vector_by_node.get(node_id, 0.0)
-            keyword_score = keyword_by_node.get(node_id, 0.0)
-            rerank_score = rerank_by_node.get(node_id) if rerank_by_node else None
-            distribution_score = distribution_scores.get(node_id, 0.0)
+            # Coverage gate (D-01, D-05)
+            if coverage_ratio < self._coverage_theta:
+                continue
+            if hot_count < self._min_support:
+                continue
 
-            keyword_weight = (
-                self._EXACT_KEYWORD_WEIGHT
-                if node_id in exact_keyword_nodes
-                else self._KEYWORD_WEIGHT
+            # Root avoidance (D-06)
+            parent_stats = node_by_id.get(parent_id)
+            if parent_stats:
+                children_count = len(context.parent_to_children.get(parent_id, ()))
+                if _apply_root_avoidance(
+                    parent_id=parent_id,
+                    parent_stats=parent_stats,
+                    children_count=children_count,
+                    breadth_cap=self._ROOT_CHILD_BREADTH_CAP,
+                ):
+                    continue  # Skip root/very-broad nodes
+
+            # Step 5: Score parent using coverage weights (separate from fusion)
+            # Parent score = coverage_ratio * 0.50 + avg_child_vector * 0.30 + support_bonus * 0.20
+            avg_child_vector = 0.0
+            dual_hot_children = [
+                c for c in context.parent_to_children.get(parent_id, ())
+                if c in dual_hot
+            ]
+            if dual_hot_children:
+                avg_child_vector = sum(
+                    vector_by_node.get(c, 0.0) for c in dual_hot_children
+                ) / len(dual_hot_children)
+
+            support_bonus = min(hot_count / 5.0, 1.0)  # Cap at 5 children
+            parent_score = (
+                coverage_ratio * self._COVERAGE_WEIGHT
+                + avg_child_vector * self._COVERAGE_VECTOR_WEIGHT
+                + support_bonus * self._COVERAGE_SUPPORT_WEIGHT
             )
-            fusion = _compute_fusion_score(
-                vector_score=vector_score,
-                keyword_score=keyword_score,
-                rerank_score=rerank_score,
-                distribution_score=distribution_score,
-                vector_weight=self._VECTOR_WEIGHT,
-                keyword_weight=keyword_weight,
-                rerank_weight=self._RERANK_WEIGHT,
-                distribution_weight=self._DISTRIBUTION_WEIGHT,
-            )
-            fusion_scores.append((node_id, fusion))
+            parent_scores.append((parent_id, parent_score, coverage_ratio, hot_count))
 
-        # Sort by fusion score and select top
-        fusion_scores.sort(key=lambda pair: pair[1], reverse=True)
-        selected = fusion_scores[:limit]
+        # Sort parents by score
+        parent_scores.sort(key=lambda p: p[1], reverse=True)
+        selected_parents = parent_scores[:limit]
 
-        # Build SubtreeHotspot objects
+        # Step 6: Build SubtreeHotspot objects for selected parents
         hotspots: list[SubtreeHotspot] = []
-        for node_id, score in selected:
-            stats = node_by_id.get(node_id)
+        for parent_id, score, coverage_ratio, hot_count in selected_parents:
+            stats = node_by_id.get(parent_id)
             if stats:
                 hotspots.append(
                     SubtreeHotspot(
-                        node_id=node_id,
+                        node_id=parent_id,
                         score=score,
-                        reason="hybrid_fusion",
+                        reason="cluster_coverage",
                         support_count=stats.get("support_count", 0),
                         dispersion=float(stats.get("dispersion", 0.0)),
                         entropy=float(stats.get("entropy", 0.0)),
                     )
                 )
 
+        # Step 7: Leaf fallback (D-06)
+        # If NO parent qualifies, return strongest dual-hot leaf nodes
+        if not hotspots:
+            leaf_candidates = _apply_leaf_fallback(
+                dual_hot=dual_hot,
+                exact_keyword_nodes=exact_keyword_nodes,
+                vector_by_node=vector_by_node,
+                keyword_by_node=keyword_by_node,
+                node_by_id=node_by_id,
+                limit=limit,
+            )
+
+            for nid, score in leaf_candidates:
+                stats = node_by_id.get(nid)
+                if stats:
+                    hotspots.append(
+                        SubtreeHotspot(
+                            node_id=nid,
+                            score=score,
+                            reason="leaf_fallback",
+                            support_count=stats.get("support_count", 0),
+                            dispersion=float(stats.get("dispersion", 0.0)),
+                            entropy=float(stats.get("entropy", 0.0)),
+                        )
+                    )
+
         return hotspots
+
+
+def _compute_child_coverage_score(
+    *,
+    parent_id: UUID,
+    parent_to_children: dict[UUID | None, tuple[UUID, ...]],
+    dual_hot: set[UUID],
+) -> tuple[float, int]:
+    """Compute coverage ratio and dual-hot child count for a parent.
+
+    Phase 12 D-01: Coverage(P) = dual_hot_children / direct_children(P).
+    Denominator is complete direct-child set from parent_to_children (D-07).
+
+    Args:
+        parent_id: Parent node UUID
+        parent_to_children: Complete parent→children mapping from tree structure
+        dual_hot: Set of child node IDs that are both vector_hot AND keyword_hot
+
+    Returns:
+        Tuple of (coverage_ratio, dual_hot_child_count)
+    """
+    children = parent_to_children.get(parent_id, ())
+    denom = len(children)
+    hot = sum(1 for c in children if c in dual_hot)
+    ratio = hot / denom if denom > 0 else 0.0
+    return (ratio, hot)
+
+
+def _is_child_dual_hot(
+    *,
+    child_id: UUID,
+    vector_hot: set[UUID],
+    keyword_hot: set[UUID],
+) -> bool:
+    """Check if a child node is dual-hot (vector_hot AND keyword_hot).
+
+    Phase 12 D-02: Intersection gate - child must be hot in BOTH dimensions.
+
+    Args:
+        child_id: Child node UUID
+        vector_hot: Set of child IDs with normalized vector >= threshold
+        keyword_hot: Set of child IDs with matched query terms >= threshold
+
+    Returns:
+        True if child is in BOTH vector_hot AND keyword_hot sets
+    """
+    return child_id in vector_hot and child_id in keyword_hot
+
+
+def _apply_leaf_fallback(
+    *,
+    dual_hot: set[UUID],
+    exact_keyword_nodes: set[UUID],
+    vector_by_node: dict[UUID, float],
+    keyword_by_node: dict[UUID, float],
+    node_by_id: dict[UUID, dict[str, Any]],
+    limit: int,
+) -> list[tuple[UUID, float]]:
+    """Apply leaf fallback when no parent meets coverage threshold.
+
+    Phase 12 D-06: Return strongest dual-hot leaf nodes when parent coverage fails.
+    Root is never promoted by coverage alone (parent_node_id=None filtered).
+
+    Args:
+        dual_hot: Set of dual-hot child node IDs
+        exact_keyword_nodes: Set of nodes with full query term coverage
+        vector_by_node: Normalized vector scores per node
+        keyword_by_node: Normalized keyword scores per node
+        node_by_id: Node stats lookup
+        limit: Maximum fallback candidates to return
+
+    Returns:
+        List of (node_id, combined_score) tuples for leaf fallback
+    """
+    leaf_candidates: list[tuple[UUID, float]] = []
+
+    # Rank dual_hot nodes by combined vector+keyword score
+    for nid in dual_hot:
+        # Skip root via fallback (parent_node_id is None)
+        stats = node_by_id.get(nid)
+        if stats and stats.get("parent_node_id") is None:
+            continue
+        combined_score = (
+            vector_by_node.get(nid, 0.0) * 0.5
+            + keyword_by_node.get(nid, 0.0) * 0.5
+        )
+        leaf_candidates.append((nid, combined_score))
+
+    # If dual_hot empty, fallback to exact_keyword_nodes or top vector node
+    if not leaf_candidates:
+        # Exact keyword nodes (focused exact-leaf queries)
+        for nid in exact_keyword_nodes:
+            stats = node_by_id.get(nid)
+            if stats and stats.get("parent_node_id") is None:
+                continue  # Skip root
+            combined_score = (
+                vector_by_node.get(nid, 0.0) * 0.5
+                + keyword_by_node.get(nid, 0.0) * 0.5
+            )
+            leaf_candidates.append((nid, combined_score))
+
+        # Top vector node if still empty
+        if not leaf_candidates and vector_by_node:
+            top_vector_node = max(vector_by_node.items(), key=lambda p: p[1])
+            nid, vector_score = top_vector_node
+            leaf_candidates.append((nid, vector_score))
+
+    # Sort and take top limit
+    leaf_candidates.sort(key=lambda p: p[1], reverse=True)
+    return leaf_candidates[:limit]
+
+
+def _apply_root_avoidance(
+    *,
+    parent_id: UUID,
+    parent_stats: dict[str, Any],
+    children_count: int,
+    breadth_cap: int,
+) -> bool:
+    """Check if a parent should be avoided as a hotspot (root or very-broad node).
+
+    Phase 12 D-06: Root is never promoted by coverage alone.
+    Very-broad nodes exceed child breadth cap.
+
+    Args:
+        parent_id: Parent node UUID
+        parent_stats: Parent node stats
+        children_count: Number of direct children
+        breadth_cap: Maximum allowed children for hotspot eligibility
+
+    Returns:
+        True if parent should be AVOIDED (filtered out), False if eligible
+    """
+    # Root is node with parent_node_id=None
+    if parent_stats.get("parent_node_id") is None:
+        return True  # Avoid root
+
+    # Very-broad nodes exceed child breadth cap
+    if children_count > breadth_cap:
+        return True  # Avoid very-broad nodes
+
+    return False  # Eligible
 
 
 def _build_path_to_root(
