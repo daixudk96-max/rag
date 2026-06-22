@@ -763,9 +763,8 @@ class ClusterHotspotSelector:
 
         # D-04: Root penalty - prefer local clusters, but allow root when it's the only option
         # Check if we have non-root alternatives before filtering
-        has_non_root_alternatives = (
-            len(scored_clusters) > 1
-            and any(c.ancestor_node_id not in root_node_ids for c, _ in scored_clusters)
+        has_non_root_alternatives = len(scored_clusters) > 1 and any(
+            c.ancestor_node_id not in root_node_ids for c, _ in scored_clusters
         )
 
         if has_non_root_alternatives:
@@ -841,6 +840,7 @@ class HybridClusterHotspotSelector:
     Fusion weights (documented, not magic):
       _VECTOR_WEIGHT = 0.40: Primary semantic similarity
       _KEYWORD_WEIGHT = 0.30: BM25/exact match evidence
+      _EXACT_KEYWORD_WEIGHT = 2.00: Full heading term coverage promotion tuned to beat broad single-term vector hits
       _RERANK_WEIGHT = 0.20: Optional reranker scores (default-off when None)
       _DISTRIBUTION_WEIGHT = 0.10: Child-node distribution bonus
 
@@ -851,6 +851,7 @@ class HybridClusterHotspotSelector:
     # Documented weight constants (not magic numbers)
     _VECTOR_WEIGHT: float = 0.40
     _KEYWORD_WEIGHT: float = 0.30
+    _EXACT_KEYWORD_WEIGHT: float = 2.00
     _RERANK_WEIGHT: float = 0.20
     _DISTRIBUTION_WEIGHT: float = 0.10
 
@@ -901,16 +902,42 @@ class HybridClusterHotspotSelector:
         # Normalize vector scores
         vector_scores_raw = [c.similarity for c in vector_candidates]
         vector_scores_normalized = _normalize_scores(vector_scores_raw)
-        vector_by_node = {c.node_id: s for c, s in zip(vector_candidates, vector_scores_normalized)}
+        vector_by_node = {
+            c.node_id: s for c, s in zip(vector_candidates, vector_scores_normalized)
+        }
 
-        # Normalize keyword scores
+        # Normalize keyword scores. Heading matches also carry matched_terms,
+        # so use term coverage to distinguish a broad one-term hit from a
+        # full heading match when raw scores are identical.
         keyword_scores_raw = [h.score for h in context.keyword_hits or []]
         keyword_scores_normalized = _normalize_scores(keyword_scores_raw)
+        all_matched_terms = {
+            term
+            for hit in context.keyword_hits or []
+            for term in hit.matched_terms
+            if term
+        }
+        terms_by_node: dict[UUID, set[str]] = defaultdict(set)
         keyword_by_node: dict[UUID, float] = {}
-        for hit, norm_score in zip(context.keyword_hits or [], keyword_scores_normalized):
-            # Take max keyword score per node
+        for hit, norm_score in zip(
+            context.keyword_hits or [], keyword_scores_normalized
+        ):
+            terms_by_node[hit.node_id].update(
+                term for term in hit.matched_terms if term
+            )
+            term_coverage = (
+                len(terms_by_node[hit.node_id]) / len(all_matched_terms)
+                if all_matched_terms
+                else 0.0
+            )
+            # Take max keyword signal per node: lexical score OR query-term coverage.
             existing = keyword_by_node.get(hit.node_id, 0.0)
-            keyword_by_node[hit.node_id] = max(existing, norm_score)
+            keyword_by_node[hit.node_id] = max(existing, norm_score, term_coverage)
+        exact_keyword_nodes = {
+            node_id
+            for node_id, matched_terms in terms_by_node.items()
+            if len(all_matched_terms) > 1 and all_matched_terms.issubset(matched_terms)
+        }
 
         # Normalize rerank scores if present
         rerank_by_node: dict[UUID, float] | None = None
@@ -946,13 +973,18 @@ class HybridClusterHotspotSelector:
             rerank_score = rerank_by_node.get(node_id) if rerank_by_node else None
             distribution_score = distribution_scores.get(node_id, 0.0)
 
+            keyword_weight = (
+                self._EXACT_KEYWORD_WEIGHT
+                if node_id in exact_keyword_nodes
+                else self._KEYWORD_WEIGHT
+            )
             fusion = _compute_fusion_score(
                 vector_score=vector_score,
                 keyword_score=keyword_score,
                 rerank_score=rerank_score,
                 distribution_score=distribution_score,
                 vector_weight=self._VECTOR_WEIGHT,
-                keyword_weight=self._KEYWORD_WEIGHT,
+                keyword_weight=keyword_weight,
                 rerank_weight=self._RERANK_WEIGHT,
                 distribution_weight=self._DISTRIBUTION_WEIGHT,
             )
@@ -1002,7 +1034,9 @@ def _build_path_to_root(
             # Cycle detected - log warning and return partial path
             logger.warning(
                 "ancestor path cycle detected: node_id=%s, cycle_at=%s, path_so_far=%s",
-                node_id, current_id, path
+                node_id,
+                current_id,
+                path,
             )
             break
         visited.add(current_id)
@@ -1050,7 +1084,8 @@ def _build_ancestor_clusters(
         if subtree_candidate_count == 0:
             logger.warning(
                 "cluster ancestor %s has subtree_candidate_count=0 with support_count=%d, skipping",
-                ancestor_id, support_count
+                ancestor_id,
+                support_count,
             )
             continue
 
@@ -1150,14 +1185,18 @@ def _compute_child_distribution_score(
     # Count sibling hits (same parent as target)
     sibling_hits = []
     for h in hits:
-        h_parent_id = h.get("parent_node_id") or node_stats.get(h.get("node_id"), {}).get("parent_node_id")
+        h_parent_id = h.get("parent_node_id") or node_stats.get(
+            h.get("node_id"), {}
+        ).get("parent_node_id")
         if h_parent_id == target_parent_id and h.get("node_id") != target_node_id:
             sibling_hits.append(h)
 
     # Count child hits (target is parent of hit)
     child_hits = []
     for h in hits:
-        h_parent_id = h.get("parent_node_id") or node_stats.get(h.get("node_id"), {}).get("parent_node_id")
+        h_parent_id = h.get("parent_node_id") or node_stats.get(
+            h.get("node_id"), {}
+        ).get("parent_node_id")
         if h_parent_id == target_node_id:
             child_hits.append(h)
 
@@ -1165,7 +1204,9 @@ def _compute_child_distribution_score(
     if not direct_hits:
         if child_hits:
             # Parent with child evidence: use average child score + breadth bonus
-            avg_child_score = sum(h.get("score", 0.0) for h in child_hits) / len(child_hits)
+            avg_child_score = sum(h.get("score", 0.0) for h in child_hits) / len(
+                child_hits
+            )
             # Breadth bonus: more children = higher score
             breadth_bonus = min(len(child_hits) / 5.0, 1.0)  # Cap at 5 children
             return avg_child_score * 0.80 + breadth_bonus * 0.20
@@ -1587,7 +1628,8 @@ def _cosine_similarity(vector_a: Sequence[float], vector_b: Sequence[float]) -> 
     if not vector_a or not vector_b:
         logger.warning(
             "cosine_similarity received empty vector: len(a)=%d, len(b)=%d",
-            len(vector_a), len(vector_b)
+            len(vector_a),
+            len(vector_b),
         )
         return 0.0
     if len(vector_a) != len(vector_b):
