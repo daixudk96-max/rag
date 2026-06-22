@@ -404,3 +404,51 @@ Level gates enforce no subjective shortcuts.
 - Code review and security review find 0 CRITICAL/HIGH findings before commit readiness.
 
 ---
+
+## Phase 12: Cluster-Hot Hotspot Selection Redesign
+
+**Goal:** Replace the post-Phase-11 `hybrid_cluster` selector's single-node Top-K fusion with true cluster-hot semantics. A parent becomes a hotspot only when a coherent group of its direct children are hot — where "hot" requires both vector similarity AND keyword match (dual-hot gate) — instead of any single high-scoring node ranking to the top.
+
+**Status:** EXECUTE (wave 2 complete, proceeding to wave 3)
+
+**Entry Point:** EXECUTE
+
+**Depends on:** Phase 11 (ClusterHotspotSelector, runtime selector switch) and the post-Phase-11 `hybrid_cluster` + jieba runtime work (commits `ae7bd97`, `91182cd`).
+
+**Plans:** 4 plans across 4 waves
+- [x] 12-01-PLAN.md — Extend HotspotSelectionContext + report/runtime with parent_to_children child denominator (D-07) [wave 1 COMPLETE]
+- [x] 12-02-PLAN.md — RED tests: coverage 1/3·2/3·3/3, dual-hot intersection, configurable θ, leaf fallback (D-01/D-02/D-05/D-06/D-10) [wave 2 COMPLETE]
+- [ ] 12-03-PLAN.md — Implement cluster-hot coverage + dual-hot gate + θ + leaf fallback in HybridClusterHotspotSelector → GREEN (D-01..D-06, D-08/D-09) [wave 3]
+- [ ] 12-03-PLAN.md — Implement cluster-hot coverage + dual-hot gate + θ + leaf fallback in HybridClusterHotspotSelector → GREEN (D-01..D-06, D-08/D-09) [wave 3]
+- [ ] 12-04-PLAN.md — p6 DNA regression + full suite + rollback verify + GitNexus detect-changes + safe commit (D-09/D-10) [wave 4]
+
+**Research:** Complete — `.planning/hotspot-cluster-redesign-EXPLORATION/00-SUMMARY.md` (E1–E7) with code anchors and the p6 tree reality check.
+
+**Locked Design Decisions (from exploration, user-approved 2026-06-22):**
+- **D1 — Definition A:** parent hotspot ⇔ `coverage(P) = |{c ∈ direct_children(P) : child_hot(c)}| / |direct_children(P)| ≥ θ`, where `child_hot(c) = vector_hot(c) AND keyword_hot(c)`. Path-all-hot (B) is a later tie-breaker, not the first-version rule.
+- **D2 — Context data:** add a child denominator (`parent_to_children` / `direct_child_count`) to `HotspotSelectionContext`; today the selector only sees `node_stats` and cannot compute true coverage. Reuse `_build_parent_to_children()`.
+- **D3 — Boundary:** selection-layer-only change. Keep emitting `SubtreeHotspot(node_id=...)`; do NOT change the traversal interface (`traverse_tree_for_query(start_node_id=...)`).
+- **D4 — Threshold:** θ is configurable, NOT fixed at 1.0 (p6 internals mostly have 2–3 children; θ=1.0 over-prunes). Preserve a leaf fallback so focused exact-leaf queries (e.g. `数据清洗标注的具体方法是什么？`) still return their position.
+- **D5 — Scope:** new Phase 12; do not reopen closed Phase 11.
+
+**Mandatory Safety Gates:**
+- GitNexus impact analysis required before editing symbols in `llamaindex_runtime/tree/semantic_distribution.py` (`HybridClusterHotspotSelector`, `_compute_child_distribution_score`, `_compute_fusion_score`, `HotspotSelectionContext`) and `llamaindex_runtime/tree/runtime.py` (hybrid_cluster context construction).
+- CRITICAL runtime-path edits stay incremental and switch-gated behind `RAG_TREE_HOTSPOT_SELECTOR`; keep `route_subtree` and `cluster` selectors as rollback paths. No deletion of existing selectors in this phase.
+- `gitnexus_detect_changes()` required before any commit.
+
+**Planned Workstreams (subject to /gsd-plan-phase):**
+- WS1: Extend `HotspotSelectionContext` with child denominator; wire `parent_to_children` from runtime/distribution report (TDD first).
+- WS2: Implement cluster-hot coverage scoring with dual-hot gate, configurable θ, and leaf fallback in `HybridClusterHotspotSelector`.
+- WS3: Rewrite distribution-scoring tests to coverage-ratio + dual-hot semantics; preserve registration, context, rerank-off, anti-hardcode, jieba-extraction, and p6 DNA regression tests.
+- WS4: p6 validation across A's coverage cases (1/3, 2/3, 3/3) and leaf-query fallback; confirm DNA query still returns `数据驱动`, `非确定性`, `持续性`.
+- WS5: Code review, security review, GitNexus detect-changes, safe git hygiene.
+
+**Success Criteria:**
+- A parent with multiple dual-hot children outranks an isolated high-vector single node (coverage gate proven by test).
+- `vector_hot`-only or `keyword_hot`-only children do NOT count toward coverage.
+- Configurable θ honored; leaf fallback returns focused exact-leaf positions.
+- p6 DNA query regression still passes; cross-domain anti-hardcode tests still pass.
+- `RAG_TREE_HOTSPOT_SELECTOR` rollback paths (`route_subtree`, `cluster`) remain intact.
+- Code review and security review find 0 CRITICAL/HIGH before commit readiness.
+
+---
