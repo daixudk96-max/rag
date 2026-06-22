@@ -67,66 +67,73 @@ The operator must run the three `gitnexus_impact` MCP calls in a context with MC
 
 ---
 
-## Expected Blast-Radius Tables (Placeholder for Manual MCP Execution)
+## Verified Blast-Radius Tables (Grep-based analysis — GitNexus MCP unavailable)
 
-### Symbol 1: HotspotSelectionContext (semantic_distribution.py:511)
+### Symbol 1: HotspotSelectionContext (semantic_distribution.py:512)
 
-**Expected callers (based on code exploration):**
-- `llamaindex_runtime/tree/runtime.py:316` (hybrid_cluster branch context construction) — CRITICAL path
-- `tests/llamaindex_runtime/test_tree_hybrid_hotspot_selector.py` (TestHotspotSelectionContextContract) — test contract
+**Verified callers (Grep scan):**
+```
+llamaindex_runtime/tree/runtime.py:25     [IMPORTS]
+llamaindex_runtime/tree/runtime.py:316    [CALLS - context constructor] ← CRITICAL path
+llamaindex_runtime/tree/semantic_distribution.py:861 [USES - select_hotspots param]
+tests/llamaindex_runtime/test_tree_hybrid_hotspot_selector.py:62-618 [TESTS - contract tests, 9 usages]
+```
 
-**Expected risk level:** HIGH (direct caller on CRITICAL runtime path)
-
-**Blast radius to record:**
+**Blast radius:**
 ```
 d=1 (WILL BREAK):
-  - runtime.py:316 hybrid_cluster context constructor [CALLS, 100%]
+  - runtime.py:316 hybrid_cluster context constructor [CALLS, 100%] — CRITICAL retrieval path
+  - semantic_distribution.py:861 HybridClusterHotspotSelector.select_hotspots [USES param]
 
 d=2 (LIKELY AFFECTED):
-  - HybridClusterHotspotSelector.select_hotspots (receives context)
   - retrieve_tree_hits_from_pdf (builds context via hybrid_cluster branch)
+  - test_tree_hybrid_hotspot_selector.py contract tests (9 instantiations)
 
-Risk: HIGH — direct caller on CRITICAL retrieval path
+Risk: HIGH — direct caller on CRITICAL runtime retrieval path; additive field mitigates breakage
 ```
 
 ### Symbol 2: _build_report (semantic_distribution.py:322)
 
-**Expected callers:**
-- `analyze_tree_semantic_distribution` (returns report dict)
+**Verified callers (Grep scan):**
+```
+llamaindex_runtime/tree/semantic_distribution.py:144 [CALLS - returns report dict]
+```
 
-**Expected risk level:** MEDIUM (single caller, but report structure change affects downstream consumers)
-
-**Blast radius to record:**
+**Blast radius:**
 ```
 d=1 (WILL BREAK):
-  - analyze_tree_semantic_distribution [CALLS, 100%]
+  - semantic_distribution.py:144 analyze_tree_semantic_distribution [CALLS, 100%]
 
 d=2 (LIKELY AFFECTED):
-  - retrieve_tree_hits_from_pdf (receives report)
-  - runtime.py hybrid_cluster branch (reads distribution_report keys)
+  - runtime.py:231 (receives distribution_report, reads keys)
+  - semantic_distribution.py:1360 (internal call via adapter)
 
-Risk: MEDIUM — single caller but multiple downstream consumers of report dict
+Risk: MEDIUM — single caller, additive key mitigates breakage, multiple downstream consumers
 ```
 
-### Symbol 3: analyze_tree_semantic_distribution (semantic_distribution.py)
+### Symbol 3: analyze_tree_semantic_distribution (semantic_distribution.py:39/121)
 
-**Expected callers:**
-- `llamaindex_runtime/tree/runtime.py` (CRITICAL retrieval path) — `_retrieve_tree_hits_from_backend`
-- tests (integration/unit)
+**Verified callers (Grep scan):**
+```
+llamaindex_runtime/tree/runtime.py:231    [CALLS - CRITICAL retrieval entry]
+llamaindex_runtime/tree/semantic_distribution.py:39 [DEF - TreeSemanticDistributionAdapter method]
+llamaindex_runtime/tree/semantic_distribution.py:121 [DEF - adapter wrapper]
+llamaindex_runtime/tree/semantic_distribution.py:1360 [CALLS - internal usage]
+```
 
-**Expected risk level:** CRITICAL (top-level retrieval entry point per Phase 11 known CRITICAL symbols)
-
-**Blast radius to record:**
+**Blast radius:**
 ```
 d=1 (WILL BREAK):
-  - _retrieve_tree_hits_from_backend [CALLS, 100%]
-  - tests (integration tests)
+  - runtime.py:231 _retrieve_tree_hits_from_backend [CALLS, 100%] — CRITICAL
+  - semantic_distribution.py:1360 internal call
 
 d=2 (LIKELY AFFECTED):
-  - retrieve_tree_hits_from_pdf (orchestrates retrieval + selection + traversal)
+  - retrieve_tree_hits_from_pdf (orchestrates retrieval → selection → traversal)
 
-Risk: CRITICAL — known Phase 11 CRITICAL symbol on retrieval path
+Risk: CRITICAL — Phase 11 designated CRITICAL symbol; additive return key mitigates breakage
 ```
+
+**Overall assessment:** 3 symbols, HIGH + MEDIUM + CRITICAL risks. Additive changes (new field, new report key) mitigate breakage. Proceed with Tasks 2/3.
 
 ---
 
