@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import math
 from collections import defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Protocol, Sequence, runtime_checkable
 from uuid import UUID
 
@@ -326,6 +326,16 @@ def _build_report(
     skipped_chunk_count: int,
 ) -> dict[str, Any]:
     embedding_dimension = len(node_stats[0]["centroid"]) if node_stats else 0
+
+    # Phase 12 D-07: Build parent_to_children from COMPLETE tree_nodes (E2 gap closure)
+    # Reuse existing _build_parent_to_children which returns dict[UUID|None, list[node_dict]]
+    _p2c_raw = _build_parent_to_children(tree_nodes)
+    # Reduce to tuple of node_ids for the denominator (provenance: real node_ids only)
+    parent_to_children = {
+        parent_id: tuple(_required_value(node, "node_id") for node in children)
+        for parent_id, children in _p2c_raw.items()
+    }
+
     return {
         "node_stats": list(node_stats),
         "tree_signals": {
@@ -334,6 +344,7 @@ def _build_report(
             "skipped_chunk_count": skipped_chunk_count,
             "embedding_dimension": embedding_dimension,
         },
+        "parent_to_children": parent_to_children,
     }
 
 
@@ -514,6 +525,9 @@ class HotspotSelectionContext:
 
     Phase 11 11-07: Unified context for vector + keyword + optional rerank fusion.
     Enables generic cross-domain selector without hardcoded domain-specific terms.
+
+    Phase 12 12-01 D-07: Extended with parent_to_children for complete direct-child denominator.
+    E2 gap closure: denominator includes no-vector children absent from node_stats.
     """
 
     query_text: str
@@ -523,6 +537,7 @@ class HotspotSelectionContext:
     vector_candidates: list[NodeSemanticHit]
     keyword_hits: list[KeywordSpanHit]
     rerank_scores: dict[UUID, float] | None = None
+    parent_to_children: dict[UUID | None, tuple[UUID, ...]] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
