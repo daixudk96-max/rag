@@ -1711,6 +1711,31 @@ class RecursiveTreeTraversalRunner:
         else:
             start_nodes = [node for node in nodes if node.get("parent_node_id") is None]
 
+        # Hotspot traversal: short-circuit to a dedicated handler that enforces the
+        # "waypoint + one-level child chunks" contract. The drill-down decision is
+        # deferred to the children level (not made on the hotspot parent), which is
+        # what prevents a route-like parent from returning [] and triggering the
+        # chunk_id-less fallback (Q18 root cause).
+        is_hotspot_traversal = (
+            hotspot_node_id is not None
+            and start_node_id is not None
+            and hotspot_node_id == start_node_id
+        )
+        if is_hotspot_traversal and start_nodes:
+            return self._traverse_hotspot_with_children(
+                hotspot_node=start_nodes[0],
+                version_id=version_id,
+                query_embedding=query_embedding,
+                node_stats_list=node_stats_list,
+                node_by_id=node_by_id,
+                tree_signals=tree_signals,
+                policy=policy,
+                registry=registry,
+                doc_id=doc_id,
+                chunk_to_span_ids=chunk_to_span_ids,
+                max_depth=max_depth,
+            )
+
         # 4. Traverse from selected starts
         hits: list[QueryHit] = []
         for start_node in start_nodes:
@@ -1948,6 +1973,135 @@ class RecursiveTreeTraversalRunner:
         # "prune" decision: no hits collected
 
         return hits
+
+    def _traverse_hotspot_with_children(
+        self,
+        *,
+        hotspot_node: dict[str, Any] | None,
+        version_id: UUID,
+        query_embedding: list[float],
+        node_stats_list: list[dict[str, Any]],
+        node_by_id: dict[UUID, dict[str, Any]],
+        tree_signals: dict[str, Any],
+        policy: TreeBranchDecisionPolicy,
+        registry: SemanticDistributionRegistry,
+        doc_id: UUID,
+        chunk_to_span_ids: dict[UUID, list[UUID]],
+        max_depth: int | None,
+    ) -> list[QueryHit]:
+        """Hotspot traversal: return hotspot waypoint + one-level child chunks.
+
+        Design principle: "热点总结节点本身一定是小节点，需要下钻，默认热点返回逻辑就是要带小节点的"
+
+        Workflow:
+        1. Build waypoint hit from hotspot node (navigation marker, chunk_id=MISSING_CHUNK_ID)
+        2. Collect one-level children (direct children, NOT descendants)
+        3. Enrich child stats with similarity
+        4. Build evidence hits from children with real chunk_ids
+        5. Apply policy.evaluate_children on children (if available) to decide further drilling
+        """
+        if hotspot_node is None:
+            return []
+
+        hotspot_node_id = hotspot_node["node_id"]
+
+        # Step 1: Build waypoint FIRST so it is always present
+        waypoint_hits = _build_waypoint_hit(
+            node=hotspot_node,
+            version_id=version_id,
+            doc_id=doc_id,
+            chunk_to_span_ids=chunk_to_span_ids,
+            hotspot_node_id=hotspot_node_id,
+            navigation_node_ids=(hotspot_node_id,),
+        )
+
+        # Step 2: Collect ONE level of direct children
+        child_nodes = [
+            node_by_id[child_id]
+            for child_id in node_by_id
+            if node_by_id[child_id].get("parent_node_id") == hotspot_node_id
+        ]
+
+        if not child_nodes:
+            # Edge case: hotspot has no children - return waypoint only (P13-05)
+            return waypoint_hits
+
+        # Step 3: Build stats lookup and enrich child stats with similarity
+        stats_by_id = {s["node_id"]: s for s in node_stats_list}
+        child_stats_with_similarity: list[dict[str, Any]] = []
+
+        for child_node in child_nodes:
+            cstats = stats_by_id.get(child_node["node_id"])
+            if cstats is None:
+                continue
+            prototype = cstats.get("prototype_embedding") or cstats.get("centroid", [])
+            if not prototype:
+                # Pitfall 5 — do not let empty prototype yield silent 0.0
+                continue
+            similarity = _cosine_similarity(query_embedding, prototype)
+            child_stats_with_similarity.append({
+                **cstats,
+                "query_distance": 1.0 - similarity,
+                "similarity": similarity,
+                "parent_query_distance": None,
+            })
+
+        # Step 4: Build evidence hits from children that carry direct chunk_ids
+        # Route-only children (no chunk_ids) yield none — P13-06
+        evidence_hits: list[QueryHit] = []
+        for cstats in child_stats_with_similarity:
+            if cstats.get("chunk_ids"):
+                evidence_hits.extend(
+                    _build_hits_from_node(
+                        node_stats=cstats,
+                        version_id=version_id,
+                        doc_id=doc_id,
+                        similarity=cstats["similarity"],
+                        chunk_to_span_ids=chunk_to_span_ids,
+                        hotspot_node_id=hotspot_node_id,
+                        navigation_node_ids=(hotspot_node_id, cstats["node_id"]),
+                        drill_depth=1,
+                    )
+                )
+
+        # Step 5: Child-level decision (optional further drill)
+        # Anti-Pattern 4 guard — only call with non-empty stats
+        if hasattr(policy, "evaluate_children") and child_stats_with_similarity:
+            child_result = policy.evaluate_children(
+                child_stats=child_stats_with_similarity,
+                tree_signals=tree_signals,
+            )
+
+            if (
+                child_result.get("decision") == "drill_down"
+                and child_result.get("selected_child_id") in node_by_id
+            ):
+                selected_child_id = child_result["selected_child_id"]
+                # Pitfall 3 — re-enter standard traversal at current_depth=2
+                # If selected child is route node without stats, it returns [],
+                # which only affects optional drill, not one-level evidence already collected
+                evidence_hits.extend(
+                    self._traverse_from_node(
+                        node=node_by_id[selected_child_id],
+                        version_id=version_id,
+                        query_embedding=query_embedding,
+                        node_stats_list=node_stats_list,
+                        node_by_id=node_by_id,
+                        tree_signals=tree_signals,
+                        policy=policy,
+                        registry=registry,
+                        doc_id=doc_id,
+                        chunk_to_span_ids=chunk_to_span_ids,
+                        parent_query_distance=None,
+                        navigation_node_ids=(hotspot_node_id, selected_child_id),
+                        hotspot_node_id=hotspot_node_id,
+                        current_depth=2,
+                        max_depth=max_depth,
+                    )
+                )
+
+        # Return waypoint + evidence hits
+        return waypoint_hits + evidence_hits
 
 
 def _cosine_similarity(vector_a: Sequence[float], vector_b: Sequence[float]) -> float:
