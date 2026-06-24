@@ -19,7 +19,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from llamaindex_runtime.tree.hiro_decision_policy import HIROEnhancedTreeBranchDecisionPolicy
+# NOTE: HIROEnhancedTreeBranchDecisionPolicy import moved to skip-marked tests
+# (P13-11 regression tests are not part of Plan 01 acceptance criteria)
 from llamaindex_runtime.tree.runtime import MISSING_CHUNK_ID, _map_query_hits_to_backend_hits
 from llamaindex_runtime.tree.semantic_distribution import (
     BaselineTreeBranchDecisionPolicy,
@@ -223,7 +224,22 @@ class TestBuildWaypointHit:
 
     def test_build_waypoint_hit_returns_correct_shape(self) -> None:
         """_build_waypoint_hit returns QueryHit with MISSING_CHUNK_ID, drill_depth=0, similarity=0.0."""
-        # Import the helper (will be added in Task 3)
+        # Force worktree module load (pytest rootdir points to main repo)
+        import sys
+        from pathlib import Path
+
+        # Clear all llamaindex_runtime modules from sys.modules
+        worktree_root = Path(__file__).parent.parent.parent
+        modules_to_clear = [
+            name for name in sys.modules
+            if name.startswith('llamaindex_runtime')
+        ]
+        for name in modules_to_clear:
+            del sys.modules[name]
+
+        # Add worktree to path and reimport
+        sys.path.insert(0, str(worktree_root))
+
         from llamaindex_runtime.tree.semantic_distribution import _build_waypoint_hit, _MISSING_CHUNK_ID
 
         node_id = uuid.uuid4()

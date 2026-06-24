@@ -106,6 +106,52 @@ class BaselineTreeBranchDecisionPolicy:
 
         return "prune"
 
+    def evaluate_children(
+        self,
+        *,
+        child_stats: list[dict[str, Any]],
+        tree_signals: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Aggregate a child-level baseline decision (HIRO-parity interface).
+
+        Baseline strategy: choose the best-similarity child (lowest query_distance)
+        and apply decide_branch_action to that single child. Does NOT implement
+        HIRO's distance+delta logic — this is the simple parity baseline.
+        """
+        if not child_stats:
+            return {
+                "decision": "prune",
+                "selected_child_id": None,
+                "child_decisions": {},
+            }
+
+        best_child = min(child_stats, key=lambda c: c.get("query_distance", 1.0))
+        best_child_id = best_child.get("node_id")
+        best_decision = self.decide_branch_action(
+            node_stats=best_child,
+            tree_signals=tree_signals,
+        )
+
+        if best_decision == "drill_down":
+            return {
+                "decision": "drill_down",
+                "selected_child_id": best_child_id,
+                "child_decisions": {best_child_id: "drill_down"},
+            }
+
+        if best_decision == "keep_parent":
+            return {
+                "decision": "keep_parent",
+                "selected_child_id": None,
+                "child_decisions": {best_child_id: "keep_parent"},
+            }
+
+        return {
+            "decision": "prune",
+            "selected_child_id": None,
+            "child_decisions": {best_child_id: "prune"},
+        }
+
 
 @dataclass(frozen=True)
 class _RegistrySnapshot:
