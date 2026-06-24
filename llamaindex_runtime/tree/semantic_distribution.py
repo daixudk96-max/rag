@@ -64,6 +64,7 @@ _MAX_DEPTH_BONUS_LEVELS = 4
 _ROOT_ROUTE_PENALTY = 0.06
 _SUPPORT_BONUS_PER_CHUNK = 0.003
 _MAX_SUPPORT_BONUS_CHUNKS = 10
+_MISSING_CHUNK_ID = UUID(int=0)  # mirrors runtime.MISSING_CHUNK_ID (runtime.py:86); defined locally to avoid circular import
 
 
 @dataclass(frozen=True)
@@ -1969,6 +1970,39 @@ def _build_hits_from_node(
             )
 
     return hits
+
+
+def _build_waypoint_hit(
+    *,
+    node: dict[str, Any],
+    version_id: UUID,
+    doc_id: UUID,
+    chunk_to_span_ids: dict[UUID, list[UUID]],
+    hotspot_node_id: UUID | None,
+    navigation_node_ids: tuple[UUID, ...],
+) -> list[QueryHit]:
+    """Build a waypoint hit (navigation marker) from a hotspot node.
+
+    A waypoint marks the hotspot in the traversal path; it is NOT real evidence
+    content. chunk_id is the MISSING sentinel so _map_query_hits_to_backend_hits
+    (runtime.py:512) skips it from backend output while it still prevents an empty
+    traversal result for hotspot-with-children traversal.
+    """
+    node_id = node["node_id"]
+    span_id_placeholder = UUID(int=node_id.int & (2**63 - 1))
+    return [
+        QueryHit(
+            doc_id=doc_id,
+            version_id=version_id,
+            span_id=span_id_placeholder,
+            chunk_id=_MISSING_CHUNK_ID,
+            node_id=node_id,
+            similarity_score=0.0,
+            hotspot_node_id=hotspot_node_id,
+            navigation_node_ids=navigation_node_ids,
+            drill_depth=0,
+        )
+    ]
 
 
 def get_hotspot_selector(strategy: str):
