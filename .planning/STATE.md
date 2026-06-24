@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 11 CLOSED; all must-haves verified; gap closure successful; no blockers remaining
-last_updated: "2026-06-24T18:15:22.918Z"
-last_activity: 2026-06-24 -- Phase 13 planning complete
+last_updated: "2026-06-24T18:46:58.804Z"
+last_activity: 2026-06-24 -- Phase 13 execution started
 progress:
   total_phases: 13
   completed_phases: 6
@@ -21,15 +21,15 @@ progress:
 See: .planning/PROJECT.md (if exists)
 
 **Core value:** Raise PageIndex from technical integration to quality-verified main-function readiness
-**Current focus:** Phase 6 — milestone-traceability-and-verification-reconstruction
+**Current focus:** Phase 13 — hotspot-traverse-logic-redesign
 
 ## Current Position
 
-Phase: 13
+Phase: 13 (hotspot-traverse-logic-redesign) — EXECUTING
 Position: EXECUTE
-Plan: 3 plans / 3 waves (13-01, 13-02, 13-03) — planned & verified
-**Status:** Ready to execute
-Last activity: 2026-06-25 -- Phase 13 planning complete
+Plan: 1 of 3
+**Status:** Executing Phase 13
+Last activity: 2026-06-24 -- Phase 13 execution started
 
 Note: Phase 11 and Phase 12 are both CLOSED. Phase 12 (cluster-hot hotspot selection) completed in git (`d7f7725`, `3296fdb`) — STATE drift reconciled 2026-06-24. Phase 13 is new corrective scope at the **traverse layer** (Phase 12 was the selection layer): fix Q18 `chunk_id=null` empty-evidence hits by returning waypoint + one level of real child chunks.
 
