@@ -493,9 +493,9 @@ Level gates enforce no subjective shortcuts.
 
 **Status:** Planned (3 plans across 3 waves)
 
-**Plans:** 1/3 plans executed
+**Plans:** 2/3 plans executed
 - [x] 13-01-PLAN.md — Foundation: `_build_waypoint_hit` helper + `BaselineTreeBranchDecisionPolicy.evaluate_children` (HIRO parity) + `_MISSING_CHUNK_ID` constant + Wave 0 test scaffold [wave 1]
-- [ ] 13-02-PLAN.md — Core: hotspot-detection dispatch at traverse entry + `_traverse_hotspot_with_children` (waypoint + one child level + child-level decision) [wave 2]
+- [x] 13-02-PLAN.md — Core: hotspot-detection dispatch at traverse entry + `_traverse_hotspot_with_children` (waypoint + one child level + child-level decision) [wave 2]
 - [ ] 13-03-PLAN.md — Backstop + gate: `runtime.py` fallback dict `chunk_id=MISSING_CHUNK_ID` + full regression (p6 DNA, waypoint-skip, whole suite) [wave 3]
 
 **Corrective Scope:**
