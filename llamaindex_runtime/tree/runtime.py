@@ -486,6 +486,7 @@ def _score_tree_nodes_with_fallback(
         scored_nodes.append(
             {
                 "node_id": node["node_id"],
+                "chunk_id": MISSING_CHUNK_ID,  # Phase 13 backstop: no fallback path emits chunk_id=null
                 "score": score,
                 "text_preview": node.get("summary_text") or node.get("title") or "",
                 "heading_path": node.get("heading_path"),

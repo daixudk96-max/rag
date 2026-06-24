@@ -526,10 +526,35 @@ class TestPolicyEvaluateChildrenCalledOnChildStats:
 class TestFallbackDictChunkId:
     """P13-12: Fallback dict now contains chunk_id field (MISSING_CHUNK_ID) when traversal returns empty."""
 
-    @pytest.mark.skip(reason="awaiting wave 3 — Plan 03")
     def test_fallback_dict_has_chunk_id_field(self) -> None:
         """Fallback dict from _score_tree_nodes_with_fallback includes chunk_id=MISSING_CHUNK_ID."""
-        pass
+        from llamaindex_runtime.tree.runtime import _score_tree_nodes_with_fallback, MISSING_CHUNK_ID
+        from llamaindex_runtime.tree.scoring import TreeScoring
+
+        # Create a node that will score positively (contains query_text substring)
+        node_id = uuid.uuid4()
+        query_text = "machine learning algorithms"
+        node = {
+            "node_id": node_id,
+            "summary_text": "This section covers machine learning algorithms for classification",
+            "heading_path": "Chapter 3 > Machine Learning",
+        }
+
+        # Call fallback scoring
+        scored_nodes = _score_tree_nodes_with_fallback(
+            nodes=[node],
+            query_text=query_text,
+            span_ids_by_node={},
+            limit=10,
+        )
+
+        # Verify at least one node scored positively
+        assert len(scored_nodes) > 0, "Fixture node must score > 0.0 for this test"
+
+        # Verify chunk_id field present and equals MISSING_CHUNK_ID
+        first_result = scored_nodes[0]
+        assert "chunk_id" in first_result
+        assert first_result["chunk_id"] == MISSING_CHUNK_ID
 
 
 # Additional test for _build_waypoint_hit (P13-03 helper, tested in Plan 01)
