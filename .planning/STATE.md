@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 11 CLOSED; all core work committed and verified; validation artifacts remain as dev logs
-last_updated: "2026-06-18T05:30:00.000Z"
-last_activity: 2026-06-18 -- Phase 11 closed after successful completion
+stopped_at: Phase 11 CLOSED; all must-haves verified; gap closure successful; no blockers remaining
+last_updated: "2026-06-24T18:15:22.918Z"
+last_activity: 2026-06-24 -- Phase 13 planning complete
 progress:
-  total_phases: 11
-  completed_phases: 5
-  total_plans: 31
-  completed_plans: 24
-  percent: 77
+  total_phases: 13
+  completed_phases: 6
+  total_plans: 33
+  completed_plans: 25
+  percent: 76
 ---
 
 # Project State
@@ -21,17 +21,19 @@ progress:
 See: .planning/PROJECT.md (if exists)
 
 **Core value:** Raise PageIndex from technical integration to quality-verified main-function readiness
-**Current focus:** Milestone closure readiness — all 11 phases complete
+**Current focus:** Phase 6 — milestone-traceability-and-verification-reconstruction
 
 ## Current Position
 
-Phase: 11 (level-agnostic-hotspot-cluster-tracking) — CLOSED
-Position: CLOSE
-Plan: 6 of 6 (all completed)
-**Status:** Phase 11 completed successfully
-Last activity: 2026-06-18 -- Phase 11 closed after successful gap closure and verification
+Phase: 13
+Position: PLAN
+Plan: Not started
+**Status:** Ready to execute
+Last activity: 2026-06-24 -- Phase 13 planning complete
 
-Progress: [██████████] 100% (11 of 11 phases semantically validated; Phase 11 closed successfully)
+Note: Phase 11 and Phase 12 are both CLOSED. Phase 12 (cluster-hot hotspot selection) completed in git (`d7f7725`, `3296fdb`) — STATE drift reconciled 2026-06-24. Phase 13 is new corrective scope at the **traverse layer** (Phase 12 was the selection layer): fix Q18 `chunk_id=null` empty-evidence hits by returning waypoint + one level of real child chunks.
+
+Progress: Phase 13 added; awaiting `/gsd-plan-phase 13`
 
 ## Phase 4 WS0/WS1/WS2 Completion Record
 
@@ -87,7 +89,7 @@ Progress: [██████████] 100% (11 of 11 phases semantically va
 
 **Velocity:**
 
-- Total plans completed: 12
+- Total plans completed: 14
 - Average duration: N/A
 - Total execution time: 0 hours
 
@@ -96,6 +98,8 @@ Progress: [██████████] 100% (11 of 11 phases semantically va
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 07 | 4 | - | - |
+| 6 | 1 | - | - |
+| 09 | 1 | - | - |
 
 **Recent Trend:**
 
@@ -169,6 +173,9 @@ Progress: [██████████] 100% (11 of 11 phases semantically va
 
 ### Roadmap Evolution
 
+- Phase 13 added (2026-06-24): Hotspot Traverse Logic Redesign (Waypoint + Child Chunks). Corrective scope after Phase 12, targeting the traverse layer (not the selection layer). Fixes Q18 `chunk_id=null` empty-evidence hits: hotspot traversal will return a waypoint (navigation marker, `chunk_id=MISSING_CHUNK_ID`, `drill_depth=0`) PLUS one level of real child chunks, and move the drill-down decision from the hotspot parent to the children level via a new `BaselineTreeBranchDecisionPolicy.evaluate_children` interface (parity with HIRO). Root cause: 7-step evidence chain (parent hotspot filtered from `node_stats_list` → traverse returns `[]` → `backend_hits=[]` → fallback dict without `chunk_id`). Source design doc: `.planning/TRAVERSE-LOGIC-REDESIGN-PLAN.md`; root-cause report: `verification/real-document-validation-2026-06-23/BUG_ANALYSIS_Q18_TRAVERSE_LOGIC.md`. Key files: `llamaindex_runtime/tree/semantic_distribution.py`, `runtime.py`, `hiro_decision_policy.py`. Entry Point: PLAN; next route `/gsd-plan-phase 13`.
+- Phase 12 closed (2026-06-22): Cluster-Hot Hotspot Selection Redesign COMPLETE. Git HEAD `d7f7725` "docs(12): mark Phase 12 complete"; `3296fdb` "feat(12-04): verify cluster-hot regression + fix D-10 leaf fallback priority". Delivered cluster-hot coverage scoring with dual-hot intersection gate in HybridClusterHotspotSelector; configurable θ (coverage_theta=0.5, min_support=2) with priority-based leaf fallback; all 51 tests passing (36 preserved + 9 GREEN + 6 p6 cluster); D-10 regression fixed; p6 DNA regression preserved; rollback paths intact; safe commit gate passed. (This entry reconciles prior STATE drift where Phase 12 showed planning/execute-ready while git already had it complete.)
+- Phase 12 added (2026-06-22): Cluster-Hot Hotspot Selection Redesign. New scope beyond closed Phase 11, targeting the post-Phase-11 `hybrid_cluster` selector (commits `ae7bd97`, `91182cd`). Exploration E1–E7 confirmed `hybrid_cluster` is single-node Top-K fusion, not cluster-hot. Research deliverable: `.planning/hotspot-cluster-redesign-EXPLORATION/00-SUMMARY.md`. Locked design (user-approved): definition A (direct-child coverage ≥ θ) + dual-hot gate (vector_hot AND keyword_hot); selection-layer-only (no traversal interface change); θ configurable with leaf fallback. Entry Point: PLAN; next route `/gsd-plan-phase 12`.
 - Phase 11 closed (2026-06-18): Level-agnostic hotspot cluster tracking completed successfully. ClusterHotspotSelector implemented with level-agnostic scoring (no route-node bonuses); runtime selector switch wired (RAG_TREE_HOTSPOT_SELECTOR=cluster|route_subtree); gap closure plans 11-05 (cluster scoring weight adjustment) and 11-06 (heading semantic relevance fix) executed successfully; all 22 tests passing (6 cluster + 16 regression); semantic validation passed (DNA query selects expected hotspot 产品特性对比 with correct evidence: 数据驱动, 非确定性, 持续性); code review passed (0 CRITICAL/HIGH, 5 WARNING fixed); all core work committed (13+ commits); phase CLOSED with no blockers remaining.
 - Phase 10 updated (2026-06-12): Semantic validation complete and commit scope approved. DB-backed whitebox demo passed, Phase 8 aligned hotspot retrieval produced 80 evidence-bearing hits with hotspot metadata, judgment reuse was blocked honestly, Level 2 was preserved, UAT/verification/security passed, and approved staged GitNexus detect-changes completed with accepted CRITICAL risk for the Phase 10 staged scope.
 - Phase 10 added (2026-06-11): Hotspot Semantic Retrieval Validation. Semantic change: parent nodes act as routing hotspots, not content-return nodes. Implementation exists in working tree (uncommitted); validation phase covers DB-backed whitebox testing, evidence-chain integrity, Level assessment impact, and code review gates.
