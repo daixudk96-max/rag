@@ -147,9 +147,9 @@ Level gates enforce no subjective shortcuts.
 
 **Goal:** Reconstruct milestone requirements/project traceability and generate missing phase verification artifacts so the milestone audit can perform the required 3-source cross-reference.
 
-**Status:** Planned
+**Status:** Completed
 
-**Entry Point:** PLAN
+**Entry Point:** COMPLETE
 
 **Depends on:** Phase 5 and `.planning/v1.0-MILESTONE-AUDIT.md`
 
@@ -179,7 +179,7 @@ Level gates enforce no subjective shortcuts.
 **Gap Closure:**
 - Closes `DB-BACKED-VALIDATION-BLOCKED` by producing source-backed active-version evidence-chain proof for Phase 8 preflight.
 
-**Plans:** 3 plans across 3 waves
+**Plans:** 1/1 plans complete
 - Wave 1: `07-01-PLAN` — DB readiness and active-version target gate.
 - Wave 2: `07-02-PLAN` — before/materialization/after rerun wrapper and artifacts.
 - Wave 3: `07-03-PLAN` — evidence-chain delta, summary, verification, Phase 8 routing.
@@ -240,7 +240,7 @@ Level gates enforce no subjective shortcuts.
 
 **Goal:** Prepare a safe milestone closure surface by isolating planning/archive changes from unrelated working-tree changes before commit/tag.
 
-**Status:** Close-ready pending approval
+**Status:** Completed (close-ready approval package prepared, awaiting user scope approval for commit/tag/push)
 
 **Entry Point:** PLAN
 
@@ -453,5 +453,52 @@ Level gates enforce no subjective shortcuts.
 - Corrected Phase 11 union-based Top-K fusion to cluster-hot coverage semantics (parent requires coherent group of dual-hot children, not any single high-scoring node)
 - Fixed D-10 leaf fallback regression: flat fixtures (no parent hierarchy) now correctly handle exact_keyword nodes (full coverage beats broad high-vector partial coverage)
 - Preserved evidence-chain metadata while changing hotspot meaning from union-based to coverage-based selection
+
+---
+
+## Phase 13: Hotspot Traverse Logic Redesign (Waypoint + Child Chunks)
+
+**Goal:** Fix Q18 `chunk_id=null` empty-evidence hits by redesigning hotspot traversal so it returns a waypoint (navigation marker for the hotspot node) PLUS one level of real child chunks, and moves the drill-down decision from the hotspot parent to the children level. Separates the two conflated responsibilities — hotspot return logic (always emit hotspot + one child level) and drill-down decision logic (policy decides on child stats) — so a route-like parent hotspot can no longer trigger the fallback path that omits `chunk_id`.
+
+**Status:** Not planned yet
+
+**Entry Point:** PLAN
+
+**Depends on:** Phase 12 (post-Phase-11 `hybrid_cluster` selector + jieba runtime; selection layer now returns coverage-based parent hotspots that need child-level traversal).
+
+**Source Design Doc:** `.planning/TRAVERSE-LOGIC-REDESIGN-PLAN.md` (approved via Plan Mode 2026-06-24)
+
+**Root Cause (from `verification/real-document-validation-2026-06-23/BUG_ANALYSIS_Q18_TRAVERSE_LOGIC.md`):**
+- 7-step evidence chain: hotspot selector returns parent → traverse starts at parent → parent filtered from `node_stats_list` (no vectors) → traverse returns `[]` → `backend_hits=[]` triggers fallback → fallback dict has no `chunk_id` → `chunk_id=null`.
+- Two logics conflated: hotspot return (should emit hotspot + children) vs drill-down decision (should run on children, runs on parent instead).
+
+**Planned Scope (5 implementation areas):**
+- New `_traverse_hotspot_with_children` (force one-level drill-down: waypoint + child evidence) in `semantic_distribution.py`
+- New `_build_waypoint_hit` helper (navigation marker, `chunk_id=MISSING_CHUNK_ID`, `drill_depth=0`)
+- New `BaselineTreeBranchDecisionPolicy.evaluate_children` interface (parity with HIRO policy)
+- Hotspot-traversal detection at traverse entry (`hotspot_node_id == start_node_id`)
+- Fallback dict `chunk_id` field as defensive backstop (`runtime.py`)
+
+**Key Files:**
+- `llamaindex_runtime/tree/semantic_distribution.py` (traverse entry, new functions, Baseline policy)
+- `llamaindex_runtime/tree/runtime.py` (fallback dict, `MISSING_CHUNK_ID`)
+- `llamaindex_runtime/tree/hiro_decision_policy.py` (reference `evaluate_children`)
+
+**Success Criteria (draft — finalized in PLAN):**
+- Hotspot traversal returns a waypoint hit + ≥1 real child evidence hit when the hotspot has evidence-bearing children
+- Real child chunks carry real `chunk_id` (not `MISSING_CHUNK_ID`); waypoint carries `MISSING_CHUNK_ID` with `drill_depth=0`
+- Policy decision (`evaluate_children`) runs on child stats, not on the hotspot parent
+- Q18 re-validation: `zero_chunk_hits` reduced, `chunk_id_present_rate` improved
+- Existing hotspot/traversal tests and p6 DNA regression remain green
+
+**Status:** Planned (3 plans across 3 waves)
+
+**Plans:** 3 plans
+- [ ] 13-01-PLAN.md — Foundation: `_build_waypoint_hit` helper + `BaselineTreeBranchDecisionPolicy.evaluate_children` (HIRO parity) + `_MISSING_CHUNK_ID` constant + Wave 0 test scaffold [wave 1]
+- [ ] 13-02-PLAN.md — Core: hotspot-detection dispatch at traverse entry + `_traverse_hotspot_with_children` (waypoint + one child level + child-level decision) [wave 2]
+- [ ] 13-03-PLAN.md — Backstop + gate: `runtime.py` fallback dict `chunk_id=MISSING_CHUNK_ID` + full regression (p6 DNA, waypoint-skip, whole suite) [wave 3]
+
+**Corrective Scope:**
+- Corrects the Phase 10–12 hotspot semantics where a route-like parent hotspot is returned without drilling to evidence-bearing children, producing empty (`chunk_id=null`) hits via the fallback path.
 
 ---
