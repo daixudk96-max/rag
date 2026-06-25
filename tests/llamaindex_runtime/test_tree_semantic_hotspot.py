@@ -355,13 +355,10 @@ class TestHotspotDrillDownToEvidence:
             adapter=adapter,
         )
 
-        # Phase 13: filter waypoint hits (chunk_id=MISSING_CHUNK_ID)
-        from llamaindex_runtime.tree.runtime import MISSING_CHUNK_ID
-        evidence_hits = [hit for hit in hits if hit.chunk_id != MISSING_CHUNK_ID]
-
-        assert len(evidence_hits) == 2
-        assert {hit.node_id for hit in evidence_hits} == {child_a_id, child_b_id}
-        assert all(hit.chunk_id != uuid.UUID(int=0) for hit in evidence_hits)
+        # Root traversal test (no hotspot_node_id) - no waypoint filtering needed
+        assert len(hits) == 2
+        assert {hit.node_id for hit in hits} == {child_a_id, child_b_id}
+        assert all(hit.chunk_id != uuid.UUID(int=0) for hit in hits)
 
 
 class TestRuntimeHotspotMetadataMapping:
@@ -551,14 +548,11 @@ class TestEvidenceBearingHitsFinalOutput:
             adapter=adapter,
         )
 
-        # Phase 13: filter waypoint hits (chunk_id=MISSING_CHUNK_ID)
-        from llamaindex_runtime.tree.runtime import MISSING_CHUNK_ID
-        evidence_hits = [hit for hit in hits if hit.chunk_id != MISSING_CHUNK_ID]
-
-        assert len(evidence_hits) == 1
-        assert evidence_hits[0].node_id == evidence_node_id
-        assert evidence_hits[0].chunk_id == chunk_id
-        assert evidence_hits[0].span_id == span_id
+        # Root traversal test (no hotspot_node_id) - no waypoint filtering needed
+        assert len(hits) == 1
+        assert hits[0].node_id == evidence_node_id
+        assert hits[0].chunk_id == chunk_id
+        assert hits[0].span_id == span_id
 
 
 class TestHotspotNavigationIntegration:
@@ -634,14 +628,11 @@ class TestHotspotNavigationIntegration:
             adapter=adapter,
         )
 
-        # Phase 13: filter waypoint hits (chunk_id=MISSING_CHUNK_ID)
-        from llamaindex_runtime.tree.runtime import MISSING_CHUNK_ID
-        evidence_hits = [hit for hit in hits if hit.chunk_id != MISSING_CHUNK_ID]
-
-        assert len(evidence_hits) == 2
-        assert {hit.node_id for hit in evidence_hits} == {child_a_id, child_b_id}
-        assert {hit.chunk_id for hit in evidence_hits} == {chunk_a, chunk_b}
-        assert all(hit.drill_depth == 1 for hit in evidence_hits)
+        # Root traversal test (no hotspot_node_id) - no waypoint filtering needed
+        assert len(hits) == 2
+        assert {hit.node_id for hit in hits} == {child_a_id, child_b_id}
+        assert {hit.chunk_id for hit in hits} == {chunk_a, chunk_b}
+        assert all(hit.drill_depth == 1 for hit in hits)
 
     def test_cyclic_tree_relationship_fails_fast(self) -> None:
         """Corrupt tree cycles should not recurse forever during aggregation."""
@@ -695,7 +686,7 @@ class TestHotspotSelectorSwitch:
 
     def test_hotspot_selector_switch_routes_to_route_selector(self) -> None:
         """Verify RAG_TREE_HOTSPOT_SELECTOR=route_subtree routes to SubtreeHotspotSelector."""
-        from llamaindex_runtime.tree.semantic_distribution import get_hotspot_selector
+        from llamaindex_runtime.tree.semantic_distribution import get_hotspot_selector, SubtreeHotspotSelector, ClusterHotspotSelector
 
         selector = get_hotspot_selector("route_subtree")
         assert isinstance(selector, SubtreeHotspotSelector)
