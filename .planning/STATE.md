@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 11 CLOSED; all must-haves verified; gap closure successful; no blockers remaining
-last_updated: "2026-06-24T18:46:58.804Z"
-last_activity: 2026-06-24 -- Phase 13 execution started
+stopped_at: Phase 13 CLOSED; hotspot traverse redesign complete; waypoint + child chunks delivered; Q18 chunk_id=null fixed; all tests passing
+last_updated: "2026-06-25T12:30:00.000Z"
+last_activity: 2026-06-25 -- Phase 13 execution completed successfully
 progress:
   total_phases: 13
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 33
-  completed_plans: 25
-  percent: 76
+  completed_plans: 28
+  percent: 84
 ---
 
 # Project State
@@ -25,15 +25,25 @@ See: .planning/PROJECT.md (if exists)
 
 ## Current Position
 
-Phase: 13 (hotspot-traverse-logic-redesign) — EXECUTING
-Position: EXECUTE
-Plan: 1 of 3
-**Status:** Executing Phase 13
-Last activity: 2026-06-24 -- Phase 13 execution started
+Phase: 13 (hotspot-traverse-logic-redesign) — CLOSED ✅
+Position: CLOSED
+Plan: 3 of 3 (complete)
+**Status:** Phase 13 execution completed successfully
+Last activity: 2026-06-25 -- Phase 13 closed with all tests passing (27 tests)
 
-Note: Phase 11 and Phase 12 are both CLOSED. Phase 12 (cluster-hot hotspot selection) completed in git (`d7f7725`, `3296fdb`) — STATE drift reconciled 2026-06-24. Phase 13 is new corrective scope at the **traverse layer** (Phase 12 was the selection layer): fix Q18 `chunk_id=null` empty-evidence hits by returning waypoint + one level of real child chunks.
+**Phase 13 Achievement:**
+- Hotspot traversal redesign delivered waypoint + one-level child chunks
+- Q18 `chunk_id=null` empty-evidence hits fixed
+- BaselineTreeBranchDecisionPolicy.evaluate_children added (HIRO-parity interface)
+- Root cause fixed: evaluate_children aggregate_decision="keep_parent" now returns child hits
+- All 27 tests passing (test_tree_semantic_hotspot.py + test_hotspot_traversal_logic.py)
+- Backward compatibility preserved (root traversal tests pass)
+- VERIFICATION.md complete (goal-backward analysis: 5/5 goals achieved)
 
-Progress: Phase 13 PLANNED (`/gsd-plan-phase 13` complete) — 3 plans, plan-checker PASSED (0 blockers, 2 warnings resolved). Awaiting `/gsd-execute-phase 13`. NOT executed (stopped per user instruction).
+**Commits:**
+- Wave 0: a268f4e (scaffold + helper functions)
+- Wave 1: 36f51cb (evaluate_children method) + b5feb99 (hotspot dispatch + implementation)
+- Wave 3: 967a01f (merge attempt) + 47b2b74 (waypoint filtering removal) + 180b18e (root cause fix) + 2cbacfb (Wave 3 summary) + b4ffb78 (VERIFICATION)
 
 ## Phase 4 WS0/WS1/WS2 Completion Record
 
