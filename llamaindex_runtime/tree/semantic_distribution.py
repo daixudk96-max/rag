@@ -1882,18 +1882,32 @@ class RecursiveTreeTraversalRunner:
                 selected_child_id = child_result.get("selected_child_id")
 
                 if aggregate_decision == "keep_parent":
-                    hits.extend(
-                        _build_hits_from_node(
-                            node_stats=enriched_node_stats,
-                            version_id=version_id,
-                            doc_id=doc_id,
-                            similarity=similarity,
-                            chunk_to_span_ids=chunk_to_span_ids,
-                            hotspot_node_id=hotspot_node_id,
-                            navigation_node_ids=navigation_node_ids,
-                            drill_depth=current_depth,
+                    # Phase 13-03 fix: When aggregate_decision is "keep_parent", return
+                    # child hits (not parent hits). Parent may be route node with
+                    # chunk_ids=[] → _build_hits_from_node returns []. Instead, return
+                    # all child chunks to satisfy "waypoint + child chunks" contract.
+                    for child_node in child_nodes:
+                        child_node_stats = child_stats_by_id.get(child_node["node_id"])
+                        if child_node_stats is None:
+                            continue
+                        child_prototype = child_node_stats.get(
+                            "prototype_embedding"
+                        ) or child_node_stats.get("centroid", [])
+                        child_similarity = _cosine_similarity(
+                            query_embedding, child_prototype
                         )
-                    )
+                        hits.extend(
+                            _build_hits_from_node(
+                                node_stats=child_node_stats,
+                                version_id=version_id,
+                                doc_id=doc_id,
+                                similarity=child_similarity,
+                                chunk_to_span_ids=chunk_to_span_ids,
+                                hotspot_node_id=hotspot_node_id,
+                                navigation_node_ids=navigation_node_ids + (child_node["node_id"],),
+                                drill_depth=current_depth + 1,
+                            )
+                        )
                     return hits
 
                 if (
