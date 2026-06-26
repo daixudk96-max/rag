@@ -1,0 +1,86 @@
+{
+  "timestamp": "2026-06-26T15:44:36.867861+00:00",
+  "query_count": 20,
+  "queries": [
+    {
+      "query_id": "Q01",
+      "query_text": "文档的主要章节结构是什么？列出所有一级标题。"
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "哪个章节讨论了核心算法原理？"
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "文档中是否有案例研究章节？如果有，在哪些页？"
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "文档中提到的关键技术指标有哪些？"
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "如何使用这个系统进行数据处理？"
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "文档中列举了哪些性能优化方法？"
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "系统的架构设计原则是什么？"
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "文档中提到了哪些错误处理机制？"
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "文档中前后章节如何描述数据流程的完整链路？"
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "系统设计中如何平衡性能和准确性？不同章节的观点是否一致？"
+    },
+    {
+      "query_id": "Q11",
+      "query_text": "文档中技术方案的选择理由是什么？是否在不同章节有对比分析？"
+    },
+    {
+      "query_id": "Q12",
+      "query_text": "文档中是否有未解决的局限性或未来工作部分？"
+    },
+    {
+      "query_id": "Q13",
+      "query_text": "如果输入数据格式不符合预期，系统会如何处理？"
+    },
+    {
+      "query_id": "Q14",
+      "query_text": "文档中提到了哪些系统限制或约束？"
+    },
+    {
+      "query_id": "Q15",
+      "query_text": "文档中描述的向量检索阈值是多少？"
+    },
+    {
+      "query_id": "Q16",
+      "query_text": "树结构构建的深度限制是什么？"
+    },
+    {
+      "query_id": "Q17",
+      "query_text": "文档中提到的 chunking 策略是什么？token 限制是多少？"
+    },
+    {
+      "query_id": "Q18",
+      "query_text": "embedding 模型的选择依据是什么？文档中使用了哪些模型？"
+    },
+    {
+      "query_id": "Q19",
+      "query_text": "文档中对比了哪些技术方案？各自的优缺点是什么？"
+    },
+    {
+      "query_id": "Q20",
+      "query_text": "文档中是否提到与其他系统的集成方案？如果有，集成方式是什么？"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-06-26T15:44:46.514341+00:00",
+  "version_id": "3665f374-9306-47d8-a0cd-e29e14814a37",
+  "query_count": 20,
+  "judgment_count": 0,
+  "status": "LEVEL_2_PRESERVED_PENDING_HOTSPOT_JUDGMENTS",
+  "metrics": {
+    "timestamp": "2026-06-26T15:44:46.513337+00:00",
+    "status": "NOT_CALCULATED_PENDING_JUDGMENTS",
+    "hit_rate": null,
+    "top1_relevance": null,
+    "stability": null
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85
+  },
+  "level": {
+    "level": "Level_2",
+    "level_description": "能查但质量未验证"
+  }
+}

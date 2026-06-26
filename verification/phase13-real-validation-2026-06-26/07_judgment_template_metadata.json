@@ -1,0 +1,6 @@
+{
+  "timestamp": "2026-06-26T15:44:46.512326+00:00",
+  "template_path": "E:\\github\\rag\\verification\\phase13-real-validation-2026-06-26\\judgment_template.csv",
+  "row_count": 92,
+  "placeholder_warning": "AI must fill is_relevant, relevance_score (use 0.05 for irrelevant, NOT 0.00), judgment_category, judgment_notes. Empty category with 0.00 is treated as placeholder."
+}

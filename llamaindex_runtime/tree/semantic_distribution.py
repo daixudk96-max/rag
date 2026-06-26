@@ -2029,6 +2029,8 @@ class RecursiveTreeTraversalRunner:
             navigation_node_ids=(hotspot_node_id,),
         )
 
+        stats_by_id = {s["node_id"]: s for s in node_stats_list}
+
         # Step 2: Collect ONE level of direct children
         child_nodes = [
             node_by_id[child_id]
@@ -2037,11 +2039,39 @@ class RecursiveTreeTraversalRunner:
         ]
 
         if not child_nodes:
-            # Edge case: hotspot has no children - return waypoint only (P13-05)
-            return waypoint_hits
+            # Leaf fallback hotspots may carry direct chunks themselves. Return those
+            # chunks as evidence so mapping does not drop the waypoint-only result and
+            # trigger the zero-chunk fallback path observed in real Q18 validation.
+            hotspot_stats = stats_by_id.get(hotspot_node_id)
+            if hotspot_stats is None or not hotspot_stats.get("chunk_ids"):
+                return waypoint_hits
 
-        # Step 3: Build stats lookup and enrich child stats with similarity
-        stats_by_id = {s["node_id"]: s for s in node_stats_list}
+            prototype: Sequence[float] = hotspot_stats.get(
+                "prototype_embedding"
+            ) or hotspot_stats.get("centroid", [])
+            similarity: float = 0.0
+            if prototype:
+                similarity = _cosine_similarity(query_embedding, prototype)
+            else:
+                logger.warning(
+                    "Leaf hotspot with direct chunks has no prototype embedding: "
+                    "node_id=%s",
+                    hotspot_node_id,
+                )
+            own_evidence_hits: list[QueryHit] = _build_hits_from_node(
+                node_stats=hotspot_stats,
+                version_id=version_id,
+                doc_id=doc_id,
+                similarity=similarity,
+                chunk_to_span_ids=chunk_to_span_ids,
+                hotspot_node_id=hotspot_node_id,
+                navigation_node_ids=(hotspot_node_id,),
+                # Evidence is on the selected leaf hotspot itself, not a child.
+                drill_depth=0,
+            )
+            return waypoint_hits + own_evidence_hits
+
+        # Step 3: Enrich child stats with similarity
         child_stats_with_similarity: list[dict[str, Any]] = []
 
         for child_node in child_nodes:

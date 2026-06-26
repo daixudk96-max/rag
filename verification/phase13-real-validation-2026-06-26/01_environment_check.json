@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-06-26T15:44:26.639539+00:00",
+  "corpus_path": "E:\\github\\rag\\PageIndex完整功能分析与集成方案.md",
+  "corpus_exists": true,
+  "document_sha256": "2e515964e932f4e26540991e8d5b2f222f31dae4816b80f8047bc46003d93056",
+  "database_url_configured": true,
+  "hotspot_selector": "hybrid_cluster",
+  "git_commit": "57857128aa75788089180021c89696fdcd104304",
+  "db_reachable": true,
+  "embedding_column_dimension": 384,
+  "registry_check": "PASS"
+}

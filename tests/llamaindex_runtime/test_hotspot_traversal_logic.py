@@ -273,7 +273,51 @@ class TestEvidenceHitShape:
 
 
 class TestHotspotNoChildren:
-    """P13-05: Hotspot with no children returns waypoint-only list (not empty)."""
+    """P13-05: Hotspot with no children returns waypoint-only list unless it has direct evidence."""
+
+    def test_leaf_hotspot_with_direct_chunks_returns_waypoint_plus_own_evidence(self) -> None:
+        """Q18 regression: leaf fallback hotspot should map to real chunks.
+
+        Real validation selected a hybrid_cluster ``leaf_fallback`` hotspot with
+        direct chunks and no children. Waypoint-only output was skipped by backend
+        mapping and triggered zero-chunk fallback hits, so direct leaf evidence
+        must be returned with the waypoint.
+        """
+        hotspot_id = uuid.uuid4()
+        chunk_id = uuid.uuid4()
+        span_id = uuid.uuid4()
+
+        runner = RecursiveTreeTraversalRunner()
+        hits = runner._traverse_hotspot_with_children(
+            hotspot_node={"node_id": hotspot_id, "parent_node_id": None},
+            version_id=uuid.uuid4(),
+            query_embedding=[0.5, 0.5],
+            node_stats_list=[
+                {
+                    "node_id": hotspot_id,
+                    "prototype_embedding": [0.5, 0.5],
+                    "chunk_ids": [chunk_id],
+                }
+            ],
+            node_by_id={hotspot_id: {"node_id": hotspot_id, "parent_node_id": None}},
+            tree_signals={},
+            policy=BaselineTreeBranchDecisionPolicy(
+                dispersion_threshold=0.5,
+                entropy_threshold=0.5,
+                min_support_threshold=1,
+            ),
+            registry=MagicMock(),
+            doc_id=uuid.uuid4(),
+            chunk_to_span_ids={chunk_id: [span_id]},
+            max_depth=10,
+        )
+
+        assert len(hits) == 2
+        assert hits[0].chunk_id == MISSING_CHUNK_ID
+        assert hits[0].drill_depth == 0
+        assert hits[1].chunk_id == chunk_id
+        assert hits[1].node_id == hotspot_id
+        assert hits[1].drill_depth == 0
 
     def test_hotspot_no_children_returns_waypoint_only(self) -> None:
         """Hotspot without children returns waypoint hit, prevents backend_hits=[] fallback."""
