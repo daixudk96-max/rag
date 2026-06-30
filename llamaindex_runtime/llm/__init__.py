@@ -106,9 +106,21 @@ class LiteLLMWrapper(LLM):
 
     @property
     def metadata(self) -> Any:
-        """LLM metadata (LlamaIndex protocol)."""
+        """LLM metadata (LlamaIndex protocol).
+
+        Provides complete metadata so downstream consumers (e.g., FunctionAgent
+        capability detection) can correctly identify this as a function-calling
+        chat model. litellm routes to OpenAI-compatible endpoints that support
+        tool/function calling, hence ``is_function_calling_model=True``.
+        """
         from llama_index.core.llms import LLMMetadata
-        return LLMMetadata(model_name=self._model_name)
+        return LLMMetadata(
+            model_name=self._model_name,
+            context_window=4096,
+            num_output=1024,
+            is_chat_model=True,
+            is_function_calling_model=True,
+        )
 
     def complete(self, prompt: str, **kwargs: Any) -> CompletionResponse:
         """Complete prompt using litellm."""
