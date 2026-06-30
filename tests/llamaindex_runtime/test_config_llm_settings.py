@@ -13,11 +13,21 @@ Exit criteria:
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any
 
 import pytest
 
 from llamaindex_runtime.config import RuntimeSettings
+
+
+@pytest.fixture(autouse=True)
+def _isolate_cwd_from_project_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Chdir to a tmp dir with no .env so from_env's .env-fallback does not
+    refill keys that tests delenv'd. Project .env (e.g. OPENAI_API_KEY) would
+    otherwise override monkeypatch.delenv and break default-value assertions.
+    """
+    monkeypatch.chdir(tmp_path)
 
 
 class TestRuntimeSettingsLLMFields:

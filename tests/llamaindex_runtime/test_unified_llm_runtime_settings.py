@@ -13,6 +13,7 @@ Exit criteria:
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -111,13 +112,16 @@ class TestUnifiedLLMSeamMockFallback:
     """Tests for mock/fallback behavior when OPENAI_API_KEY absent."""
 
     def test_get_llm_returns_mock_llm_when_openai_key_absent(
-        self, monkeypatch: pytest.MonkeyPatch
+        self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
     ) -> None:
         """get_llm() should return MockLLM when OPENAI_API_KEY absent (preserving fallback)."""
         # Reset singleton
         import llamaindex_runtime.llm
         llamaindex_runtime.llm._llm_instance = None
 
+        # Isolate cwd to a dir with no .env so delenv is not refilled by the
+        # project .env file (env-first/.env-fallback precedence in from_env).
+        monkeypatch.chdir(tmp_path)
         monkeypatch.setenv("DATABASE_URL", "postgresql://test@localhost/test")
         monkeypatch.delenv("OPENAI_API_KEY", raising=False)
 
@@ -130,13 +134,16 @@ class TestUnifiedLLMSeamMockFallback:
         assert isinstance(llm, MockLLM)
 
     def test_get_llm_default_model_temperature_preserved(
-        self, monkeypatch: pytest.MonkeyPatch
+        self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
     ) -> None:
         """get_llm() should use RuntimeSettings defaults when env not set."""
         # Reset singleton
         import llamaindex_runtime.llm
         llamaindex_runtime.llm._llm_instance = None
 
+        # Isolate cwd to a dir with no .env so delenv is not refilled by the
+        # project .env file (env-first/.env-fallback precedence in from_env).
+        monkeypatch.chdir(tmp_path)
         monkeypatch.setenv("DATABASE_URL", "postgresql://test@localhost/test")
         monkeypatch.setenv("OPENAI_API_KEY", "test-key")
         monkeypatch.delenv("LLM_MODEL", raising=False)

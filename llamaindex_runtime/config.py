@@ -8,6 +8,22 @@ from pathlib import Path
 from dotenv import load_dotenv, dotenv_values
 
 
+def _load_env_file_fallback(env_path: Path) -> None:
+    """Load .env values into os.environ only for keys not already set.
+
+    Process environment wins over .env file: this preserves monkeypatch.setenv
+    in tests and explicit env vars in production, while still enabling pure
+    file-based config when os.environ is cleared (see test_runtime_settings_env_file_loading).
+    """
+    if not env_path.exists():
+        return
+    env_values = dotenv_values(env_path)
+    # Fill only absent keys — never overwrite an existing process env var.
+    for key, value in env_values.items():
+        if key not in os.environ:
+            os.environ[key] = value
+
+
 @dataclass(frozen=True)
 class RuntimeSettings:
     VALID_VECTOR_BACKENDS: ClassVar[frozenset[str]] = frozenset({"pgvector", "qdrant", "milvus"})
@@ -73,12 +89,11 @@ class RuntimeSettings:
         #
         # Strategy: Find .env in cwd, load values into os.environ
         # This works even when os.environ was cleared (pure file-based loading)
-        env_path = Path.cwd() / ".env"
-        if env_path.exists():
-            # Load .env file values into os.environ
-            # dotenv_values returns dict, we merge into os.environ
-            env_values = dotenv_values(env_path)
-            os.environ.update(env_values)
+        #
+        # Precedence: process environment wins over .env file. We only fill
+        # keys that are absent from os.environ, so monkeypatch.setenv in tests
+        # (and explicit env vars in production) are not overwritten by .env.
+        _load_env_file_fallback(Path.cwd() / ".env")
 
         return cls(
             database_url=os.getenv("DATABASE_URL", ""),
@@ -117,12 +132,9 @@ class RuntimeSettings:
         #
         # Strategy: Find .env in cwd, load values into os.environ
         # This works even when os.environ was cleared (pure file-based loading)
-        env_path = Path.cwd() / ".env"
-        if env_path.exists():
-            # Load .env file values into os.environ
-            # dotenv_values returns dict, we merge into os.environ
-            env_values = dotenv_values(env_path)
-            os.environ.update(env_values)
+        #
+        # Precedence: process environment wins over .env file (see from_env).
+        _load_env_file_fallback(Path.cwd() / ".env")
 
         return {
             "openai_api_key": os.getenv("OPENAI_API_KEY", ""),
