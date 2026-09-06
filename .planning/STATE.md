@@ -5,7 +5,7 @@ milestone_name: "OKF SSOT + zero/low-token knowledge graph + four-route retrieva
 status: keyword_fts_022_promoted_ocr_lazy_init
 stopped_at: "2026-09-06 user-approved fixes: (1) migration 022_keyword_fts_indexes.sql promoted from verification harness into root chain (catalog 21→22, tail contract 020/021→021/022 evolved in gate+c2 scripts and tests; live disposable-PG proof: 22 migrations, trigger+3 indexes, query_spans_by_keyword returns rows); (2) OCR lazy-init in ingestion/bundle.py — _build_default_converter gates do_ocr on _pdf_has_raster_images (pypdf XObject pre-scan, fail-safe True), text-only PDFs skip RapidOCR startup; canonical 5/5 + okf lazy guards 5/5; see .planning/phases/retrieval-fixes-022-ocr/2026-09-06-RECORD.md"
 last_updated: 2026-09-06T01:05:00Z
-last_activity: migration 022 promotion + OCR lazy-init executed 2026-09-06 (live verify PASS, pytest 82 passed/3 pre-existing evidence-leftover unchanged)
+last_activity: migration 022 promotion + OCR lazy-init executed 2026-09-06 (live verify PASS, pytest 82 passed/3 pre-existing evidence-leftover unchanged); project published to GitHub private repo daixudk96-max/rag (commit c88dcfe1, 1404 files, secret scan clean, cache/temp excluded); manual Trellis task dir .trellis/tasks/feat-09-06-retrieval-fixes-022-ocr created with user authorization (task tool blocked by allowlist)
 progress:
   total_phases: 20
   completed_phases: 8
