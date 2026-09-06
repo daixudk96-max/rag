@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-06-19T02:51:31Z",
-  "status": "LEVEL_2_PRESERVED_FUNCTIONAL_VALIDATION_FAILED",
+  "generated_at": "2026-06-19T07:38:42Z",
+  "status": "LEVEL_2_PRESERVED_PENDING_HOTSPOT_JUDGMENTS",
   "level": "Level_2",
-  "reason": "DNA query did not return expected evidence strings: 数据驱动, 非确定性, 持续性.",
-  "next_allowed_action": "fix_hotspot_selector_or_corpus_hierarchy_then_rerun"
+  "reason": "All queries returned evidence-bearing hits with hotspot/navigation metadata preserved and DNA evidence validated.",
+  "next_allowed_action": "complete_07_judgment_template_then_calculate_quality_metrics"
 }

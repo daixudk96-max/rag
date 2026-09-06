@@ -1,0 +1,107 @@
+{
+  "timestamp": "2026-07-01T18:14:47.799767+00:00",
+  "source": "E:\\github\\rag\\verification\\phase14-new-doc-validation\\business_queries.py",
+  "count": 20,
+  "queries": [
+    {
+      "id": "Q1",
+      "query": "研究报告的核心结论是什么？哪个项目最接近完整需求？",
+      "level": "L1_summary"
+    },
+    {
+      "id": "Q2",
+      "query": "KAG 和 NexusRAG 在知识图谱能力上有什么区别？",
+      "level": "L2_comparison"
+    },
+    {
+      "id": "Q3",
+      "query": "A-F 六项能力中，哪几项在开源生态里最稀缺？为什么？",
+      "level": "L2_capability"
+    },
+    {
+      "id": "Q4",
+      "query": "LlamaIndex 如何实现向量命中回映到树节点？",
+      "level": "L3_technical"
+    },
+    {
+      "id": "Q5",
+      "query": "如果要快速做 POC，应该选择哪个项目？需要补哪些模块？",
+      "level": "L2_recommendation"
+    },
+    {
+      "id": "Q6",
+      "query": "LightRAG 支持哪些向量数据库后端？",
+      "level": "L2_detail"
+    },
+    {
+      "id": "Q7",
+      "query": "模块拼接蓝图中的图触发向量检索策略是什么？",
+      "level": "L3_architecture"
+    },
+    {
+      "id": "Q8",
+      "query": "RAPTOR 和 HIRO 的核心贡献是什么？它们适合作为什么角色？",
+      "level": "L2_role"
+    },
+    {
+      "id": "Q9",
+      "query": "KAG 增强实现需要多少人日？适合什么场景？",
+      "level": "L2_estimation"
+    },
+    {
+      "id": "Q10",
+      "query": "KAG 的 mutual indexing 结构是什么？它如何连接图谱和原文？",
+      "level": "L3_mechanism"
+    },
+    {
+      "id": "Q11",
+      "query": "NexusRAG 如何保留文档结构？它保留了哪些元数据？",
+      "level": "L2_metadata"
+    },
+    {
+      "id": "Q12",
+      "query": "Agent 自主扩展机制的建议顺序是什么？",
+      "level": "L3_workflow"
+    },
+    {
+      "id": "Q13",
+      "query": "A-F 六项能力的判定标准是什么？E 项必须看到什么机制才判为是？",
+      "level": "L2_criteria"
+    },
+    {
+      "id": "Q14",
+      "query": "从仓库成熟度来看，哪个项目最稳？哪个最适合当主底座？",
+      "level": "L1_maturity"
+    },
+    {
+      "id": "Q15",
+      "query": "本次检索排除了哪些 GraphRAG 项目？为什么排除？",
+      "level": "L1_scope"
+    },
+    {
+      "id": "Q16",
+      "query": "NexusRAG 和 LightRAG 分别使用什么向量数据库？",
+      "level": "L2_backend"
+    },
+    {
+      "id": "Q17",
+      "query": "向量命中回映树节点的聚合公式建议是什么？",
+      "level": "L3_formula"
+    },
+    {
+      "id": "Q18",
+      "query": "必须自研的四个模块是什么？按什么顺序优先排？",
+      "level": "L2_priority"
+    },
+    {
+      "id": "Q19",
+      "query": "最终执行顺序建议是什么？",
+      "level": "L1_sequence"
+    },
+    {
+      "id": "Q20",
+      "query": "需求贴合度综合判断的排序是什么？依据是什么？",
+      "level": "L1_ranking"
+    }
+  ]
+}

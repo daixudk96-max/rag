@@ -1,0 +1,173 @@
+[
+  {
+    "text": "This report summarizes Q4 2024 financial performance metrics.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/1",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 677.18,
+                "r": 359.75000000000006,
+                "b": 667.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                61
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Quarterly Financial Report"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4978705082681552270,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "Revenue, Q3 2024 = 12,500. Revenue, Q4 2024 = 14,200. Revenue, Change = +13.6%. Expenses, Q3 2024 = 8,200. Expenses, Q4 2024 = 8,900. Expenses, Change = +8.5%. Profit, Q3 2024 = 4,300. Profit, Q4 2024 = 5,300. Profit, Change = +23.3%",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/tables/0",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "table",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 142.6864471435547,
+                "t": 663.3743286132812,
+                "r": 469.0919189453125,
+                "b": 589.4004669189453,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Quarterly Financial Report"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4978705082681552270,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "The strong Q4 performance reflects improved market conditions.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/3",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 535.18,
+                "r": 363.6600000000001,
+                "b": 525.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                62
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Quarterly Financial Report",
+        "Analysis"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4978705082681552270,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "North America contributed 45% of total revenue.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/5",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 489.18,
+                "r": 291.43000000000006,
+                "b": 479.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                47
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Quarterly Financial Report",
+        "Analysis",
+        "Regional Breakdown"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4978705082681552270,
+        "filename": "source.pdf"
+      }
+    }
+  }
+]

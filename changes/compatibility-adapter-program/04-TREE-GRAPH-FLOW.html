@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tree / Graph Flow Whitebox</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121935;
+      --panel-2: #0f1530;
+      --text: #edf2ff;
+      --muted: #a9b5d6;
+      --line: #30406f;
+      --accent: #79c0ff;
+      --accent-2: #7ee787;
+      --accent-3: #f2cc60;
+      --danger: #ff7b72;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg), #0a0f1a 60%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .page {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 32px 24px 56px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: 30px; }
+    h2 {
+      font-size: 22px;
+      margin-top: 26px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    p, li { color: var(--muted); }
+    .lead {
+      margin: 12px 0 24px;
+      max-width: 980px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 24px;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-size: 13px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .dot.registry { background: var(--accent); }
+    .dot.tree { background: var(--accent-2); }
+    .dot.vector { background: var(--accent-3); }
+    .dot.graph { background: var(--danger); }
+    .section {
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .box {
+      min-width: 170px;
+      max-width: 250px;
+      padding: 14px 14px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+    }
+    .box h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    .box p {
+      font-size: 13px;
+      margin: 0;
+    }
+    .box.registry { border-color: rgba(121,192,255,0.55); }
+    .box.tree { border-color: rgba(126,231,135,0.55); }
+    .box.vector { border-color: rgba(242,204,96,0.55); }
+    .box.graph { border-color: rgba(255,123,114,0.55); }
+    .box.code { border-color: rgba(213,160,255,0.55); }
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      color: var(--muted);
+      font-size: 28px;
+      font-weight: 600;
+    }
+    .subgrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .card {
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+    }
+    .code {
+      font-family: Consolas, Monaco, monospace;
+      color: var(--text);
+      font-size: 12px;
+      white-space: pre-wrap;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
+    }
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .step-list li { margin-bottom: 8px; }
+    .footer {
+      margin-top: 32px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Tree / Graph Whitebox Flow</h1>
+    <p class="lead">
+      这份 HTML 把当前项目里“文档 → spans → tree → vector → graph → retrieval”的主链路画成白盒流程图。
+      它描述的是当前 <strong>E:\github\rag</strong> 里的真实实现，而不是理想化架构图。
+    </p>
+
+    <div class="legend">
+      <span class="tag"><span class="dot registry"></span>Registry / Provenance</span>
+      <span class="tag"><span class="dot tree"></span>Tree</span>
+      <span class="tag"><span class="dot vector"></span>Vector</span>
+      <span class="tag"><span class="dot graph"></span>Graph</span>
+    </div>
+
+    <section class="section">
+      <h2>1. 存储主链</h2>
+      <div class="flow-row">
+        <div class="box registry"><h3>原始文档</h3><p>PDF / DOCX 文件仍在文件系统，数据库只登记其来源与版本。</p></div>
+        <div class="arrow">→</div>
+        <div class="box registry"><h3>register_document</h3><p>生成 doc_id / version_id，记录 content_hash、source_uri、processing_status。</p></div>
+        <div class="arrow">→</div>
+        <div class="box registry"><h3>canonical_spans</h3><p>Docling 解析后写入标准化 spans，span_id 是后续所有回溯锚点。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>tree_nodes / tree_node_spans</h3><p>按 heading_path + 轻量 semantic split 长出 persisted tree，并把 span 绑到 node。</p></div>
+        <div class="arrow">→</div>
+        <div class="box vector"><h3>vector_chunks / embeddings</h3><p>chunk 生成、embedding 计算、chunk↔span 持久化，可选投影到 Qdrant / Milvus / pgvector。</p></div>
+        <div class="arrow">→</div>
+        <div class="box graph"><h3>entities / evidence_links / Neo4j</h3><p>当前默认图谱抽取为 heuristic；后续可由 donor graph 路线替换内部逻辑。</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. Tree 生成流程</h2>
+      <div class="cols">
+        <div class="card tree">
+          <h3>当前默认 persisted tree</h3>
+          <ol class="step-list">
+            <li>读取 <span class="code">canonical_spans</span></li>
+            <li>按 <span class="code">heading_path</span> 组织父节点</li>
+            <li>同 heading 下做轻量 semantic cluster</li>
+            <li>写入 <span class="code">tree_nodes</span> 与 <span class="code">tree_node_spans</span></li>
+          </ol>
+          <div class="code">E:\github\rag\llamaindex_runtime\registry\tree_generator.py
+- _group_spans_by_heading_path()
+- _build_parent_nodes()
+- _append_leaf_nodes()
+- generate_tree()</div>
+        </div>
+        <div class="card tree">
+          <h3>PageIndex donor path（可选）</h3>
+          <ol class="step-list">
+            <li>调用 PageIndex tree parser</li>
+            <li>TOC / structure detection 走统一 LLM seam</li>
+            <li>embedded tree flatten 成本地 flat node</li>
+            <li>写回本地 registry，保住 node_id / span_id 链</li>
+          </ol>
+          <div class="code">E:\github\rag\llamaindex_runtime\tree\pageindex_adapter.py
+- index_tree()
+- _call_pageindex_tree_parser_stub()
+- _flatten_embedded_tree()</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. Tree 内部语义分布链</h2>
+      <div class="flow-row">
+        <div class="box vector"><h3>vector_chunks</h3><p>每个 chunk 有 embedding，并通过 chunk↔span 映射可回到 span。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>node ↔ span</h3><p>通过 tree_node_spans 把 span 聚到 node，再把 chunk embedding 归属到 node。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>TreeSemanticDistributionAdapter</h3><p>为每个 node 产出 centroid / dispersion / entropy / support_count。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>Decision Policy</h3><p>当前默认 baseline；可显式切到 HIRO policy，决定 keep_parent / drill_down / prune。</p></div>
+      </div>
+      <div class="subgrid">
+        <div class="card vector">
+          <h3>Baseline 统计层</h3>
+          <div class="code">llamaindex_runtime/tree/semantic_distribution.py
+- PersistedTreeSemanticDistributionAdapter
+- _compute_centroid()
+- _compute_entropy()
+- _collect_chunk_assignments()</div>
+        </div>
+        <div class="card tree">
+          <h3>Traversal 层</h3>
+          <div class="code">llamaindex_runtime/tree/semantic_distribution.py
+- RecursiveTreeTraversalRunner
+- traverse_tree_for_query()
+- _traverse_from_node()</div>
+        </div>
+        <div class="card tree">
+          <h3>Decision 层</h3>
+          <div class="code">默认：BaselineTreeBranchDecisionPolicy
+可选：HIROEnhancedTreeBranchDecisionPolicy
+
+runtime 开关：tree/runtime.py
+parameter: decision_policy="baseline" | "hiro"</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. Tree 检索流程</h2>
+      <div class="flow-row">
+        <div class="box tree"><h3>query(mode="tree")</h3><p>统一入口；给了 registry + version_id 时走 persisted tree backend path。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>_retrieve_tree_hits_from_backend</h3><p>取树节点、取 query embedding、跑 semantic distribution + traversal。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>QueryHit / BackendHit</h3><p>输出 node 命中，并附带 provenance：node_id、span_ids、heading_path、score。</p></div>
+      </div>
+      <div class="code">E:\github\rag\llamaindex_runtime\tree\runtime.py
+- _retrieve_tree_hits_from_backend()
+- retrieve_tree_hits_from_pdf()</div>
+    </section>
+
+    <section class="section">
+      <h2>5. 当前图谱生成与检索流程</h2>
+      <div class="flow-row">
+        <div class="box tree"><h3>tree_nodes + summaries</h3><p>当前默认 graph 抽取不是 LLM donor，而是从 tree node 的 title / heading_path / summary_text 推实体名。</p></div>
+        <div class="arrow">→</div>
+        <div class="box graph"><h3>entities / node_entity_links / evidence_links</h3><p>写回本地 registry，证据仍然锚在 span_id 上。</p></div>
+        <div class="arrow">→</div>
+        <div class="box graph"><h3>Neo4j projection</h3><p>project_version_to_graph() 把实体/关系/证据投影到 Neo4j。</p></div>
+        <div class="arrow">→</div>
+        <div class="box graph"><h3>graph query</h3><p>给 entity_id，查邻居，返回 QueryHit。</p></div>
+      </div>
+      <div class="subgrid">
+        <div class="card graph">
+          <h3>当前抽实体入口</h3>
+          <div class="code">llamaindex_runtime/processing/callbacks.py
+- _derive_entity_name()
+- build_tree_entity_extraction_callback()</div>
+        </div>
+        <div class="card graph">
+          <h3>图投影</h3>
+          <div class="code">llamaindex_runtime/graph/projector.py
+- project_version_to_graph()</div>
+        </div>
+        <div class="card graph">
+          <h3>图查询</h3>
+          <div class="code">llamaindex_runtime/graph/query.py
+- retrieve_graph_hits()</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. 当前主线 vs 可选路径</h2>
+      <div class="cols">
+        <div class="card">
+          <h3>当前默认主线</h3>
+          <ul>
+            <li>本地 registry / provenance contracts</li>
+            <li>persisted tree backend</li>
+            <li>本地 semantic distribution baseline</li>
+            <li>默认 baseline decision policy</li>
+            <li>本地 heuristic graph extraction</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>当前已接入但非默认</h3>
+          <ul>
+            <li>PageIndexTreeAdapter（tree build / retrieve donor）</li>
+            <li>HIROEnhancedTreeBranchDecisionPolicy（显式切换）</li>
+            <li>统一 LLM seam（donor-facing structural extraction）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>当前只研究未接入</h3>
+          <ul>
+            <li>RAPTOR（structure donor reference）</li>
+            <li>LightRAG（graph 支线暂停）</li>
+            <li>RAG-Anything（multimodal 支线暂停）</li>
+            <li>Yuxi（不推荐作为 runtime donor）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer">
+      输出位置：<code>E:\github\rag\changes\compatibility-adapter-program\04-TREE-GRAPH-FLOW.html</code>
+    </p>
+  </div>
+</body>
+</html>

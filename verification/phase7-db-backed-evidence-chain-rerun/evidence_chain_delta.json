@@ -1,0 +1,32 @@
+{
+  "requirement_id": "REQ-P7-DB-EVIDENCE-CHAIN-PROOF",
+  "active_version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "before_classification": "evidence_chain_ready",
+  "after_classification": "evidence_chain_ready",
+  "materialization_status": "completed",
+  "stats_delta": {
+    "canonical_spans": 0,
+    "vector_chunks": 0,
+    "vector_chunks_with_node_id": 0,
+    "vector_chunk_spans": 0,
+    "tree_node_spans": 0,
+    "heading_path_rate": 0.0,
+    "mapped_chunks_rate": 0.0
+  },
+  "final_stats": {
+    "canonical_spans": 54,
+    "canonical_spans_with_heading_path": 54,
+    "heading_path_rate": 1.0,
+    "vector_chunks": 54,
+    "vector_chunks_with_node_id": 54,
+    "mapped_chunks_rate": 1.0,
+    "vector_chunk_spans": 54,
+    "tree_node_spans": 54
+  },
+  "final_classification": "DB_EVIDENCE_READY",
+  "blocking_reasons": [],
+  "next_allowed_action": "proceed_to_phase8_preflight",
+  "level_baseline": "Level 2 remains authoritative",
+  "judgment_collection": "deferred_to_phase8_integrity_gate",
+  "remediation_notes": "Resolved Phase 7 DB evidence-chain blockers. Initial blockers progressed from database_url_not_configured to connection_failed, then missing_canonical_spans, then missing_node_chunk_mapping. Remediation loaded repo-root .env, restarted the existing PostgreSQL container, parsed the active version document into 54 canonical_spans, materialized 54 vector_chunks and 54 vector_chunk_spans, repaired 54 tree_node_spans by normalized heading-path mapping, and reran VectorLoader so all 54 vector_chunks have node_id. Phase 7 evidence-chain diagnostics now classify the active version as evidence_chain_ready. No human judgments collected and no level_assessment.json updated."
+}

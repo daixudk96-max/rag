@@ -1,0 +1,64 @@
+{
+  "generated_at": "2026-06-16T17:39:29Z",
+  "validation_script_version": "2026-06-12-v2",
+  "git_commit_sha": "1ddaead5ceab20037b52c0a888d0bff4eaa84396",
+  "source_document": "ANONYMIZED_LOCAL_DOCX",
+  "source_document_location": "local_user_supplied_path_redacted",
+  "query_count": 12,
+  "queries": [
+    {
+      "query_id": "Q01",
+      "query_text": "AI产品经理的核心DNA是什么？"
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "传统产品经理和AI产品经理的关注点有什么不同？"
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "AI产品的智能来源是什么？"
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "什么是数据闭环飞轮？为什么它重要？"
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "抖音如何利用用户行为数据优化推荐？"
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "特斯拉如何收集自动驾驶数据？"
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "AI产品落地时第一个要思考的问题是什么？"
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "如何处理不干净的数据？"
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "李菲菲在AI 1.0时代遇到了什么数据问题？"
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "传统软件和AI产品的输出特点有什么区别？"
+    },
+    {
+      "query_id": "Q11",
+      "query_text": "独家数据为什么是真正的护城河？"
+    },
+    {
+      "query_id": "Q12",
+      "query_text": "特斯拉的AB test预演如何对比用户操作和AI预演？"
+    }
+  ],
+  "query_quality": {
+    "duplicate_count": 0,
+    "min_query_length": 11,
+    "max_query_length": 27,
+    "avg_query_length": 17.916666666666668
+  }
+}

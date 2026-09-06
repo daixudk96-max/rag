@@ -1,0 +1,34 @@
+query_id,hit_rank,node_id,heading_path,page_no,text_preview,is_relevant,relevance_score,judgment_category,judgment_notes
+Q01,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.85,highly_relevant,Root structure node - excellent match for structure query
+Q02,1,f3d04b49-710d-474c-88a5-f3181b2f58dc,第二阶段-竞品分析-代旭/3. 竞品深度剖析,33,"3. 竞品深度剖析...",True,0.45,partially_relevant,Competitor analysis section - might discuss algorithms but not core focus
+Q03,1,f3d04b49-710d-474c-88a5-f3181b2f58dc,第二阶段-竞品分析-代旭/3. 竞品深度剖析,33,"3. 竞品深度剖析...",True,0.95,highly_relevant,Parent node for case studies - excellent match
+Q03,2,fe5725ba-5376-4f44-b971-cbf3583246eb,第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 A：爱复盘,36,"竞品 A：爱复盘...",True,0.95,highly_relevant,Actual case study - excellent match
+Q03,3,c7e745cb-70a5-4698-9937-088a1b219520,第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 B：DeepSeek 智能场控看板 (直接竞品),63,"竞品 B：DeepSeek 智能场控看板 (直接竞品)...",True,0.95,highly_relevant,Actual case study - excellent match
+Q03,4,6019895b-c09d-4d4a-a60f-7ca7ffa8810c,第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 C：巨量千川智投星 (间接竞品),85,"竞品 C：巨量千川智投星 (间接竞品)...",True,0.95,highly_relevant,Actual case study - excellent match
+Q03,5,00f1bc06-54d3-4338-9119-c54393e48221,第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 D：飞书多维表格AI辅助（间接竞品）,103,"竞品 D：飞书多维表格AI辅助（间接竞品）...",True,0.95,highly_relevant,Actual case study - excellent match
+Q04,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.30,marginally_relevant,Root node - might mention some metrics but lacks specifics
+Q04,2,6644ae31-cc73-49dd-b1fe-e6315aaffbbc,第二阶段-竞品分析-代旭/目的,10,"目的...",True,0.20,marginally_relevant,Objective section - might mention key indicators
+Q05,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.25,marginally_relevant,Root node - usage context might be discussed
+Q05,2,6644ae31-cc73-49dd-b1fe-e6315aaffbbc,第二阶段-竞品分析-代旭/目的,10,"目的...",True,0.20,marginally_relevant,Objective section - might mention usage scenarios
+Q05,3,6644ae31-cc73-49dd-b1fe-e6315aaffbbc,第二阶段-竞品分析-代旭/目的,10,"目的...",True,0.15,marginally_relevant,Duplicate hit - lower relevance
+Q05,4,6644ae31-cc73-49dd-b1fe-e6315aaffbbc,第二阶段-竞品分析-代旭/目的,10,"目的...",True,0.15,marginally_relevant,Duplicate hit - lower relevance
+Q05,5,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.15,marginally_relevant,Duplicate hit - lower relevance
+Q06,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Root node - performance optimization might be discussed in competitor context
+Q07,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Root node - system architecture might be discussed in competitor analysis
+Q08,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.15,marginally_relevant,Root node - error handling unlikely in competitor analysis
+Q09,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.35,partially_relevant,Root node - business flow might be discussed across document
+Q09,2,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Duplicate hit - lower relevance
+Q10,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.25,marginally_relevant,Root node - might discuss performance/accuracy tradeoffs in competitor context
+Q11,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.30,partially_relevant,Root node - solution choices might be discussed in competitor analysis
+Q11,2,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Duplicate hit - lower relevance
+Q12,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.40,partially_relevant,Root node - limitations/future work likely discussed
+Q13,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Root node - might mention data processing issues
+Q14,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.35,partially_relevant,Root node - constraints likely discussed
+Q15,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.25,marginally_relevant,Root node - might mention thresholds in competitor comparison
+Q16,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Root node - might mention tree structure limits
+Q17,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.20,marginally_relevant,Root node - might mention chunking strategies
+Q18,1,f3d04b49-710d-474c-88a5-f3181b2f58dc,第二阶段-竞品分析-代旭/3. 竞品深度剖析,33,"3. 竞品深度剖析...",True,0.50,partially_relevant,Competitor analysis - likely discusses AI/models used by competitors
+Q18,2,113ada85-6ffc-499d-b435-8232754ad857,第二阶段-竞品分析-代旭/4. 市场机会与差异化定位,139,"4. 市场机会与差异化定位...",True,0.45,partially_relevant,Market positioning - might discuss technology choices
+Q18,3,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.25,marginally_relevant,Root node - lower relevance duplicate
+Q19,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.30,partially_relevant,Root node - comparison is core topic of document
+Q20,1,e76c5ff8-abaa-48a1-82fc-9b69f4e24b61,第二阶段-竞品分析-代旭,1,"第二阶段-竞品分析-代旭...",True,0.25,marginally_relevant,Root node - might mention integration approaches

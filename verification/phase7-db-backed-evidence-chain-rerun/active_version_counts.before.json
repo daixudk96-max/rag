@@ -1,0 +1,16 @@
+{
+  "active_version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "database_url_configured": true,
+  "data_available": true,
+  "stats": {
+    "canonical_spans": 54,
+    "canonical_spans_with_heading_path": 54,
+    "heading_path_rate": 1.0,
+    "vector_chunks": 54,
+    "vector_chunks_with_node_id": 54,
+    "mapped_chunks_rate": 1.0,
+    "vector_chunk_spans": 54,
+    "tree_node_spans": 54
+  },
+  "classification": "evidence_chain_ready"
+}

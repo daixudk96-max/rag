@@ -1,0 +1,1653 @@
+{
+  "requirement_id": "REQ-P8-MATCHED-VALIDATION-RERUN",
+  "validation_date": "2026-06-08T06:29:24.568654+00:00",
+  "version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count": 20,
+  "top_k": 5,
+  "results": [
+    {
+      "query_id": "Q01",
+      "query_text": "文档的主要章节结构是什么？列出所有一级标题。",
+      "category": "structure",
+      "expected_answer_type": "structure",
+      "difficulty": "easy",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "哪个章节讨论了核心算法原理？",
+      "category": "structure",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 4,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "a545f64d-b6f1-4812-80f8-e9e499205bf6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/1. **聚类功能已经实现了！**",
+          "page_no": 5,
+          "text_preview": "1. **聚类功能已经实现了！**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "cfeb0b98-5714-40a4-b686-896b02b3a3dd",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**",
+          "page_no": 43,
+          "text_preview": "2. **PageIndex完整功能清单**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "文档中是否有案例研究章节？如果有，在哪些页？",
+      "category": "structure",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 1,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "3b1c5eb4-30b5-4232-a6eb-349b24f845a8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案",
+          "page_no": 1,
+          "text_preview": "PageIndex完整功能分析与集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "文档中提到的关键技术指标有哪些？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结",
+          "page_no": 385,
+          "text_preview": "总结",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "如何使用这个系统进行数据处理？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "3b1c5eb4-30b5-4232-a6eb-349b24f845a8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案",
+          "page_no": 1,
+          "text_preview": "PageIndex完整功能分析与集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "35ad39a8-fd76-42db-93e4-3acb629d21ef",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**",
+          "page_no": 158,
+          "text_preview": "**完整集成PageIndex，增强检索部分**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "80595220-2398-4cc5-b5ae-735119d8febb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "文档中列举了哪些性能优化方法？",
+      "category": "content",
+      "expected_answer_type": "cross_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "系统的架构设计原则是什么？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "b161dcc2-d3a8-429d-b7aa-992f3d64eef8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "35ad39a8-fd76-42db-93e4-3acb629d21ef",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**",
+          "page_no": 158,
+          "text_preview": "**完整集成PageIndex，增强检索部分**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "1280d1b7-a496-4e57-a1e9-0f0a14c5db0c",
+          "chunk_id": "5dfade92-112b-5f30-8a66-ba56351eb45d",
+          "span_ids": [
+            "2e759222-d7ea-513a-9961-23019980fa3e",
+            "395bc9b2-b6c2-500b-bd89-8e3cf5fad4aa"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "**完整集成PageIndex + 增强检索** - **保留PageIndex所有功能** ： - PageIndexClient（索引管理） - Workspace（持久化） - CLI工具 - 工具函数 - **增强检索部分** ： - Clustering backend（预计算，减少token） - Reasoning backend（Agent导航，可选） - Hybrid retrieval（tree + graph + vector） - **符合架构原则** ： - Frozen contracts（PageIndex donor不改） - Unified seam（Registry统一） - 配置驱动（RuntimeSettings）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "文档中提到了哪些错误处理机制？",
+      "category": "content",
+      "expected_answer_type": "cross_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "80595220-2398-4cc5-b5ae-735119d8febb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "58a76549-d97c-4aa4-8d21-9fdafdbeb5ac",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）",
+          "page_no": 82,
+          "text_preview": "2.2 **CLI工具**（run_pageindex.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "16e51f75-0468-444b-9207-36f1045371bb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）",
+          "page_no": 110,
+          "text_preview": "agentic_vectorless_rag_demo.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "b161dcc2-d3a8-429d-b7aa-992f3d64eef8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "文档中前后章节如何描述数据流程的完整链路？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "35ad39a8-fd76-42db-93e4-3acb629d21ef",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**",
+          "page_no": 158,
+          "text_preview": "**完整集成PageIndex，增强检索部分**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "1280d1b7-a496-4e57-a1e9-0f0a14c5db0c",
+          "chunk_id": "5dfade92-112b-5f30-8a66-ba56351eb45d",
+          "span_ids": [
+            "2e759222-d7ea-513a-9961-23019980fa3e",
+            "395bc9b2-b6c2-500b-bd89-8e3cf5fad4aa"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "**完整集成PageIndex + 增强检索** - **保留PageIndex所有功能** ： - PageIndexClient（索引管理） - Workspace（持久化） - CLI工具 - 工具函数 - **增强检索部分** ： - Clustering backend（预计算，减少token） - Reasoning backend（Agent导航，可选） - Hybrid retrieval（tree + graph + vector） - **符合架构原则** ： - Frozen contracts（PageIndex donor不改） - Unified seam（Registry统一） - 配置驱动（RuntimeSettings）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "系统设计中如何平衡性能和准确性？不同章节的观点是否一致？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "f8ee7681-d27f-4fdb-96fb-fb376b0fd626",
+          "chunk_id": "1a64a80b-022e-5f72-a616-840c6bedeee2",
+          "span_ids": [
+            "6a594755-c7c0-5313-8554-ca8ddd3a8407",
+            "26d93316-4c01-5cc4-8f2e-2d834c8c93f7",
+            "ab58d6bf-a706-50fe-b8f6-7e1fb1c2803f",
+            "2090324d-bd42-5716-9f05-7fb827fb442a",
+            "c85645e3-1d6f-537a-9066-b9082ba0137d",
+            "69cc8a27-5b99-5723-a825-f2f557a86a3b",
+            "54c7a732-cf0d-585e-af70-eedf364ba33a"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解",
+          "page_no": 154,
+          "text_preview": "根据用户描述，真实意图是： **保留PageIndex所有功能** ： - ✓ PageIndexClient（索引管理、workspace、持久化） - ✓ CLI工具（run_pageindex.py） - ✓ 工具函数（get_document, get_document_structure, get_page_content） **增强检索部分** （替换/新增）： 1. **聚类检索** （当前已实现）： - TreeGenerator的semantic clustering - 替换PageIndex的reasoning-only retrieval - 预计算embedding（减少查询token） 2. **Agent reasoning检索** （可选，新增）： - 保留PageIndex的LLM导航树能力 - 作为additional backend（与聚类并行） - 不是所有节点一起找（PageIndex逐节点判断） 3. **Hybrid retrieval** （融合）： - tree backend（聚类 + reasoning） - graph backend（KG） - vector backend（embedding） **输入输出换一下** ： - 输入：PageIndexClient.index() → 保留 - 检索：替换backend（增加聚类） - 输出：BackendHit格式 → 保留",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结",
+          "page_no": 385,
+          "text_preview": "总结",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q11",
+      "query_text": "文档中技术方案的选择理由是什么？是否在不同章节有对比分析？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "1280d1b7-a496-4e57-a1e9-0f0a14c5db0c",
+          "chunk_id": "5dfade92-112b-5f30-8a66-ba56351eb45d",
+          "span_ids": [
+            "2e759222-d7ea-513a-9961-23019980fa3e",
+            "395bc9b2-b6c2-500b-bd89-8e3cf5fad4aa"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "**完整集成PageIndex + 增强检索** - **保留PageIndex所有功能** ： - PageIndexClient（索引管理） - Workspace（持久化） - CLI工具 - 工具函数 - **增强检索部分** ： - Clustering backend（预计算，减少token） - Reasoning backend（Agent导航，可选） - Hybrid retrieval（tree + graph + vector） - **符合架构原则** ： - Frozen contracts（PageIndex donor不改） - Unified seam（Registry统一） - 配置驱动（RuntimeSettings）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "b161dcc2-d3a8-429d-b7aa-992f3d64eef8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q12",
+      "query_text": "文档中是否有未解决的局限性或未来工作部分？",
+      "category": "edge",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "1622d73f-1929-48b1-b71f-db47ffb02e4f",
+          "chunk_id": "6b89eb51-5667-556c-97d1-34cc3263e235",
+          "span_ids": [
+            "f055ce80-980c-5ee6-90be-8576c10927a9"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": 411,
+          "text_preview": "1. 决策确认完整集成方案 2. 立即启动Phase 1（PageIndexClient移植） 3. 规划Phase 2-3（检索增强 + 配置测试）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "ab535519-e8af-434a-b52e-02910da078e6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结",
+          "page_no": 385,
+          "text_preview": "总结",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q13",
+      "query_text": "如果输入数据格式不符合预期，系统会如何处理？",
+      "category": "edge",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "80595220-2398-4cc5-b5ae-735119d8febb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "58a76549-d97c-4aa4-8d21-9fdafdbeb5ac",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）",
+          "page_no": 82,
+          "text_preview": "2.2 **CLI工具**（run_pageindex.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "b161dcc2-d3a8-429d-b7aa-992f3d64eef8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q14",
+      "query_text": "文档中提到了哪些系统限制或约束？",
+      "category": "edge",
+      "expected_answer_type": "cross_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "1280d1b7-a496-4e57-a1e9-0f0a14c5db0c",
+          "chunk_id": "5dfade92-112b-5f30-8a66-ba56351eb45d",
+          "span_ids": [
+            "2e759222-d7ea-513a-9961-23019980fa3e",
+            "395bc9b2-b6c2-500b-bd89-8e3cf5fad4aa"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "**完整集成PageIndex + 增强检索** - **保留PageIndex所有功能** ： - PageIndexClient（索引管理） - Workspace（持久化） - CLI工具 - 工具函数 - **增强检索部分** ： - Clustering backend（预计算，减少token） - Reasoning backend（Agent导航，可选） - Hybrid retrieval（tree + graph + vector） - **符合架构原则** ： - Frozen contracts（PageIndex donor不改） - Unified seam（Registry统一） - 配置驱动（RuntimeSettings）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "1fe98698-a589-4ed5-9cd1-3a641fbd720a",
+          "chunk_id": "18c81ca1-f363-522e-80e5-f3f5628f60f8",
+          "span_ids": [
+            "d4c18c6e-41a7-5d34-80f3-56e4d9fdb568"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": 387,
+          "text_preview": "1. ✓ **聚类功能已实现** （TreeGenerator，关键词检测） 2. ✓ **PageIndex有完整功能** （Client、CLI、Workspace、Agent） 3. ✓ **工程量可控** （1-1.5周，10天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q15",
+      "query_text": "文档中描述的向量检索阈值是多少？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "95e2f682-7972-4303-b7c3-8a9293dd8b94",
+          "chunk_id": "4338e967-5707-59de-bc7c-4db7d5f27a54",
+          "span_ids": [
+            "88c22ae9-b728-5922-a794-a36eab7517c1",
+            "235e4246-0ea7-541d-ad47-931cf74ab95d",
+            "376cbb53-641b-5927-830b-1b65ee2371ef",
+            "75f27309-a63f-5fbe-8c9d-acbdcace1d92",
+            "5e80b8b5-5589-517d-a73c-4b298427d55a",
+            "0ca610ec-3cb2-5da5-93c7-c48d65bbe219"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "**2.1 Clustering backend** （当前已实现）： ``` # 已存在：llamaindex_runtime/registry/tree_generator.py # _detect_semantic_cluster() # 增强：embedding-based clustering def _detect_semantic_cluster_embedding(spans, model): texts = [s.get(\"raw_text\", \"\") for s in spans] embeddings = model.encode(texts) # embedding模型 # KMeans或hierarchical clustering # 返回cluster indices ``` **2.2 Reasoning backend** （PageIndex移植）： ``` # llamaindex_runtime/tree/reasoning_backend.py from pageindex.retrieve import get_document_structure, get_page_content class ReasoningTreeBackend: def retrieve(self, query_text, doc_id): # 1. 获取完整树结构 structure = get_document_structure(documents, doc_id) # 2. LLM reasoning判断相关节点 # （PageIndex agent workflow） # 3. 提取相关页面内容 pages = \"5-7,12\" # LLM判断的page numbers content = get_page_content(documents, doc_id, pages) return BackendHit( heading_path=..., node_id=..., page_no=..., text_preview=content, ) ``` **2.3 Hybrid retrieval融合** ： ``` # llamaindex_runtime/tree/hybrid_retrieval.py class HybridTreeRetrieval: def retrieve(self, query_text, version_id): # 并行调用： tree_hits_clustering = clustering_backend.retrieve(query_text) tree_hits_reasoning = reasoning_backend.retrieve(query_text) graph_hits = graph_backend.retrieve(query_text) vector_hits = vector_backend.retrieve(query_text) # Hybrid路由： hits = merge_hits( tree_hits_clustering, tree_hits_reasoning, graph_hits, vector_hits, weights=[0.3, 0.2, 0.2, 0.3], # 配置权重 ) return hits ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q16",
+      "query_text": "树结构构建的深度限制是什么？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "easy",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "80595220-2398-4cc5-b5ae-735119d8febb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "a545f64d-b6f1-4812-80f8-e9e499205bf6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/1. **聚类功能已经实现了！**",
+          "page_no": 5,
+          "text_preview": "1. **聚类功能已经实现了！**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "cfeb0b98-5714-40a4-b686-896b02b3a3dd",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**",
+          "page_no": 43,
+          "text_preview": "2. **PageIndex完整功能清单**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q17",
+      "query_text": "文档中提到的 chunking 策略是什么？token 限制是多少？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "80595220-2398-4cc5-b5ae-735119d8febb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "cfeb0b98-5714-40a4-b686-896b02b3a3dd",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**",
+          "page_no": 43,
+          "text_preview": "2. **PageIndex完整功能清单**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "58a76549-d97c-4aa4-8d21-9fdafdbeb5ac",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）",
+          "page_no": 82,
+          "text_preview": "2.2 **CLI工具**（run_pageindex.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "16e51f75-0468-444b-9207-36f1045371bb",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）",
+          "page_no": 110,
+          "text_preview": "agentic_vectorless_rag_demo.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q18",
+      "query_text": "embedding 模型的选择依据是什么？文档中使用了哪些模型？",
+      "category": "content",
+      "expected_answer_type": "single_section",
+      "difficulty": "medium",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "8f0e0051-b1a7-467d-b7a6-02d70f7c1a70",
+          "chunk_id": "275571c0-25ae-5bc6-bea4-c907bc1d2665",
+          "span_ids": [
+            "7f447a52-a4d9-515a-9a4a-88855c46084a",
+            "f0768f8e-fc1d-5d36-966a-576f1a4ef8ec",
+            "1ff5b003-1276-5ea7-9380-617e14807345",
+            "f7ac2756-a90b-5668-ae78-c65bd8fb8d4b",
+            "f8697639-fd85-50aa-a81b-4b5d6bb48560",
+            "f7eeeaf1-3cb0-5314-bbef-eb1b79145a03",
+            "0a314a3f-5002-5553-a7e1-e308b9a2c13a",
+            "9f0693b8-29fb-5585-aa3a-8684347b66ed",
+            "3b4ad0a4-669b-58b6-8a40-fd89140ebf17",
+            "8b2844ee-c62b-54e3-9d16-7612797b30c0",
+            "2b39f511-74c0-5327-8845-d7687cd77ffa",
+            "ec0f872f-53d3-5b4a-80b4-280e6765ff7c",
+            "55767e18-394c-5494-8123-04c8d08ff2d2",
+            "82bc4160-f943-50ee-930c-ee11985aff1e",
+            "4f4c61e1-8b6e-5b3e-8a55-84f8c13ef40d",
+            "d273c651-d2d3-5429-9890-4ecfa62fa5c0",
+            "fd4351b0-40ce-5fa0-a9a9-6b9e4d246550",
+            "db72d325-b05d-5406-a715-a515e9b8b85c",
+            "f6c14c95-d006-5f25-89ac-4a805afc4108",
+            "fef0911f-03bb-5b3e-ab76-72805b31dfa9",
+            "b5f2df59-e645-523f-821a-f0fc977cfed0",
+            "1a3d0448-8092-5400-963c-81fc6c4f3e05"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "1. **聚类功能已经实现了！** **位置** ： `llamaindex_runtime/registry/tree_generator.py` **实现细节** ： ``` # line 23-63: _detect_semantic_cluster() \"\"\"Minimal semantic clustering: detect divergent content domains.\"\"\" # 关键词检测分组： domain_keywords = { \"ml\": [\"machine learning\", \"neural network\", \"deep learning\"], \"cooking\": [\"cooking\", \"recipe\", \"pasta\", \"ingredient\"], \"medicine\": [\"medical\", \"health\", \"doctor\", \"patient\"], \"finance\": [\"finance\", \"investment\", \"stock\", \"market\"], \"sports\": [\"sports\", \"game\", \"team\", \"player\"], } # 集成到树生成流程： def _group_spans_by_semantic_cluster(self, grouped_spans): span_texts = [s.get(\"raw_text\", \"\") for s in grouped_spans] cluster_indices = _detect_semantic_cluster(span_texts) # 按cluster分组spans ``` **工作原理** ： - 检测相同heading_path下的语义分叉内容 - 自动split成多个cluster（cluster_id标记） - 生成多个leaf nodes（每个cluster一个node） - 示例：同是\"附录\"章节，但内容一个是ML相关，一个是cooking相关 → split成2个节点 **当前状态** ： - ✓ 已实现（关键词检测） - ✓ 已集成到TreeGenerator - ⚠ **但是很简单** （只有关键词匹配，不是embedding-based聚类） 2. **PageIndex完整功能清单** 2.1 **PageIndexClient** （client.py） **完整的文档索引管理框架** ： ``` class PageIndexClient: def __init__(self, api_key, model, workspace): # Workspace持久化管理 # 配置加载（ConfigLoader） def index(self, file_path, mode=\"auto\"): # 索引文档（PDF/Markdown） # 生成树结构 + 提取页面文本 # 持久化到workspace def get_document(self, doc_id): # 返回文档元数据（doc_name, description, page_count） def get_document_structure(self, doc_id): # 返回完整树结构（TOC） def get_page_content(self, doc_id, pages=\"5-7\"): # 根据page number提取内容 # 支持 range（5-7）, comma（3,8）, single（12） # Workspace管理： def _save_doc(self, doc_id) # 持久化 def _load_workspace(self) # 加载已有文档 def _ensure_doc_l…",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q19",
+      "query_text": "文档中对比了哪些技术方案？各自的优缺点是什么？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "47a11057-9696-497a-a563-d441307c4f4f",
+          "chunk_id": "b61bd08f-1ab1-5a5f-a016-6e30041fc8aa",
+          "span_ids": [
+            "b885acde-40b8-5b0d-a812-91f1d2b58507"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "树结构提取, PageIndex = tree_parser. 树结构提取, 当前实现 = PageIndexTreeAdapter. 树结构提取, 状态 = ✓ 已移植. Markdown支持, PageIndex = md_to_tree. Markdown支持, 当前实现 = PageIndexTreeAdapter. Markdown支持, 状态 = ✓ 已移植. tree_thinning, PageIndex = ✓ 完整实现. tree_thinning, 当前实现 = ✗ 未移植. tree_thinning, 状态 = ⚠ 需移植. 节点文本提取, PageIndex = ✓ get_page_content. 节点文本提取, 当前实现 = ✗ 未实现. 节点文本提取, 状态 = ⚠ 需移植. Workspace管理, PageIndex = ✓ PageIndexClient. Workspace管理, 当前实现 = ✗ 未实现. Workspace管理, 状态 = ⚠ 需移植. 文档持久化, PageIndex = ✓ JSON workspace. 文档持久化, 当前实现 = ✗ 未实现. 文档持久化, 状态 = ⚠ 需移植. LLM summaries, PageIndex = ✓ node/document. LLM summaries, 当前实现 = ✗ 控制包禁止. LLM summaries, 状态 = ✗. Agent reasoning, PageIndex = ✓ OpenAI Agents SDK. Agent reasoning, 当前实现 = ✗ 未实现. Agent reasoning, 状态 = ⚠ 可选. CLI工具, PageIndex = ✓ run_pageindex.py. CLI工具, 当前实现 = ✗ 未实现. CLI工具, 状态 = ⚠ 可移植. 聚类功能, PageIndex = ✗ 无. 聚类功能, 当前实现 = ✓ TreeGenerator（简单）. 聚类功能, 状态 = ✓ 已实现. UUID provenance, PageIndex = ✗ 序列号0001. UUID provenance, 当前实现 = ✓ uuid5 deterministic. UUID provenance, 状态 = ✓ 已实现. Graph backend, PageIndex = ✗ 无. Graph backend, 当前实现 = ✓ KG retrieval. Graph backend, 状态 = ✓ 已实现. Vector backend, PageIndex = ✗ Vectorless. Vector backend, 当前实现 = ✓ embedding-based. Vector backend, 状态 = ✓ 已实现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "b161dcc2-d3a8-429d-b7aa-992f3d64eef8",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "a29c2f74-6ce3-4039-b6fe-2217a578d2de",
+          "chunk_id": "b4e58e65-4b4f-548c-9383-509cf0fa547a",
+          "span_ids": [
+            "5bc62917-5ffe-599b-b7bc-e9674d9cad09"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "单次查询, PageIndex原版（reasoning-only） = 1000-5000 tokens（LLM导航树）. 单次查询, 完整集成方案（hybrid） = 100-300 tokens（聚类筛选）. 高频查询（100次）, PageIndex原版（reasoning-only） = 100k-500k tokens. 高频查询（100次）, 完整集成方案（hybrid） = 10k-30k tokens（节省90%+）. 冷启动, PageIndex原版（reasoning-only） = 0（无需预计算）. 冷启动, 完整集成方案（hybrid） = 一次索引（聚类+embedding）. Agent reasoning（可选）, PageIndex原版（reasoning-only） = 1000-5000 tokens（每次）. Agent reasoning（可选）, 完整集成方案（hybrid） = 只在需要时启用",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "query_id": "Q20",
+      "query_text": "文档中是否提到与其他系统的集成方案？如果有，集成方式是什么？",
+      "category": "synthesis",
+      "expected_answer_type": "cross_section",
+      "difficulty": "hard",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "d2dc827b-fa45-4463-a115-862534780e9a",
+          "chunk_id": "060f987b-674e-5721-8254-809cd4095e91",
+          "span_ids": [
+            "02f8eddc-d215-5722-9711-e6442b22e9c0",
+            "797cb156-88ab-5ac9-85f3-93e8076234b2"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "**架构** ： ``` PageIndex完整集成（保留所有功能）： ├── PageIndexClient # 索引管理 │ ├── index() # 索引文档 │ ├── get_document() # 获取元数据 │ ├── get_document_structure() # 获取树结构 │ └── get_page_content() # 提取页面内容 │ └── workspace管理 # 持久化 │ ├── run_pageindex.py # CLI工具 │ └── 检索backend增强： ├── TreeBackendAdapter # 检索路由 │ ├── clustering_backend # 聚类检索（当前实现） │ ├── reasoning_backend # Agent reasoning（PageIndex移植） │ └── hybrid_backend # tree + graph + vector │ ├── GraphBackendAdapter # KG retrieval ├── VectorBackendAdapter # Embedding retrieval ```",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "62b599d3-32d7-49ed-8bcf-08edb6bdb332",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "35ad39a8-fd76-42db-93e4-3acb629d21ef",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**",
+          "page_no": 158,
+          "text_preview": "**完整集成PageIndex，增强检索部分**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "db0958ce-a1f3-4ea1-ab86-3f63628924a6",
+          "chunk_id": "00000000-0000-0000-0000-000000000000",
+          "span_ids": [],
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "1280d1b7-a496-4e57-a1e9-0f0a14c5db0c",
+          "chunk_id": "5dfade92-112b-5f30-8a66-ba56351eb45d",
+          "span_ids": [
+            "2e759222-d7ea-513a-9961-23019980fa3e",
+            "395bc9b2-b6c2-500b-bd89-8e3cf5fad4aa"
+          ],
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "**完整集成PageIndex + 增强检索** - **保留PageIndex所有功能** ： - PageIndexClient（索引管理） - Workspace（持久化） - CLI工具 - 工具函数 - **增强检索部分** ： - Clustering backend（预计算，减少token） - Reasoning backend（Agent导航，可选） - Hybrid retrieval（tree + graph + vector） - **符合架构原则** ： - Frozen contracts（PageIndex donor不改） - Unified seam（Registry统一） - 配置驱动（RuntimeSettings）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "status": "completed"
+    }
+  ]
+}

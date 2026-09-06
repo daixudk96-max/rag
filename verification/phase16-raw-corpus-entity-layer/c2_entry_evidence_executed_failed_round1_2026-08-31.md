@@ -1,0 +1,1 @@
+{"c1_closure":{"evidence_name":"e2b_full_corpus_acceptance_evidence_executed_SUCCESS_2026-08-31.md","hash_matched":true,"matrix_keys":8,"status":"executed"},"candidate_path":"fixture_candidates","proof":{"proof_error":{"error_type":"ValueError","outcome":"proof_error"}},"schema_version":1,"status":"executed_failed"}

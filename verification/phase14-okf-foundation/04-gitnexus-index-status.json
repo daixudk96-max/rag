@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "phase": "14-okf-foundation",
+  "artifact_type": "gitnexus_index_status",
+  "executed_at_utc": "2026-07-17T11:36:16Z",
+  "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+  "command": "rtk env -u DATABASE_URL -u FORMAL_RUNTIME_DATABASE_URL -u OKF_MIGRATION_TEST_DATABASE_DISPOSABLE -u OKF_REBUILD_EXPECTED_DATABASE -u OKF_FAILURE_AUDIT_ACCEPTANCE -u OKF_REBUILD_DOCKER_ACCEPTANCE npx gitnexus status",
+  "scope": "GitNexus index for repository label rag",
+  "credential_handling": "All six named database/runtime/acceptance environment variables were explicitly unset. Their values were not inspected, printed, or persisted.",
+  "result": "PASS",
+  "verdict": "PASS",
+  "aggregate_counts": {
+    "indexed_revision_short": "9c1922c",
+    "current_revision_short": "9c1922c",
+    "index_status": "up-to-date"
+  },
+  "provenance": ".planning/phases/14-okf-foundation/14-04-SUMMARY.md",
+  "caveats": [
+    "The documented CLI status command reported an up-to-date index; no refresh was performed.",
+    "No raw terminal output or output digest is retained."
+  ]
+}

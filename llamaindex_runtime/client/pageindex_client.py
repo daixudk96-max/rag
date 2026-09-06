@@ -8,13 +8,11 @@
 import os
 import uuid
 import json
-import asyncio
-import concurrent.futures
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 
 from ..tree.pageindex_adapter import PageIndexTreeAdapter
-from ..registry import RegistryWriter, PostgresRegistryWriter
+from ..registry import RegistryWriter
 from ..config import RuntimeSettings
 from .retrieve import get_document, get_document_structure, get_page_content
 
@@ -57,14 +55,14 @@ class EnhancedPageIndexClient:
         self.registry = registry
         self.settings = settings or RuntimeSettings.from_env()
 
-        # 配置统一到RuntimeSettings
-        if api_key:
-            os.environ["OPENAI_API_KEY"] = api_key
-        elif not os.getenv("OPENAI_API_KEY") and os.getenv("CHATGPT_API_KEY"):
-            os.environ["OPENAI_API_KEY"] = os.getenv("CHATGPT_API_KEY")
+        # SECURITY: Do NOT mutate global os.environ
+        # api_key is stored internally if provided, not propagated to global environment
+        self._api_key = api_key  # Internal storage only, no global propagation
 
         # Workspace路径（优先参数，其次RuntimeSettings）
-        self.workspace = Path(workspace or self.settings.pageindex_workspace).expanduser()
+        self.workspace = Path(
+            workspace or self.settings.pageindex_workspace
+        ).expanduser()
         if self.workspace:
             self.workspace.mkdir(parents=True, exist_ok=True)
 
@@ -87,42 +85,72 @@ class EnhancedPageIndexClient:
         write_to_registry: bool = True,
     ) -> str:
         """
-        Index a document and optionally write to Registry.
+        Index a document and optionally consume canonical state.
 
         Args:
             file_path: 文档路径（PDF或Markdown）
             mode: 索引模式（auto/pdf/md）
-            version_id: Registry版本ID（可选，自动生成）
-            write_to_registry: 是否写入Registry（默认True）
+            version_id: Canonical E2a version UUID to consume (optional)
+            write_to_registry: [DEPRECATED] Has no effect. PageIndex is consumer-only.
 
         Returns:
-            doc_id: PageIndex文档ID
+            doc_id: PageIndex workspace document ID (always a freshly-created UUID4,
+                    never the canonical version_id even when consuming canonical state)
 
-        保留PageIndex完整功能：
-        - PDF索引（page_index）
-        - Markdown索引（md_to_tree）
-        - Workspace持久化
-        - Lazy-load优化
-
-        扩展Registry集成：
-        - 写入tree_nodes
-        - 写入node_spans
-        - 支持hybrid检索
+        Behavior:
+            - ALWAYS returns workspace doc_id (never canonical version_id or None)
+            - When version_id provided with registry, queries canonical tree state
+            - PageIndex NEVER authors canonical E2a data (consumer-only)
+            - Workspace parsing is non-authoritative, canonical state is authoritative
         """
+        # SECURITY: Validate path exists with static error (no raw path exposure)
         file_path = os.path.abspath(os.path.expanduser(file_path))
         if not os.path.exists(file_path):
-            raise FileNotFoundError(f"File not found: {file_path}")
+            raise FileNotFoundError("Document file not found")
+
+        # SECURITY: Validate version_id UUID format with static error (no raw input exposure)
+        canonical_version_uuid = None
+        if version_id:
+            try:
+                canonical_version_uuid = uuid.UUID(version_id)
+            except (ValueError, AttributeError):
+                raise ValueError("version_id must be a valid UUID") from None
+
+        # Consume canonical state if registry and valid version_id provided
+        canonical_hits = []
+        canonical_projections: list[dict[str, Any]] = (
+            []
+        )  # Non-authoritative workspace projection
+        if self.registry and canonical_version_uuid:
+            # Query canonical tree state through adapter.retrieve_tree_hits()
+            # This properly reads canonical nodes/spans/chunks as non-authoritative representation
+            canonical_hits = self.adapter.retrieve_tree_hits(
+                query_text="",  # Empty query to retrieve all canonical state
+                version_id=canonical_version_uuid,
+                registry=self.registry,
+                limit=None,
+            )
+            # SECURITY: Build non-authoritative workspace projection from canonical hits
+            # (no canonical writes, no raw sensitive text leak, clear non-authoritative semantics)
+            for hit in canonical_hits:
+                canonical_projections.append(
+                    {
+                        "heading_path": hit.heading_path,
+                        "page_no": hit.page_no,
+                        "node_id": str(hit.node_id),  # Non-authoritative reference
+                        "chunk_id": str(hit.chunk_id),  # Non-authoritative reference
+                        # Note: text_preview is NOT stored to avoid sensitive text leak
+                    }
+                )
 
         doc_id = str(uuid.uuid4())
         ext = os.path.splitext(file_path)[1].lower()
 
-        is_pdf = ext == '.pdf'
-        is_md = ext in ['.md', '.markdown']
+        is_pdf = ext == ".pdf"
+        is_md = ext in [".md", ".markdown"]
 
         # PageIndex索引（生成树结构）
         if mode == "pdf" or (mode == "auto" and is_pdf):
-            print(f"PageIndex indexing PDF: {file_path}")
-
             # 调用PageIndex donor的page_index（移植版本）
             try:
                 from pageindex.page_index import page_index
@@ -131,72 +159,83 @@ class EnhancedPageIndexClient:
                 result = page_index(
                     doc=file_path,
                     model=self.model,
-                    if_add_node_summary='yes',
-                    if_add_node_text='yes',
-                    if_add_node_id='yes',
-                    if_add_doc_description='yes'
+                    if_add_node_summary="yes",
+                    if_add_node_text="yes",
+                    if_add_node_id="yes",
+                    if_add_doc_description="yes",
                 )
 
                 # 提取PDF页面文本（PageIndex原版逻辑）
                 pages = []
-                with open(file_path, 'rb') as f:
+                with open(file_path, "rb") as f:
                     pdf_reader = PyPDF2.PdfReader(f)
                     for i, page in enumerate(pdf_reader.pages, 1):
-                        pages.append({'page': i, 'content': page.extract_text() or ''})
+                        pages.append({"page": i, "content": page.extract_text() or ""})
 
-                tree_structure = result.get('structure', [])
+                tree_structure = result.get("structure", [])
 
-                # 写入Registry（如果启用）
+                # PageIndex must NOT write to registry (consumer-only)
+                # Removed forbidden adapter.index_tree() call
+                # Client returns non-authoritative workspace result only
                 if write_to_registry and self.registry:
-                    # 使用PageIndexTreeAdapter写入Registry
-                    self.adapter.index_tree(
-                        source_path=file_path,
-                        version_id=version_id or doc_id,
-                        registry=self.registry,
+                    import warnings
+
+                    warnings.warn(
+                        "PageIndex client.index() cannot write canonical tree to registry. "
+                        "PageIndex is a consumer of canonical data, not an author. "
+                        "Use E2a ingestion pipeline for canonical tree authoring.",
+                        UserWarning,
                     )
+                    # Do NOT call adapter.index_tree() or registry.write_tree()
 
                 self.documents[doc_id] = {
-                    'id': doc_id,
-                    'type': 'pdf',
-                    'path': file_path,
-                    'doc_name': result.get('doc_name', ''),
-                    'doc_description': result.get('doc_description', ''),
-                    'page_count': len(pages),
-                    'structure': tree_structure,
-                    'pages': pages,
-                    'version_id': version_id or doc_id,
+                    "id": doc_id,
+                    "type": "pdf",
+                    "path": file_path,
+                    "doc_name": result.get("doc_name", ""),
+                    "doc_description": result.get("doc_description", ""),
+                    "page_count": len(pages),
+                    "structure": tree_structure,
+                    "pages": pages,
+                    # Canonical identity: normalized version_id string if provided, else None
+                    "canonical_version_id": (
+                        str(canonical_version_uuid) if canonical_version_uuid else None
+                    ),
+                    # Non-authoritative canonical projection (no raw text)
+                    "canonical_projections": canonical_projections,
                 }
 
             except ImportError:
-                # PageIndex donor未安装，fallback到PageIndexTreeAdapter
-                self.adapter.index_tree(
-                    source_path=file_path,
-                    version_id=version_id or doc_id,
-                    registry=self.registry if write_to_registry else None,
-                )
+                # PageIndex donor not installed - return non-authoritative stub
+                # DO NOT call adapter.index_tree() (would raise RuntimeError)
+                tree_structure = []  # Stub: empty structure
 
-                # 从Registry读取树结构（fallback）
                 if write_to_registry and self.registry:
-                    nodes = self.registry.query_tree_nodes_by_version(version_id or doc_id)
-                    tree_structure = self._nodes_to_tree(nodes)
-                else:
-                    tree_structure = []
+                    import warnings
+
+                    warnings.warn(
+                        "PageIndex donor not installed. Returning non-authoritative workspace result.",
+                        UserWarning,
+                    )
 
                 self.documents[doc_id] = {
-                    'id': doc_id,
-                    'type': 'pdf',
-                    'path': file_path,
-                    'doc_name': '',
-                    'doc_description': '',
-                    'page_count': 0,
-                    'structure': tree_structure,
-                    'pages': [],
-                    'version_id': version_id or doc_id,
+                    "id": doc_id,
+                    "type": "pdf",
+                    "path": file_path,
+                    "doc_name": "",
+                    "doc_description": "",
+                    "page_count": 0,
+                    "structure": tree_structure,
+                    "pages": [],
+                    # Canonical identity: normalized version_id string if provided, else None
+                    "canonical_version_id": (
+                        str(canonical_version_uuid) if canonical_version_uuid else None
+                    ),
+                    # Non-authoritative canonical projection (empty when donor unavailable)
+                    "canonical_projections": canonical_projections,
                 }
 
         elif mode == "md" or (mode == "auto" and is_md):
-            print(f"PageIndex indexing Markdown: {file_path}")
-
             # 调用PageIndex donor的md_to_tree（移植版本）
             try:
                 import asyncio
@@ -205,57 +244,51 @@ class EnhancedPageIndexClient:
                 coro = md_to_tree(
                     md_path=file_path,
                     if_thinning=False,
-                    if_add_node_summary='yes',
+                    if_add_node_summary="yes",
                     summary_token_threshold=200,
                     model=self.model,
-                    if_add_doc_description='yes',
-                    if_add_node_text='yes',
-                    if_add_node_id='yes'
+                    if_add_doc_description="yes",
+                    if_add_node_text="yes",
+                    if_add_node_id="yes",
                 )
 
                 try:
                     asyncio.get_running_loop()
                     import concurrent.futures
+
                     with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
                         result = pool.submit(asyncio.run, coro).result()
                 except RuntimeError:
                     result = asyncio.run(coro)
 
-                tree_structure = result.get('structure', [])
+                tree_structure = result.get("structure", [])
 
-                # 写入Registry（如果启用）
+                # PageIndex must NOT write to registry (consumer-only)
+                # Removed forbidden write_tree and _flatten_embedded_tree calls
                 if write_to_registry and self.registry:
-                    # Register document and version in Registry FIRST (FK constraint)
-                    registered_doc = self.registry.register_document(
-                        source_path=Path(file_path),
-                        source_uri=f"file://{file_path}",
-                        title=result.get('doc_name', Path(file_path).stem),
-                    )
-                    # Use version_id from registered document
-                    registry_version_id = registered_doc.version_id
+                    import warnings
 
-                    # Use first tree_structure directly (no second md_to_tree call)
-                    flat_nodes = self.adapter._flatten_embedded_tree(
-                        tree_structure,
-                        version_id=registry_version_id
+                    warnings.warn(
+                        "PageIndex client.index() cannot write canonical tree to registry. "
+                        "PageIndex is a consumer of canonical data, not an author. "
+                        "Use E2a ingestion pipeline for canonical tree authoring.",
+                        UserWarning,
                     )
-                    self.registry.write_tree(
-                        version_id=registry_version_id,
-                        nodes=flat_nodes,
-                        node_spans=[],
-                    )
-                    # Update version_id to actual Registry version_id
-                    version_id = str(registry_version_id)
 
                 self.documents[doc_id] = {
-                    'id': doc_id,
-                    'type': 'md',
-                    'path': file_path,
-                    'doc_name': result.get('doc_name', ''),
-                    'doc_description': result.get('doc_description', ''),
-                    'line_count': result.get('line_count', 0),
-                    'structure': tree_structure,
-                    'version_id': version_id or doc_id,
+                    "id": doc_id,
+                    "type": "md",
+                    "path": file_path,
+                    "doc_name": result.get("doc_name", ""),
+                    "doc_description": result.get("doc_description", ""),
+                    "line_count": result.get("line_count", 0),
+                    "structure": tree_structure,
+                    # Canonical identity: normalized version_id string if provided, else None
+                    "canonical_version_id": (
+                        str(canonical_version_uuid) if canonical_version_uuid else None
+                    ),
+                    # Non-authoritative canonical projection (no raw text)
+                    "canonical_projections": canonical_projections,
                 }
 
             except ImportError:
@@ -265,41 +298,47 @@ class EnhancedPageIndexClient:
                 tree_structure = []  # Stub: empty structure
 
                 self.documents[doc_id] = {
-                    'id': doc_id,
-                    'type': 'md',
-                    'path': file_path,
-                    'doc_name': '',
-                    'doc_description': '',
-                    'line_count': 0,
-                    'structure': tree_structure,
-                    'version_id': version_id or doc_id,
+                    "id": doc_id,
+                    "type": "md",
+                    "path": file_path,
+                    "doc_name": "",
+                    "doc_description": "",
+                    "line_count": 0,
+                    "structure": tree_structure,
+                    # Canonical identity: normalized version_id string if provided, else None
+                    "canonical_version_id": (
+                        str(canonical_version_uuid) if canonical_version_uuid else None
+                    ),
+                    # Non-authoritative canonical projection (empty when donor unavailable)
+                    "canonical_projections": canonical_projections,
                 }
         else:
-            raise ValueError(f"Unsupported file format for: {file_path}")
-
-        print(f"PageIndex indexing complete. Document ID: {doc_id}")
+            # SECURITY: Unsupported format - static error (no raw path exposure)
+            raise ValueError("Unsupported file format")
 
         # Workspace持久化（PageIndex原版逻辑）
         if self.workspace:
             self._save_doc(doc_id)
 
-        # Return version_id (for Registry) instead of doc_id (internal)
-        return version_id if write_to_registry and self.registry else doc_id
+        # ALWAYS return workspace doc_id (never canonical version_id)
+        # Canonical version_id is stored separately in document metadata
+        return doc_id
 
     @staticmethod
     def _make_meta_entry(doc: dict) -> dict:
         """Build a lightweight meta entry from a document dict."""
         entry = {
-            'type': doc.get('type', ''),
-            'doc_name': doc.get('doc_name', ''),
-            'doc_description': doc.get('doc_description', ''),
-            'path': doc.get('path', ''),
-            'version_id': doc.get('version_id', ''),
+            "type": doc.get("type", ""),
+            "doc_name": doc.get("doc_name", ""),
+            "doc_description": doc.get("doc_description", ""),
+            "path": doc.get("path", ""),
+            # Canonical identity: explicit version_id if provided, else empty string
+            "canonical_version_id": doc.get("canonical_version_id", ""),
         }
-        if doc.get('type') == 'pdf':
-            entry['page_count'] = doc.get('page_count')
-        elif doc.get('type') == 'md':
-            entry['line_count'] = doc.get('line_count')
+        if doc.get("type") == "pdf":
+            entry["page_count"] = doc.get("page_count")
+        elif doc.get("type") == "md":
+            entry["line_count"] = doc.get("line_count")
         return entry
 
     @staticmethod
@@ -308,8 +347,8 @@ class EnhancedPageIndexClient:
         try:
             with open(path, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except (json.JSONDecodeError, OSError) as e:
-            print(f"Warning: corrupt {Path(path).name}: {e}")
+        except (json.JSONDecodeError, OSError):
+            # SECURITY: Do not log raw path or exception details
             return None
 
     def _save_doc(self, doc_id: str):
@@ -317,9 +356,10 @@ class EnhancedPageIndexClient:
         doc = self.documents[doc_id].copy()
 
         # Strip text from structure nodes — redundant with pages (PDF only)
-        if doc.get('structure') and doc.get('type') == 'pdf':
+        if doc.get("structure") and doc.get("type") == "pdf":
             from .utils import remove_fields
-            doc['structure'] = remove_fields(doc['structure'], fields=['text'])
+
+            doc["structure"] = remove_fields(doc["structure"], fields=["text"])
 
         path = self.workspace / f"{doc_id}.json"
         with open(path, "w", encoding="utf-8") as f:
@@ -328,8 +368,8 @@ class EnhancedPageIndexClient:
         self._save_meta(doc_id, self._make_meta_entry(doc))
 
         # Drop heavy fields; will lazy-load on demand
-        self.documents[doc_id].pop('structure', None)
-        self.documents[doc_id].pop('pages', None)
+        self.documents[doc_id].pop("structure", None)
+        self.documents[doc_id].pop("pages", None)
 
     def _rebuild_meta(self) -> dict:
         """Scan individual doc JSON files and return a meta dict."""
@@ -346,7 +386,7 @@ class EnhancedPageIndexClient:
         """Read and validate _meta.json, returning None on any corruption."""
         meta = self._read_json(self.workspace / META_INDEX)
         if meta is not None and not isinstance(meta, dict):
-            print(f"Warning: {META_INDEX} is not a JSON object, ignoring")
+            # SECURITY: Do not log raw file details
             return None
         return meta
 
@@ -363,26 +403,25 @@ class EnhancedPageIndexClient:
         meta = self._read_meta()
         if meta is None:
             meta = self._rebuild_meta()
-            if meta:
-                print(f"Loaded {len(meta)} document(s) from workspace (legacy mode).")
+            # SECURITY: Do not log raw workspace details
 
         for doc_id, entry in meta.items():
             doc = dict(entry, id=doc_id)
-            if doc.get('path') and not os.path.isabs(doc['path']):
-                doc['path'] = str((self.workspace / doc['path']).resolve())
+            if doc.get("path") and not os.path.isabs(doc["path"]):
+                doc["path"] = str((self.workspace / doc["path"]).resolve())
             self.documents[doc_id] = doc
 
     def _ensure_doc_loaded(self, doc_id: str):
         """Load full document JSON on demand (structure, pages, etc.)."""
         doc = self.documents.get(doc_id)
-        if not doc or doc.get('structure') is not None:
+        if not doc or doc.get("structure") is not None:
             return
         full = self._read_json(self.workspace / f"{doc_id}.json")
         if not full:
             return
-        doc['structure'] = full.get('structure', [])
-        if full.get('pages'):
-            doc['pages'] = full['pages']
+        doc["structure"] = full.get("structure", [])
+        if full.get("pages"):
+            doc["pages"] = full["pages"]
 
     # 工具函数（PageIndex原版）
     def get_document(self, doc_id: str) -> str:
@@ -411,11 +450,11 @@ class EnhancedPageIndexClient:
         # (Registry nodes are already flat with heading_path)
         return [
             {
-                'title': node.get('heading_path', '').split('/')[-1],
-                'heading_path': node.get('heading_path', ''),
-                'node_id': str(node.get('node_id', '')),
-                'level_no': node.get('level_no', 0),
-                'nodes': [],  # No nesting in fallback
+                "title": node.get("heading_path", "").split("/")[-1],
+                "heading_path": node.get("heading_path", ""),
+                "node_id": str(node.get("node_id", "")),
+                "level_no": node.get("level_no", 0),
+                "nodes": [],  # No nesting in fallback
             }
             for node in nodes
         ]

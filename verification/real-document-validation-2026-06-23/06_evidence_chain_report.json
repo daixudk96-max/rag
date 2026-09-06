@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-06-23T01:32:57.398463+00:00",
+  "total_hits": 18,
+  "queries_with_hits": 10,
+  "zero_hit_queries": 10,
+  "zero_hit_query_rate": 0.5,
+  "zero_chunk_hits": 0,
+  "parent_only_hits": 0,
+  "missing_node_hits": 0,
+  "missing_chunk_hits": 5,
+  "chunk_id_present_rate": 0.7222222222222222,
+  "heading_path_rate": 1.0,
+  "measured_not_assumed": true
+}

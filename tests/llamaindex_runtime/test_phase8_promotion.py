@@ -1,9 +1,17 @@
-"""Phase 8: Donor default-path promotion verification tests.
+"""Phase 8: Donor default-path promotion verification tests (with Phase 15 boundary tests).
 
-Tests verify whether donor-integrated path can replace baseline as default:
-1. Donor path runs without fallback when OPENAI_API_KEY available
-2. Provenance integrity preserved under real LLM execution
-3. Comparison framework works on real documents with credentials
+This module contains:
+1. TestPageIndexForbiddenBoundaryOnPageIndex (Phase 15): Pure unit tests for the
+   static forbidden-authoring boundary enforced by PageIndexTreeAdapter.index_tree().
+   These tests verify that index_tree() raises FORBIDDEN before any LLM call or
+   registry interaction. No credentials, no fixtures, no I/O.
+
+2. TestPhase8DonorBaselineComparison (Phase 8): Integration tests for the comparison
+   framework between donor and baseline paths. Requires comparison module and tests
+   report generation with promotion/deferral decisions.
+
+3. TestPhase8DefaultPathSwitch (Phase 8): Integration tests for switching default path
+   based on Phase 8 decision. Requires runtime module and tests default policy behavior.
 
 Exit criteria: Either promotion success (A) or promotion deferred with evidence (B).
 """
@@ -12,105 +20,83 @@ from __future__ import annotations
 
 import uuid
 from pathlib import Path
-from typing import Any
 from unittest.mock import MagicMock
 
 import pytest
 
 
-@pytest.mark.integration
-class TestPhase8CredentialedDonorExecution:
-    """Tests for donor-integrated path execution with real LLM credentials."""
+class TestPageIndexForbiddenBoundaryOnPageIndex:
+    """Phase 15: Verify index_tree() enforces static FORBIDDEN boundary.
 
-    def test_donor_path_calls_real_llm_when_credentials_available(
-        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    These are pure unit tests — no LLM call, no credentials, no fixture,
+    no I/O. The boundary fires before any path read or registry interaction.
+    """
+
+    def test_index_tree_forbidden_boundary_without_llm_call(
+        self,
     ) -> None:
-        """RED: Test that PageIndex adapter calls real LLM via unified seam when OPENAI_API_KEY set.
+        """Phase 15: Verify index_tree raises FORBIDDEN without LLM call.
 
-        This test should FAIL initially because current implementation has fallback to stub.
+        Ensures that index_tree() enforces the consumer-only boundary
+        and raises FORBIDDEN RuntimeError. No live LLM invocation occurs;
+        no credentials are required. The path value is irrelevant (never read).
         """
-        # Setup: Mock OPENAI_API_KEY
-        monkeypatch.setenv("OPENAI_API_KEY", "test-key-for-tdd")
-
         from llamaindex_runtime.tree.pageindex_adapter import PageIndexTreeAdapter
 
-        # Create test PDF (minimal)
-        test_pdf = tmp_path / "test_minimal.pdf"
-        test_pdf.write_bytes(b"%PDF-1.4 minimal stub\n")
-
-        version_id = uuid.uuid4()
-        registry = MagicMock()
-
         adapter = PageIndexTreeAdapter()
+        registry = MagicMock()
+        version_id = uuid.uuid4()
 
-        # RED EXPECTATION: Should call real LLM seam, not fallback to stub
-        # Current implementation: falls back to stub when PageIndex import fails
-        # Target: should route through unified LLM seam successfully
+        # Plain path string — value is irrelevant; index_tree() never reads it.
+        source_path = "any/path/that/is/never/read.pdf"
 
-        # This will fail initially because:
-        # 1. PageIndex import may fail (external dependency)
-        # 2. Even if import succeeds, LLM call may fail without real API
-
-        # Phase 8 TDD: Expect controlled RuntimeError when credentials present but execution fails
-        # NOT: generic Exception, ImportError, or silent stub fallback
+        # MUST raise FORBIDDEN RuntimeError
         with pytest.raises(RuntimeError) as exc_info:
             adapter.index_tree(
-                source_path=str(test_pdf),
+                source_path=source_path,
                 version_id=version_id,
                 registry=registry,
             )
 
-        # GREEN: Verify error is controlled Phase 8 RuntimeError (not generic exception)
-        assert "Phase 8 donor path failed with credentials" in str(exc_info.value)
-        assert "Check LLM configuration" in str(exc_info.value)
+        # Verify FORBIDDEN error message (static consumer-boundary enforcement)
+        error_msg = str(exc_info.value)
+        assert "FORBIDDEN" in error_msg
+        assert "cannot author canonical" in error_msg.lower()
 
-    def test_donor_path_preserves_provenance_under_real_llm(
-        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+        # Verify registry.write_tree was NEVER called
+        registry.write_tree.assert_not_called()
+
+    def test_index_tree_forbidden_prevents_provenance_violation(
+        self,
     ) -> None:
-        """RED: Test that provenance contracts preserved when donor uses real LLM.
+        """Phase 15: Verify forbidden boundary prevents any provenance flow.
 
-        Frozen contracts: doc_id, version_id, span_id, chunk_id, node_id must be UUIDs.
+        Ensures that the FORBIDDEN RuntimeError is raised before any write_tree call,
+        preventing any provenance data from reaching the registry. Zero registry
+        writer calls.
         """
-        monkeypatch.setenv("OPENAI_API_KEY", "test-key-for-tdd")
-
         from llamaindex_runtime.tree.pageindex_adapter import PageIndexTreeAdapter
 
-        test_pdf = tmp_path / "test_provenance.pdf"
-        test_pdf.write_bytes(b"%PDF-1.4 provenance test\n")
-
-        version_id = uuid.uuid4()
-        registry = MagicMock()
-
         adapter = PageIndexTreeAdapter()
+        registry = MagicMock()
+        version_id = uuid.uuid4()
 
-        # Mock registry to capture written nodes
-        written_nodes: list[dict[str, Any]] = []
-        registry.write_tree = MagicMock(
-            side_effect=lambda **kwargs: written_nodes.extend(kwargs.get("nodes", []))
-        )
+        # Plain path string — value is irrelevant; index_tree() never reads it.
+        source_path = "any/path/that/is/never/read.pdf"
 
-        # RED: Should preserve version_id provenance even when using real LLM
-        try:
+        # MUST raise FORBIDDEN RuntimeError before any write attempt
+        with pytest.raises(RuntimeError) as exc_info:
             adapter.index_tree(
-                source_path=str(test_pdf),
+                source_path=source_path,
                 version_id=version_id,
                 registry=registry,
             )
-        except Exception:
-            # Expected to fail in RED phase (no real LLM)
-            pass
 
-        # Provenance integrity check
-        for node in written_nodes:
-            assert isinstance(
-                node.get("version_id"), uuid.UUID
-            ), "Frozen contract violation: version_id must be UUID"
-            assert isinstance(
-                node.get("node_id"), uuid.UUID
-            ), "Frozen contract violation: node_id must be UUID"
-            assert (
-                node["version_id"] == version_id
-            ), "Provenance anchoring violation: version_id mismatch"
+        # Verify FORBIDDEN error
+        assert "FORBIDDEN" in str(exc_info.value)
+
+        # Verify zero registry writer calls (no provenance data leaked)
+        registry.write_tree.assert_not_called()
 
 
 @pytest.mark.integration
@@ -238,3 +224,7 @@ class TestPhase8DefaultPathSwitch:
         # GREEN: Both options should work
         assert isinstance(hits_env, list)
         assert isinstance(hits_param, list)
+
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v"])

@@ -1,0 +1,99 @@
+query_id,hit_rank,node_id,heading_path,page_no,text_preview,is_relevant,relevance_score,judgment_category,judgment_notes
+Q01,1,0ce5cb29-b317-4c65-a618-61b61d5ee65f,PageIndex完整功能分析与集成方案,1,"PageIndex完整功能分析与集成方案...",True/False,0.00,<category>,<notes>
+Q01,2,256f6227-1e82-4023-91c7-5b2c0f5bdeaf,PageIndex完整功能分析与集成方案/关键发现,3,"关键发现...",True/False,0.00,<category>,<notes>
+Q01,3,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q01,4,c43a33c0-9d55-46f8-8907-9f9352f99343,PageIndex完整功能分析与集成方案/用户意图理解,154,"用户意图理解...",True/False,0.00,<category>,<notes>
+Q01,5,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q02,1,a42e538f-c66d-47c8-b22d-fce457a8e16f,PageIndex完整功能分析与集成方案/关键发现/1. **聚类功能已经实现了！**,5,"1. **聚类功能已经实现了！**...",True/False,0.00,<category>,<notes>
+Q02,2,256f6227-1e82-4023-91c7-5b2c0f5bdeaf,PageIndex完整功能分析与集成方案/关键发现,3,"关键发现...",True/False,0.00,<category>,<notes>
+Q02,3,c64dc629-ce14-4c6d-a352-d01aad5e132e,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**,43,"2. **PageIndex完整功能清单**...",True/False,0.00,<category>,<notes>
+Q03,1,932ce793-524f-42c8-aa80-836b445e1c73,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）,110,"agentic_vectorless_rag_demo.py）...",True/False,0.00,<category>,<notes>
+Q03,2,c64dc629-ce14-4c6d-a352-d01aad5e132e,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**,43,"2. **PageIndex完整功能清单**...",True/False,0.00,<category>,<notes>
+Q03,3,0ce5cb29-b317-4c65-a618-61b61d5ee65f,PageIndex完整功能分析与集成方案,1,"PageIndex完整功能分析与集成方案...",True/False,0.00,<category>,<notes>
+Q03,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q03,5,fdfd5000-5cd9-42ee-bab9-2198675c44e7,PageIndex完整功能分析与集成方案/总结,385,"总结...",True/False,0.00,<category>,<notes>
+Q04,1,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q04,2,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q04,3,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q04,4,256f6227-1e82-4023-91c7-5b2c0f5bdeaf,PageIndex完整功能分析与集成方案/关键发现,3,"关键发现...",True/False,0.00,<category>,<notes>
+Q04,5,83709124-2ed1-4d58-8f0a-97cb0697b4ab,PageIndex完整功能分析与集成方案/总结/推荐方案：,392,"推荐方案：...",True/False,0.00,<category>,<notes>
+Q05,1,c43a33c0-9d55-46f8-8907-9f9352f99343,PageIndex完整功能分析与集成方案/用户意图理解,154,"用户意图理解...",True/False,0.00,<category>,<notes>
+Q05,2,846334d1-2ad0-4f6d-baa3-ecd047871055,PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**,158,"**完整集成PageIndex，增强检索部分**...",True/False,0.00,<category>,<notes>
+Q05,3,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q05,4,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q05,5,5dfdf97c-ab6f-4806-803f-f8837b7a33a1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）,45,"2.1 **PageIndexClient**（client.py）...",True/False,0.00,<category>,<notes>
+Q06,1,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q06,2,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q06,3,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q06,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q06,5,9f46f96a-2a07-455c-81e4-c96f93e517df,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）,270,"Phase 2：检索backend增强（4天）...",True/False,0.00,<category>,<notes>
+Q07,1,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q07,2,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q07,3,83709124-2ed1-4d58-8f0a-97cb0697b4ab,PageIndex完整功能分析与集成方案/总结/推荐方案：,392,"推荐方案：...",True/False,0.00,<category>,<notes>
+Q07,4,fdfd5000-5cd9-42ee-bab9-2198675c44e7,PageIndex完整功能分析与集成方案/总结,385,"总结...",True/False,0.00,<category>,<notes>
+Q07,5,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q08,1,5dfdf97c-ab6f-4806-803f-f8837b7a33a1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）,45,"2.1 **PageIndexClient**（client.py）...",True/False,0.00,<category>,<notes>
+Q08,2,40e899c1-f898-4762-b14e-318a640db8c1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）,82,"2.2 **CLI工具**（run_pageindex.py）...",True/False,0.00,<category>,<notes>
+Q08,3,932ce793-524f-42c8-aa80-836b445e1c73,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）,110,"agentic_vectorless_rag_demo.py）...",True/False,0.00,<category>,<notes>
+Q08,4,9f46f96a-2a07-455c-81e4-c96f93e517df,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）,270,"Phase 2：检索backend增强（4天）...",True/False,0.00,<category>,<notes>
+Q08,5,731c7764-949e-45c9-9678-b402f7ce9e7f,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 3：配置与测试（3天）,333,"Phase 3：配置与测试（3天）...",True/False,0.00,<category>,<notes>
+Q09,1,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q09,2,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q09,3,c43a33c0-9d55-46f8-8907-9f9352f99343,PageIndex完整功能分析与集成方案/用户意图理解,154,"用户意图理解...",True/False,0.00,<category>,<notes>
+Q09,4,932ce793-524f-42c8-aa80-836b445e1c73,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）,110,"agentic_vectorless_rag_demo.py）...",True/False,0.00,<category>,<notes>
+Q09,5,eae87824-d424-4f05-bd4a-3b5f7f711286,PageIndex完整功能分析与集成方案/具体实现步骤,230,"具体实现步骤...",True/False,0.00,<category>,<notes>
+Q10,1,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q10,2,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q10,3,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q10,4,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q10,5,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q11,1,83709124-2ed1-4d58-8f0a-97cb0697b4ab,PageIndex完整功能分析与集成方案/总结/推荐方案：,392,"推荐方案：...",True/False,0.00,<category>,<notes>
+Q11,2,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q11,3,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q11,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q11,5,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q12,1,b15372cc-6733-4d22-aad8-50670d6c2b13,PageIndex完整功能分析与集成方案/总结/下一步：,411,"下一步：...",True/False,0.00,<category>,<notes>
+Q12,2,fdfd5000-5cd9-42ee-bab9-2198675c44e7,PageIndex完整功能分析与集成方案/总结,385,"总结...",True/False,0.00,<category>,<notes>
+Q12,3,d885cfe7-de5a-43af-b233-ace27fc3ca8a,PageIndex完整功能分析与集成方案/总结/关键发现：,387,"关键发现：...",True/False,0.00,<category>,<notes>
+Q12,4,83709124-2ed1-4d58-8f0a-97cb0697b4ab,PageIndex完整功能分析与集成方案/总结/推荐方案：,392,"推荐方案：...",True/False,0.00,<category>,<notes>
+Q12,5,eae87824-d424-4f05-bd4a-3b5f7f711286,PageIndex完整功能分析与集成方案/具体实现步骤,230,"具体实现步骤...",True/False,0.00,<category>,<notes>
+Q13,1,5dfdf97c-ab6f-4806-803f-f8837b7a33a1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）,45,"2.1 **PageIndexClient**（client.py）...",True/False,0.00,<category>,<notes>
+Q13,2,40e899c1-f898-4762-b14e-318a640db8c1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）,82,"2.2 **CLI工具**（run_pageindex.py）...",True/False,0.00,<category>,<notes>
+Q13,3,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q13,4,9f46f96a-2a07-455c-81e4-c96f93e517df,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）,270,"Phase 2：检索backend增强（4天）...",True/False,0.00,<category>,<notes>
+Q13,5,731c7764-949e-45c9-9678-b402f7ce9e7f,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 3：配置与测试（3天）,333,"Phase 3：配置与测试（3天）...",True/False,0.00,<category>,<notes>
+Q14,1,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q14,2,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q14,3,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q14,4,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q14,5,9f46f96a-2a07-455c-81e4-c96f93e517df,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）,270,"Phase 2：检索backend增强（4天）...",True/False,0.00,<category>,<notes>
+Q15,1,9f46f96a-2a07-455c-81e4-c96f93e517df,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）,270,"Phase 2：检索backend增强（4天）...",True/False,0.00,<category>,<notes>
+Q15,2,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q15,3,c43a33c0-9d55-46f8-8907-9f9352f99343,PageIndex完整功能分析与集成方案/用户意图理解,154,"用户意图理解...",True/False,0.00,<category>,<notes>
+Q15,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q15,5,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q16,1,5dfdf97c-ab6f-4806-803f-f8837b7a33a1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）,45,"2.1 **PageIndexClient**（client.py）...",True/False,0.00,<category>,<notes>
+Q16,2,40e899c1-f898-4762-b14e-318a640db8c1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）,82,"2.2 **CLI工具**（run_pageindex.py）...",True/False,0.00,<category>,<notes>
+Q16,3,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q16,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q16,5,932ce793-524f-42c8-aa80-836b445e1c73,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）,110,"agentic_vectorless_rag_demo.py）...",True/False,0.00,<category>,<notes>
+Q17,1,5dfdf97c-ab6f-4806-803f-f8837b7a33a1,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）,45,"2.1 **PageIndexClient**（client.py）...",True/False,0.00,<category>,<notes>
+Q17,2,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q17,3,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q17,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q17,5,c64dc629-ce14-4c6d-a352-d01aad5e132e,PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**,43,"2. **PageIndex完整功能清单**...",True/False,0.00,<category>,<notes>
+Q18,1,9f46f96a-2a07-455c-81e4-c96f93e517df,PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）,270,"Phase 2：检索backend增强（4天）...",True/False,0.00,<category>,<notes>
+Q18,2,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q18,3,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q18,4,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q18,5,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q19,1,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>
+Q19,2,f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵,134,"功能矩阵...",True/False,0.00,<category>,<notes>
+Q19,3,075677b5-b734-4200-8443-57d8c5f93c6c,PageIndex完整功能分析与集成方案/Token消耗对比,374,"Token消耗对比...",True/False,0.00,<category>,<notes>
+Q19,4,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q19,5,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q20,1,a548e0f9-3e91-4d1c-a887-c8bcec242874,PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**,190,"**方案：完整集成PageIndex + 增强检索**...",True/False,0.00,<category>,<notes>
+Q20,2,de32600b-666d-44a1-81ad-82b73fac7680,PageIndex完整功能分析与集成方案/推荐集成方案,188,"推荐集成方案...",True/False,0.00,<category>,<notes>
+Q20,3,846334d1-2ad0-4f6d-baa3-ecd047871055,PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**,158,"**完整集成PageIndex，增强检索部分**...",True/False,0.00,<category>,<notes>
+Q20,4,c43a33c0-9d55-46f8-8907-9f9352f99343,PageIndex完整功能分析与集成方案/用户意图理解,154,"用户意图理解...",True/False,0.00,<category>,<notes>
+Q20,5,6f189d97-92cf-4772-b335-8f9134d35fb6,PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比,132,"PageIndex vs 当前实现对比...",True/False,0.00,<category>,<notes>

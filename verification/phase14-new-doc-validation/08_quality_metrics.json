@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-07-01T18:15:09.708428+00:00",
+  "hit_rate": 1.0,
+  "avg_hits_per_query": 4.95,
+  "evidence_chunk_rate": 1.0,
+  "chunk_id_present_rate": 1.0,
+  "thresholds": {
+    "min_hit_rate": 0.8,
+    "min_evidence_rate": 0.95
+  },
+  "pass_hit_rate": true,
+  "pass_evidence_rate": true
+}

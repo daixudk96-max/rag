@@ -1,0 +1,13 @@
+{
+  "requirement_id": "REQ-P8-MATCHED-VALIDATION-RERUN",
+  "status": "MATCHED_RETRIEVAL_READY",
+  "validation_date": "2026-06-08T06:29:24.568654+00:00",
+  "active_version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count_expected": 20,
+  "query_count_completed": 20,
+  "total_hit_rows": 95,
+  "retrieval_failures": 0,
+  "blocking_reasons": [],
+  "next_allowed_action": "run_integrity_gate",
+  "level_baseline": "Level 2 remains authoritative"
+}

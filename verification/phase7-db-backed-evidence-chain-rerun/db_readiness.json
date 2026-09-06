@@ -1,0 +1,14 @@
+{
+  "database_url_configured": true,
+  "connection_status": "connected",
+  "active_version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "tables_checked": [
+    "document_versions",
+    "canonical_spans",
+    "vector_chunks",
+    "vector_chunk_spans",
+    "tree_node_spans"
+  ],
+  "ready_for_materialization": true,
+  "blocking_reasons": []
+}

@@ -1,0 +1,128 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.2, pluggy-1.6.0 -- C:\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: E:\github\rag
+configfile: pytest.ini
+plugins: anyio-4.12.1, Faker-40.15.0, langsmith-0.4.59, asyncio-1.3.0, cov-7.0.0, mock-3.15.1, timeout-2.4.0, tdd-guard-pytest-0.1.2
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/llamaindex_runtime/test_pageindex_double_call.py::test_pageindex_donor_called_twice_before_fix PageIndex indexing Markdown: C:\Users\daixu\AppData\Local\Temp\tmp5b8e0_bh.md
+FAILED
+
+================================== FAILURES ===================================
+________________ test_pageindex_donor_called_twice_before_fix _________________
+
+    def test_pageindex_donor_called_twice_before_fix():
+        """
+        RED state: Prove bug exists.
+    
+        Expected: PageIndex donor (md_to_tree) is called 2 times
+        This proves the double-call bug exists.
+        """
+        # Create a temporary markdown file
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as tmp_file:
+            tmp_file.write("# Test Document\n\n## Section 1\n\nContent here.\n")
+            tmp_md_path = tmp_file.name
+    
+        try:
+            # Mock PageIndex donor - patch the source module where md_to_tree is defined
+            with mock.patch('pageindex.page_index_md.md_to_tree', new_callable=mock.AsyncMock) as mock_md_to_tree:
+                # Setup mock return value
+                mock_md_to_tree.return_value = {
+                    'structure': [
+                        {'level': 0, 'heading': 'Root', 'content': 'Root content'},
+                        {'level': 1, 'heading': 'Section 1', 'content': 'Section 1 content'},
+                    ],
+                    'doc_name': 'test_document'
+                }
+    
+                # Setup client with mocked registry
+                settings = RuntimeSettings.from_env()
+                mock_registry = mock.MagicMock()
+                mock_registry.register_document.return_value = mock.MagicMock(version_id='test_version_123')
+    
+                client = EnhancedPageIndexClient(registry=mock_registry, settings=settings)
+    
+                # Execute: Call index() with write_to_registry=True
+                # This triggers the double-call bug
+>               client.index(file_path=tmp_md_path, write_to_registry=True)
+
+tests\llamaindex_runtime\test_pageindex_double_call.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+llamaindex_runtime\client\pageindex_client.py:238: in index
+    self.adapter.index_tree(
+llamaindex_runtime\tree\pageindex_adapter.py:76: in index_tree
+    flat_nodes = self._flatten_embedded_tree(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <llamaindex_runtime.tree.pageindex_adapter.PageIndexTreeAdapter object at 0x0000027481477E90>
+embedded_tree = [{'content': 'Root content', 'heading': 'Root', 'level': 0}, {'content': 'Section 1 content', 'heading': 'Section 1', 'level': 1}]
+version_id = 'test_version_123', parent_node_id = None, heading_prefix = ''
+
+    def _flatten_embedded_tree(
+        self,
+        embedded_tree: list[dict[str, Any]],
+        version_id: UUID,
+        parent_node_id: UUID | None = None,
+        heading_prefix: str = "",
+    ) -> list[dict[str, Any]]:
+        """Convert PageIndex embedded tree to local flat schema.
+    
+        This is the key adaptation layer:
+        - Input: Embedded tree with nodes[] inside nodes[]
+        - Output: Flat list with parent_node_id FK and UUIDs
+    
+        Transformation:
+        1. Generate UUID for node_id (not PageIndex's sequential "0001")
+        2. Build heading_path from title + parent chain
+        3. Use start_index as page_no, ignore end_index
+        4. Use heading-based summary (not LLM-generated)
+        5. Set parent_node_id relationships
+        6. Set version_id for provenance anchoring
+    
+        Parameters
+        ----------
+        embedded_tree:
+            PageIndex embedded tree structure.
+        version_id:
+            Version UUID for provenance anchoring (frozen contract).
+        parent_node_id:
+            Parent node UUID (None for root nodes).
+        heading_prefix:
+            Heading path prefix from parent chain.
+    
+        Returns
+        -------
+        list[dict]
+            Flat node list matching local schema.
+        """
+        flat_nodes: list[dict[str, Any]] = []
+    
+        for node_dict in embedded_tree:
+            # 1. Generate UUID (not PageIndex's sequential strings)
+            node_id = uuid.uuid4()
+    
+            # 2. Build heading_path from title + parent chain
+            if heading_prefix:
+                heading_path = f"{heading_prefix}/{node_dict['title']}"
+            else:
+>               heading_path = node_dict['title']
+                               ^^^^^^^^^^^^^^^^^^
+E               KeyError: 'title'
+
+llamaindex_runtime\tree\pageindex_adapter.py:424: KeyError
+============================== warnings summary ===============================
+C:\Python311\Lib\site-packages\torch\cuda\__init__.py:61
+  C:\Python311\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+    import pynvml  # type: ignore[import]
+
+C:\Python311\Lib\site-packages\PyPDF2\__init__.py:21
+  C:\Python311\Lib\site-packages\PyPDF2\__init__.py:21: DeprecationWarning: PyPDF2 is deprecated. Please move to the pypdf library instead.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/llamaindex_runtime/test_pageindex_double_call.py::test_pageindex_donor_called_twice_before_fix
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+======================= 1 failed, 2 warnings in 53.13s ========================

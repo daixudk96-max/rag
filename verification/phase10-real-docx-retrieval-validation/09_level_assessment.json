@@ -1,0 +1,7 @@
+{
+  "generated_at": "2026-06-16T17:39:37Z",
+  "status": "LEVEL_2_PRESERVED_PENDING_HOTSPOT_JUDGMENTS",
+  "level": "Level_2",
+  "reason": "All queries returned evidence-bearing hits with hotspot/navigation metadata preserved.",
+  "next_allowed_action": "complete_07_judgment_template_then_calculate_quality_metrics"
+}

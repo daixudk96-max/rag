@@ -1,0 +1,341 @@
+{
+  "schema_version": "1.0",
+  "record_kind": "current_gate3_per_attempt_authorization_contract",
+  "record_purpose": "Current-runtime authority contract for Gate 3 (Plan 16-13 real local RaNER smoke + Windows/WSL resource measurement) established by Task #222 (2026-08-12). Encodes the genuine user authorization message of 2026-08-11 ('行，我授权继续吧然后 gate3 可以多次运行') as a per-attempt, coordinator-initiated, bounded, non-concurrent multi-attempt contract. This is a NEW current contract artifact and is NOT the historical single-use materialization ledger (16-LIVE-GATE-TOKENS.json), which is preserved byte-for-byte and never reinterpreted as current runtime authority. REMEDIATED 2026-08-12 (Task #222 continuation, adversarial-review remediation): the single authoritative runtime registry moved to a SIBLING path outside any attempt output root; a supervised-launch protocol (external bounded supervisory parent + worker subprocess, OS-backed inter-process lock, startup barrier, worker never writes lifecycle events, explicit dangling-launch reconciliation) is required; terminal ok means ONLY supervised completion (not independently verified/canonical/frozen); canonical_selected and compatibility_frozen are post-terminal append-only annotation events in the same registry.",
+  "artifact_role": "stable policy / current-authority contract artifact; it is NOT the runtime attempt registry. Ordinary launcher/runtime code MUST NOT mutate .planning/**. The single authoritative append-only runtime attempt registry is declared under attempt_contract.runtime_attempt_registry (SIBLING path OUTSIDE any attempt output root, so it can never be atomically replaced or rejected as pre-existing by the live publisher) and is implemented by Task #221 outside .planning/**. Future multi-attempt evidence publication is attempt-specific under raner_smoke_live_output/<attempt-id>/; Task #221 must adapt the current fixed whole-directory atomic os.replace publisher semantics through TDD before any launch.",
+  "authorizing_message": "行，我授权继续吧然后 gate3 可以多次运行",
+  "authorizing_message_date": "2026-08-11",
+  "reconciled_at": "2026-08-12",
+  "reconciled_by": "Task #222 (GSD planning-only reconciliation; adversarial-review remediation, continuation of Task #222)",
+  "gate_3": {
+    "token_id": "OKF_E2B_RANER_SMOKE_AUTHORIZED",
+    "plan": "16-13",
+    "purpose": "Real local RaNER offline smoke + Windows/WSL resource measurement (cold start, peak memory, throughput, p95 latency), producing exact code-point mention coordinates, confidence=None/confidence_kind=unavailable, and the measured input from which runtime_compatibility_id may later be frozen.",
+    "authorization_model": "per_attempt_explicit_coordinator_initiated_multi_attempt",
+    "multi_attempt_grant": true,
+    "automatic_retry": false,
+    "autonomous_loop": false,
+    "concurrency": false,
+    "historical_materialization_record": ".planning/phases/16-raw-corpus-entity-layer/16-LIVE-GATE-TOKENS.json",
+    "historical_record_interpretation": "PRESERVE byte-for-byte (do not delete or rewrite historical claims that were true when written) and NEVER reinterpret as current runtime authority. Materialization of the historical single-use tokens is bookkeeping only and grants no standing or per-attempt runtime entitlement."
+  },
+  "attempt_contract": {
+    "each_attempt": {
+      "explicitly_separately_initiated_by_coordinator": true,
+      "bounded": true,
+      "non_concurrent": true,
+      "at_most_one_attempt_active_or_launch_committed": true,
+      "fresh_immutable_attempt_id": true,
+      "durably_recorded_before_any_model_loader_begins": true,
+      "supervised_by_external_parent": true,
+      "worker_must_not_write_lifecycle_events": true,
+      "terminal_for_that_attempt_on_success_failure_timeout_interruption_crash": true,
+      "terminal_records_never_transition_or_rewrite": true,
+      "permanently_retained_if_failed": true
+    },
+    "explicit_semantics": {
+      "new_attempt_initiation_allowed": "true ONLY for blocked_not_executed (the gate-level / no-active-attempt pre-initiation condition): an explicit coordinator action may create a fresh attempt ONLY when no attempt is active. false for launch_committed, ok, execution_failed.",
+      "current_attempt_model_load_allowed": "true ONLY for launch_committed (the already-created attempt may proceed to its model loader, under the supervised-launch protocol). false for blocked_not_executed (no attempt created), ok, execution_failed.",
+      "launch_committed_meaning": "launch_committed means ONLY that the already-created attempt may proceed to its model loader under the supervised-launch protocol (parent holds the OS-backed inter-process lock; the worker cannot reach a model loader before the durable launch_committed event + startup barrier are established; the worker MUST NOT write lifecycle registry events). It MUST NOT authorize creation/initiation of another attempt.",
+      "new_attempt_after_terminal": "Terminal records never transition or get rewritten. After an attempt is terminal, a later attempt is created as a NEW record with a NEW attempt_id through a separate explicit coordinator initiation, never via a transition from the terminal record, and only after the previous attempt has a terminal lifecycle event.",
+      "terminal_ok_meaning": "terminal ok means ONLY that the supervised worker completed successfully and the supervisor structurally captured the expected per-attempt evidence pair (hashes). It does NOT mean independently verified, canonical, deployment-suitable, or compatibility-frozen.",
+      "canonical_selection_and_freeze_are_post_terminal_annotations": "canonical_selected and compatibility_frozen are append-only non-lifecycle annotation events in the same single authoritative registry; they never rewrite a terminal event."
+    },
+    "forbidden_patterns": [
+      "stale attempt ID reuse",
+      "stale attempt output reuse",
+      "stale attempt marker reuse",
+      "rewriting a prior attempt's durable record",
+      "treating a later attempt as a retry of a failed attempt ID",
+      "automatic retry",
+      "autonomous launch loop",
+      "concurrent attempts",
+      "initiating a new attempt while any attempt is active or launch_committed",
+      "creating or initiating another attempt under launch_committed (launch_committed authorizes only the already-created attempt to proceed to its model loader)",
+      "transitioning from a terminal record into a new attempt (a later attempt is a NEW record with a NEW attempt_id via a separate explicit coordinator initiation)",
+      "placing the runtime attempt registry inside an attempt output root that can be atomically replaced or rejected as pre-existing by the live publisher",
+      "a worker subprocess writing lifecycle registry events",
+      "automatic retry or an automatic recovery loop that launches a new attempt after a dangling launch_committed",
+      "appending canonical_selected without an independent verifier validating a terminal ok",
+      "appending compatibility_frozen without a prior canonical_selected and a separately authorized compatibility-freeze action",
+      "rewriting or augmenting a terminal ok event with canonical/freeze status"
+    ],
+    "later_attempt_definition": "A later attempt is a NEW explicit attempt with a NEW immutable attempt_id, never a retry or continuation of a failed attempt_id, and never a transition from a terminal record; it may be initiated only after the previous attempt has a terminal lifecycle event. The three timed inference passes inside one attempt are MEASUREMENT REPETITIONS within that same attempt, not retries.",
+    "supervised_launch_protocol": {
+      "parent_worker_model": true,
+      "parent_role": "external bounded supervisory parent: holds the OS-backed inter-process exclusive lock from pre-launch check through the terminal lifecycle event; spawns and supervises the worker; appends ALL lifecycle registry events; observes worker exit/timeout/interruption/crash and appends exactly one terminal event; terminates the worker on bounded timeout; sanitizes failure details; the worker MUST NOT write lifecycle registry events.",
+      "worker_role": "child worker subprocess: performs the model load + inference + measurement; MUST NOT write any lifecycle registry event; can only reach a model loader after the durable launch_committed event and the lock protocol are established (startup barrier).",
+      "startup_barrier": "a parent/worker startup barrier (or equivalent) so the worker cannot reach a model loader before the durable launch_committed event and the lock protocol are established.",
+      "lock": {
+        "path": "verification/phase16-raw-corpus-entity-layer/.raner_smoke_attempt_registry.lock",
+        "scope": "OS-backed inter-process exclusive lock; held from pre-launch check through the terminal lifecycle event; SIBLING path outside any attempt output directory; enforces at most one attempt in launch_committed (non-concurrent)."
+      },
+      "worker_started_event": {
+        "included": true,
+        "when": "appended by the parent after launch but before the startup barrier opens; records worker identity/liveness.",
+        "kind": "permitted non-terminal lifecycle metadata event; it does not grant any lifecycle transition."
+      }
+    },
+    "dangling_launch_reconciliation": {
+      "condition": "a process killed/crashed after the durable launch_committed event but before any terminal event leaves a dangling launch_committed.",
+      "policy": "NEVER automatic retry and NEVER an automatic recovery loop that launches a new attempt.",
+      "explicit_coordinator_action": "an explicit coordinator reconciliation action acquires the same OS-backed inter-process lock, positively confirms the worker is not alive (or the startup barrier cannot proceed), then appends exactly one execution_failed terminal event with a truthful result_reason (e.g. dangling_launch_reconciled).",
+      "liveness_unestablishable": "if liveness cannot be established, the reconciliation BLOCKS and does NOT start another attempt.",
+      "allowed_because": "this terminal append is allowed because launch_committed is NON-terminal; no terminal event is ever rewritten.",
+      "later_attempt": "a later attempt is only a NEW separately initiated attempt_id after the previous attempt has a terminal lifecycle event; reconciliation does not launch a new attempt."
+    },
+    "attempt_state_machine": {
+      "initial_state": "blocked_not_executed",
+      "states": {
+        "blocked_not_executed": {
+          "description": "Initial (gate-level) state for every attempt. No attempt record exists, no worker exists, and no model loader has begun. This is the no-active-attempt pre-initiation condition: an explicit coordinator action MAY create a fresh attempt ONLY when no attempt is active.",
+          "new_attempt_initiation_allowed": true,
+          "current_attempt_model_load_allowed": false,
+          "terminal": false
+        },
+        "launch_committed": {
+          "description": "The coordinator has explicitly initiated THIS attempt via the supervised-launch protocol: the supervising parent holds the OS-backed inter-process exclusive lock (verification/phase16-raw-corpus-entity-layer/.raner_smoke_attempt_registry.lock), assigned a fresh immutable attempt_id, and durably recorded it (append-only launch_committed event in the authoritative SIBLING runtime registry, verification/phase16-raw-corpus-entity-layer/raner_smoke_attempt_registry.jsonl) BEFORE the worker can reach any model loader (startup barrier). The worker may proceed to its model loader only after the durable launch event and lock protocol are established; the worker MUST NOT write lifecycle registry events. launch_committed means ONLY that the already-created attempt may proceed to its model loader under supervision. It MUST NOT authorize creation/initiation of another attempt. At most one attempt may be launch_committed (non-concurrent). A dangling launch_committed (worker killed/crashed before any terminal event) is terminalized ONLY by explicit coordinator reconciliation (append exactly one execution_failed; never automatic retry).",
+          "new_attempt_initiation_allowed": false,
+          "current_attempt_model_load_allowed": true,
+          "terminal": false
+        },
+        "ok": {
+          "description": "Terminal success for this attempt in the lifecycle sense ONLY: the supervised worker completed successfully and the supervisor structurally captured the expected per-attempt evidence pair (hashes). It does NOT mean independently verified, canonical, deployment-suitable, or compatibility-frozen. Cannot transition to any other state and is never rewritten. Post-terminal canonical_selected / compatibility_frozen annotation events are separate append-only records.",
+          "new_attempt_initiation_allowed": false,
+          "current_attempt_model_load_allowed": false,
+          "terminal": true
+        },
+        "execution_failed": {
+          "description": "Terminal failure for this attempt (supervisor-observed outcome: timeout, interruption, crash, runtime_error, launch_denied, supervisor_observed_exit; or explicit coordinator reconciliation of a dangling launch: dangling_launch_reconciled). Permanently retained with its immutable attempt_id and result_reason. Cannot transition to any other state and is never retried, reused, or rewritten.",
+          "new_attempt_initiation_allowed": false,
+          "current_attempt_model_load_allowed": false,
+          "terminal": true
+        }
+      },
+      "transitions": [
+        {
+          "from": "blocked_not_executed",
+          "to": "launch_committed",
+          "trigger": "Coordinator explicitly and separately initiates a new attempt: the supervising parent acquires the OS-backed inter-process exclusive lock, assigns a fresh immutable attempt_id, and durably appends the launch_committed event to the authoritative SIBLING runtime registry BEFORE the worker can reach any model loader (startup barrier). Requires NO active attempt (no attempt launch_committed or non-terminal) and no prior use of the same attempt_id. After an attempt is terminal, a later attempt is created as a NEW record with a NEW attempt_id through a separate explicit coordinator initiation, never by a transition from the terminal record, and only after the previous attempt has a terminal lifecycle event.",
+          "terminal_for_attempt": false
+        },
+        {
+          "from": "launch_committed",
+          "to": "ok",
+          "trigger": "The supervising parent observes the worker exit successfully and structurally captures the expected per-attempt evidence pair (hashes); it appends exactly one ok terminal event. ok means supervised completion ONLY (not independent verification, not canonical, not compatibility-frozen). Later canonical_selected / compatibility_frozen are separate post-terminal annotation events.",
+          "terminal_for_attempt": true
+        },
+        {
+          "from": "launch_committed",
+          "to": "execution_failed",
+          "trigger": "The supervising parent observes worker failure, timeout, interruption, crash, or launch denial and appends exactly one execution_failed terminal event (sanitized failure details; worker terminated on bounded timeout); OR an explicit coordinator reconciliation terminalizes a dangling launch_committed by appending exactly one execution_failed with a truthful reason (blocks if liveness cannot be established; never automatic retry / no recovery loop). The record becomes terminal for that attempt and is permanently retained.",
+          "terminal_for_attempt": true
+        }
+      ],
+      "terminal_states": [
+        "ok",
+        "execution_failed"
+      ],
+      "terminal_outcome_reasons": {
+        "ok": [
+          "success"
+        ],
+        "execution_failed": [
+          "timeout",
+          "interruption",
+          "crash",
+          "runtime_error",
+          "launch_denied",
+          "supervisor_observed_exit",
+          "dangling_launch_reconciled"
+        ]
+      },
+      "invariants": [
+        "No transition out of a terminal state; terminal records are never transitioned or rewritten.",
+        "After an attempt is terminal, a later attempt is created as a NEW record with a NEW attempt_id through a separate explicit coordinator initiation, never via a transition from the terminal record, and only after the previous attempt has a terminal lifecycle event.",
+        "launch_committed is durably recorded by the supervising parent as an append-only event in the authoritative SIBLING runtime registry BEFORE the worker can reach a model loader (startup barrier); there is exactly one launch_committed event per attempt_id and no second launch event for the same ID.",
+        "Exactly one terminal event (ok or execution_failed) per attempt_id; no terminal rewrite; failed history is permanently retained. Terminal events are appended by the supervising parent or the explicit coordinator reconciliation - never by the worker.",
+        "The worker subprocess MUST NOT write lifecycle registry events.",
+        "The supervising parent holds the OS-backed inter-process exclusive lock from pre-launch check through the terminal lifecycle event; at most one attempt may be active/launch_committed.",
+        "launch_committed allows ONLY the already-created attempt to proceed to its model loader under supervision; it never authorizes creation/initiation of another attempt.",
+        "A dangling launch_committed is terminalized ONLY by explicit coordinator reconciliation (acquire the same lock, confirm the worker is not alive / the startup barrier cannot proceed, append exactly one execution_failed); if liveness cannot be established, block and do not start another attempt; never automatic retry / no recovery loop.",
+        "Timeout, interruption, and crash are terminal failure outcomes of an attempt (as result_reason under execution_failed); they are not states and never allow model loading.",
+        "terminal ok means supervised completion + supervisor-captured evidence-pair hashes ONLY; it is NOT independent verification, canonical, deployment-suitable, or compatibility-frozen.",
+        "canonical_selected and compatibility_frozen are post-terminal append-only annotation events (zero-or-one per current Phase 16); they never rewrite a terminal event; supersession requires a separately authorized planning amendment.",
+        "A failed attempt is permanently retained and its attempt_id is never retried or reused.",
+        "A later attempt is a new explicit attempt, never a retry of a failed attempt_id.",
+        "The three timed inference passes inside one attempt are measurement repetitions within that attempt, not retries."
+      ]
+    },
+    "runtime_attempt_registry": {
+      "single_authoritative_registry": true,
+      "path": "verification/phase16-raw-corpus-entity-layer/raner_smoke_attempt_registry.jsonl",
+      "location_scope": "OUTSIDE .planning/** AND OUTSIDE any attempt output root; SIBLING to raner_smoke_live_output/ so it can never be atomically replaced or rejected as pre-existing by the live publisher (ordinary launcher/runtime code MUST NOT mutate .planning/**)",
+      "lock_path": "verification/phase16-raw-corpus-entity-layer/.raner_smoke_attempt_registry.lock",
+      "format": "append-only JSONL (one JSON event per line, never rewritten)",
+      "implemented_by": "Task #221 (declared as policy here; no registry/output is created now)",
+      "evidence_publication": {
+        "future_multi_attempt_evidence_is_attempt_specific": true,
+        "pattern": "verification/phase16-raw-corpus-entity-layer/raner_smoke_live_output/<attempt-id>/",
+        "task_221_must_adapt_current_publisher": "Task #221 MUST replace/adapt the current fixed whole-directory atomic os.replace publisher semantics through TDD before any launch, so that attempt-specific output directories are written and the registry (a SIBLING) is never inside an atomically-replaced or pre-existing-rejected output root."
+      },
+      "append_only_event_semantics": [
+        "exactly one durable launch_committed event per attempt_id, appended by the supervising parent BEFORE the worker can reach a model loader (startup barrier)",
+        "optional exactly one worker_started event per attempt_id (non-terminal lifecycle metadata: worker identity/liveness after launch, before the startup barrier opens)",
+        "exactly one terminal event per attempt_id: ok or execution_failed (with result_reason), appended by the supervising parent or the explicit coordinator reconciliation",
+        "no second launch_committed event for the same attempt_id",
+        "no terminal event rewriting; failed history permanently retained",
+        "zero or one post-terminal annotation events per attempt_id (canonical_selected, then compatibility_frozen); annotations are append-only non-lifecycle records and never rewrite a terminal event",
+        "a later attempt is a NEW record with a NEW attempt_id appended as a new line, never a rewrite or retry of a prior attempt, and only after the previous attempt has a terminal lifecycle event"
+      ]
+    },
+    "attempt_count_at_reconciliation": 0,
+    "attempt_registry_note": "No embedded mutable attempt list and no dual-write instruction. This planning policy artifact is the stable current-authority contract, NOT the runtime attempt registry; it records attempt_count_at_reconciliation: 0 (no Gate 3 attempt has been launched or committed). The single authoritative append-only runtime registry is declared above (runtime_attempt_registry.path: verification/phase16-raw-corpus-entity-layer/raner_smoke_attempt_registry.jsonl - a SIBLING outside any attempt output root, with lock_path verification/phase16-raw-corpus-entity-layer/.raner_smoke_attempt_registry.lock) and is implemented by Task #221 outside .planning/**; it is not created now.",
+    "attempt_event_shape": {
+      "lifecycle_events": {
+        "event_type": "launch_committed | worker_started | ok | execution_failed",
+        "lifecycle_events_are_immutable": true,
+        "lifecycle_events_do_not_contain_canonical_or_freeze_status": true,
+        "launch_committed": {
+          "attempt_id": "string (fresh, immutable, never reused)",
+          "recorded_at": "ISO-8601 UTC timestamp",
+          "coordinator_initiated_at": "ISO-8601 UTC timestamp",
+          "result_reason": "null",
+          "lock_held": "true (parent holds the OS-backed inter-process exclusive lock from pre-launch check through the terminal event)"
+        },
+        "worker_started": {
+          "attempt_id": "string (same as launch_committed)",
+          "recorded_at": "ISO-8601 UTC timestamp",
+          "result_reason": "null",
+          "worker_identity": "string (worker/process identity, non-secret)",
+          "purpose": "non-terminal lifecycle metadata: records worker identity/liveness after launch but before the startup barrier opens; does not grant any lifecycle transition"
+        },
+        "ok": {
+          "attempt_id": "string",
+          "recorded_at": "ISO-8601 UTC timestamp",
+          "result_reason": "success",
+          "evidence_hashes": "object (expected per-attempt evidence pair structurally published and hashes captured by the supervisor; NOT independent verification)",
+          "mirror_digest": "artifact_digest of the verified read-only mirror used by this attempt",
+          "meaning": "supervised worker completed successfully; NOT independently verified / canonical / deployment-suitable / compatibility-frozen"
+        },
+        "execution_failed": {
+          "attempt_id": "string",
+          "recorded_at": "ISO-8601 UTC timestamp",
+          "result_reason": "timeout | interruption | crash | runtime_error | launch_denied | supervisor_observed_exit | dangling_launch_reconciled",
+          "failure_details_sanitized": true
+        }
+      },
+      "annotation_events": {
+        "event_type": "canonical_selected | compatibility_frozen",
+        "annotations_are_append_only_non_lifecycle": true,
+        "annotations_never_rewrite_terminal_events": true,
+        "zero_or_one_per_current_phase_16": true,
+        "canonical_selected": {
+          "attempt_id": "string (must reference a terminal ok attempt)",
+          "recorded_at": "ISO-8601 UTC timestamp",
+          "precondition": "only after an independent verifier validates a terminal ok",
+          "binds": [
+            "immutable evidence hashes",
+            "mirror digest",
+            "measured-artifact hashes"
+          ],
+          "not_a_lifecycle_transition": true
+        },
+        "compatibility_frozen": {
+          "attempt_id": "string (must reference a canonical_selected attempt)",
+          "recorded_at": "ISO-8601 UTC timestamp",
+          "precondition": "only after canonical_selected, under a separately authorized downstream compatibility-freeze action",
+          "binds": [
+            "immutable evidence hashes",
+            "mirror digest",
+            "measured-artifact hashes",
+            "frozen compatibility_id"
+          ],
+          "not_a_lifecycle_transition": true
+        }
+      }
+    }
+  },
+  "preparation_authorization": {
+    "task": "Task #221 isolated runtime preparation",
+    "authorized": true,
+    "granted_by": "user authorization message 2026-08-11 ('行，我授权继续吧然后 gate3 可以多次运行')",
+    "scope": [
+      "Official Python package access solely for repository-local isolated preparation (build and verify an isolated runtime so modelscope.pipelines imports)",
+      "Close the WSL measurement gap with an explicit available-WSL probe (measurement seam work)"
+    ],
+    "explicitly_not_authorized": [
+      "preparation-time model loading",
+      "RaNER inference",
+      "real WSL model benchmarking",
+      "live evidence publication",
+      "external database access",
+      "reading or falling back to DATABASE_URL",
+      "C2 entry",
+      "commit",
+      "push",
+      "mutation of the global C:\\Python311"
+    ]
+  },
+  "pre_launch_contract_amendment_required": {
+    "required_before_first_gate_3_launch": true,
+    "what": "The current /goal skill + its tests (.claude/skills/goal/SKILL.md and .claude/skills/goal/tests/test_goal_contract.py) and Plan 16-13 (16-13-PLAN.md Task 2) still encode obsolete single-use/no-retry Gate 3 semantics (e.g., 'no live-gate retry under any failure, timeout, or interruption; a live gate is single-use and never re-run', 'Never inherit and never retry a live-gate token', 'run it exactly once ... and never re-ask or retry'). These must be amended by a separate TDD-governed contract amendment to the multi-attempt-by-explicit-launch model BEFORE the first Gate 3 launch.",
+    "not_amended_by": "Task #222 (planning-only; .claude/** is out of scope for this package)."
+  },
+  "canonical_evidence_and_compatibility_freezing": {
+    "terminal_ok_scope": "terminal ok means ONLY supervised worker completion + supervisor-captured per-attempt evidence-pair hashes; it does NOT mean independently verified, canonical, deployment-suitable, or compatibility-frozen.",
+    "independent_verification_is_precondition_for_canonical_selected_only": true,
+    "canonical_evidence_selection": "canonical_selected annotation event appended ONLY after an independent verifier validates a terminal ok; references attempt_id + immutable evidence hashes + mirror digest + measured-artifact hashes; it is a post-terminal append-only annotation, NOT a lifecycle state transition.",
+    "compatibility_freezing_is_separate_downstream_action": true,
+    "compatibility_freeze_binds_to": [
+      "a named attempt_id (must already have a canonical_selected annotation)",
+      "evidence hashes",
+      "mirror digest",
+      "measured artifacts",
+      "the frozen compatibility_id"
+    ],
+    "compatibility_frozen_annotation": "compatibility_frozen annotation event appended ONLY after canonical_selected, under a separately authorized downstream compatibility-freeze action; append-only non-lifecycle annotation; never rewrites a terminal event.",
+    "zero_or_one_per_phase_16": "zero-or-one canonical_selected and zero-or-one compatibility_frozen event appropriate to current Phase 16; any supersession requires a separately authorized planning amendment rather than silently selecting multiple canonical attempts.",
+    "live_runner_must_not_freeze_automatically": true,
+    "launcher_must_not_freeze_automatically": true
+  },
+  "unchanged_authority_status": {
+    "gate_4": "remains unexecuted and is NOT authorized by this message",
+    "c2": "remains OFF / skipped_not_entered",
+    "commit_push": "not authorized",
+    "task_181": "remains pending"
+  },
+  "phase_16_safety_invariants_preserved": [
+    "verified local read-only mirror (exact, non-reparse)",
+    "local-only / offline model/tokenizer path",
+    "exact code-point offsets (no str.find / substring recovery)",
+    "confidence=None / confidence_kind=unavailable (no fabricated probability)",
+    "truthful Windows and available-WSL measurements (no fabricated measurements/evidence)",
+    "no silent downgrade (envelope exceedance reported; Large Generic never silently replaced by Base News)",
+    "zero generative-LLM tokens (R-OKF-04)",
+    "default OFF extraction (RAG_ENTITY_EXTRACTOR=off default)"
+  ],
+  "task_221_implementation_blockers_recorded_without_implementing": [
+    "isolated exact/hash-locked dependencies (hash-pinned package set in a repository-local isolated runtime)",
+    "import proof for modelscope.pipelines (current blocker: ModuleNotFoundError addict; protobuf 6.33.5 incompatible with frozen >=3.19,<3.21; 17 missing NLP deps; uv.lock stale)",
+    "local-only fast tokenizer proof (fast path enforced; slow .index() coordinate recovery is forbidden)",
+    "explicit absolute mirror root (mirror root never inferred/read implicitly)",
+    "child-environment credential/URI scrubbing and fail-closed DATABASE_URL presence denial without reading/logging its value",
+    "outbound-network denial/proof (offline load path proven)",
+    "single authoritative append-only runtime attempt registry (path verification/phase16-raw-corpus-entity-layer/raner_smoke_attempt_registry.jsonl; SIBLING to any attempt output root; OUTSIDE .planning/**; append-only JSONL: one durable launch_committed event before worker can reach model loader + optional one worker_started + exactly one terminal ok|execution_failed event; no rewrite; zero-or-one post-terminal canonical_selected/compatibility_frozen annotations)",
+    "OS-backed inter-process exclusive lock at verification/phase16-raw-corpus-entity-layer/.raner_smoke_attempt_registry.lock (SIBLING outside attempt-output dirs; held from pre-launch check through terminal lifecycle event; at most one attempt in launch_committed; non-concurrent)",
+    "controlled launcher adaptation of the current fixed whole-directory atomic os.replace publisher to attempt-specific publication (verification/phase16-raw-corpus-entity-layer/raner_smoke_live_output/<attempt-id>/) through TDD; the registry SIBLING must never be inside an atomically-replaced or pre-existing-rejected output root",
+    "supervised parent+worker launch with startup barrier (worker must not write lifecycle registry events; parent appends launch_committed before worker can reach loader; parent observes exit/timeout/interruption/crash and appends exactly one terminal event; terminates worker on bounded timeout; sanitizes failure details)",
+    "explicit coordinator reconciliation for dangling launch_committed (acquires the same lock, confirms worker not alive / startup barrier cannot proceed, appends exactly one execution_failed; blocks if liveness cannot be established; never automatic retry / no recovery loop)",
+    "attempt-specific no-overwrite publication (no stale attempt output/marker reuse or rewrite)",
+    "sanitized broad failure handling (timeout/interruption/crash all terminal per attempt)",
+    "truthful WSL measurement seam (explicit available-WSL probe; default probe must not silently record unavailable)"
+  ],
+  "read_only_agent_proposals_explicitly_not_adopted": [
+    "obsolete single .gate3-consumed marker",
+    "single-use launcher proposal"
+  ],
+  "gitnexus_cli_fallback_validated": "rtk proxy npx gitnexus <subcommand> ... -r rag (validated fallback when GitNexus MCP is unavailable). The stale skill clause in .claude/skills/gitnexus/*/SKILL.md that blocks on MCP unavailability must be amended later; it is NOT amended by this package.",
+  "secret_integrity": "This record contains no secrets, no credential values, no raw routes/DSNs, and no corpus content.",
+  "no_live_gate_launched_or_consumed_in_this_reconciliation": true
+}

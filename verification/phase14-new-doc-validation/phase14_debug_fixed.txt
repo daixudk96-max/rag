@@ -1,0 +1,145 @@
+C:\Python311\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+C:\Python311\Lib\site-packages\jieba\_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[CLEANUP] Removed 2 stale status files: 02_document_ingestion_status.json, 03_tree_vector_status.json
+[01] Environment check OK — corpus=deep-research-report (1).md
+[DB] Applying migrations...
+[04] Loaded 20 business queries
+[INGEST] Processing corpus...
+[02] Ingest OK — spans=55, version=89891787-b554-453b-a599-5436da430b88
+[TREE] Generating tree...
+[NODE_EMB] Generating node prototype embeddings...
+[NODE_EMB] Written 8 node embeddings
+[VECTOR] Loading embeddings...
+[03] Tree+Vector OK — nodes=10, vectors=0
+[05] Running retrieval for 20 queries...
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['研究', '报告', '核心', '结论', '哪个', '项目', '接近', '完整', '需求']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q1: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['KAG', 'NexusRAG', '知识', '图谱', '能力', '区别']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q2: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['六项', '能力', '几项', '开源', '生态', '稀缺']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q3: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['LlamaIndex', '实现', '向量', '命中', '回映', '节点']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q4: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['如果', '快速', 'POC', '应该', '选择', '哪个', '项目', '需要', '模块']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q5: 1 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['LightRAG', '支持', '向量', '数据库']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q6: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['模块', '拼接', '蓝图', '触发', '向量', '检索', '策略']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q7: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['RAPTOR', 'HIRO', '核心', '贡献', '它们', '适合', '作为', '角色']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q8: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['KAG', '增强', '实现', '需要', '多少', '人日', '适合', '场景']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q9: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['KAG', 'mutual', 'indexing', '结构', '连接', '图谱', '原文']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q10: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['NexusRAG', '保留', '文档', '结构', '数据']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q11: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['Agent', '自主', '扩展', '机制', '建议', '顺序']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q12: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['六项', '能力', '判定', '标准', '必须', '看到', '机制', '判为']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q13: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['仓库', '成熟度', '来看', '哪个', '项目', '最稳', '适合', '当主', '底座']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q14: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['本次', '检索', '排除', 'GraphRAG', '项目']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q15: 3 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['NexusRAG', 'LightRAG', '分别', '使用', '向量', '数据库']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q16: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['向量', '命中', '回映', '节点', '聚合', '公式', '建议']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q17: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['必须', '自研', '四个', '模块', '顺序', '优先']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q18: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['最终', '执行', '顺序', '建议']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q19: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['需求', '贴合', '综合', '判断', '排序', '依据']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q20: 0 hits
+[06] Evidence chain: total=59, evidence=0, missing=59
+[07] Judgment template: judgment_template.csv (59 rows)
+
+[Phase 1 COMPLETE] Retrieve pipeline finished
+  - Total hits: 59
+  - Queries with hits: 13/20
+  - Evidence chunk hits: 0
+  - Missing chunk hits: 59 (target: 0)
+  [FAIL] Phase 13 validation: 59 missing chunk hits

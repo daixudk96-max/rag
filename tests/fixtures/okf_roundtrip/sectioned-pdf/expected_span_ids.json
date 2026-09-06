@@ -1,0 +1,68 @@
+{
+  "doc_id": "00000000-0000-0000-0000-000000000001",
+  "version_id": "00000000-0000-0000-0000-000000000003",
+  "spans": [
+    {
+      "span_id": "11ab7e50-03f3-5849-97a8-416165e454c7",
+      "page_no": 1,
+      "heading_path": [
+        "Introduction to Machine Learning"
+      ],
+      "offset": 0,
+      "text": "Overview of ML fundamentals."
+    },
+    {
+      "span_id": "53dc3531-7955-525e-8ad5-b63943758f92",
+      "page_no": 1,
+      "heading_path": [
+        "Introduction to Machine Learning",
+        "Chapter 1: Foundations"
+      ],
+      "offset": 0,
+      "text": "Machine learning is a subset of artificial intelligence that enables systems to learn from data."
+    },
+    {
+      "span_id": "6c83f131-5d82-5ab8-adbf-0add6855ee05",
+      "page_no": 1,
+      "heading_path": [
+        "Introduction to Machine Learning",
+        "Chapter 1: Foundations",
+        "1.1 Supervised Learning"
+      ],
+      "offset": 0,
+      "text": "Supervised learning uses labeled training data to learn mapping functions."
+    },
+    {
+      "span_id": "4f7783f9-216d-579f-8559-0a2696714691",
+      "page_no": 1,
+      "heading_path": [
+        "Introduction to Machine Learning",
+        "Chapter 1: Foundations",
+        "1.2 Unsupervised Learning"
+      ],
+      "offset": 0,
+      "text": "Unsupervised learning discovers hidden patterns in unlabeled data."
+    },
+    {
+      "span_id": "b01a53c1-2a9b-5d4d-8753-0346da88b0ea",
+      "page_no": 1,
+      "heading_path": [
+        "Introduction to Machine Learning",
+        "Chapter 2: Applications"
+      ],
+      "offset": 0,
+      "text": "Machine learning applications span many industries."
+    },
+    {
+      "span_id": "8a29c0f8-628d-5da0-8b9f-59be77f83ed4",
+      "page_no": 1,
+      "heading_path": [
+        "Introduction to Machine Learning",
+        "Chapter 2: Applications",
+        "2.1 Natural Language Processing"
+      ],
+      "offset": 0,
+      "text": "NLP enables computers to understand and process human language."
+    }
+  ]
+}

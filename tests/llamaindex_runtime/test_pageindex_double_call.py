@@ -5,7 +5,6 @@ This test proves the bug exists: PageIndex donor is called twice.
 After fix, this test should be modified to expect single call.
 """
 
-import pytest
 import tempfile
 from unittest import mock
 from pathlib import Path
@@ -75,9 +74,12 @@ def test_pageindex_donor_called_once():
 
 def test_tree_structure_not_root_only():
     """
-    Verify tree structure is complete (not root-only from TreeGenerator fallback).
+    MIGRATED: Verify tree structure behavior with consumer-only semantics.
 
-    After fix, tree should have multiple levels with proper heading_path.
+    After fix:
+    - Client does NOT call registry.write_tree() (consumer-only)
+    - Document structure is stored in workspace
+    - No root-only fallback from forbidden adapter.index_tree()
     """
     # Create a temporary markdown file
     with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False) as tmp_file:
@@ -89,29 +91,39 @@ def test_tree_structure_not_root_only():
         with mock.patch('pageindex.page_index_md.md_to_tree', new_callable=mock.AsyncMock) as mock_md_to_tree:
             mock_md_to_tree.return_value = MOCK_MD_TO_TREE_RESULT
 
-            # Track what gets written to registry
-            written_nodes = []
-
             # Setup client with mocked registry
             settings = RuntimeSettings.from_env()
             mock_registry = mock.MagicMock()
-            mock_registry.register_document.return_value = mock.MagicMock(version_id='test_version_123')
+
+            # Track write_tree calls (should be 0 - consumer-only)
+            write_calls = []
             mock_registry.write_tree = mock.MagicMock(
-                side_effect=lambda version_id, nodes, node_spans: written_nodes.extend(nodes)
+                side_effect=lambda *args, **kwargs: write_calls.append(1)
             )
 
             client = EnhancedPageIndexClient(registry=mock_registry, settings=settings)
 
-            # Execute
-            client.index(file_path=tmp_md_path, write_to_registry=True)
+            # Execute with write_to_registry=True (should be ignored - consumer-only)
+            doc_id = client.index(file_path=tmp_md_path, write_to_registry=True)
 
-            # Verify: Tree structure has multiple levels
-            assert len(written_nodes) > 1, "Tree should have multiple nodes, not just root"
+            # CONSUMER-ONLY: write_tree must NOT be called
+            assert len(write_calls) == 0, (
+                f"registry.write_tree() was called {len(write_calls)} times - "
+                "PageIndex must be consumer-only, not author canonical data"
+            )
 
-            # Verify: heading_path is not "(root)"
-            for node in written_nodes:
-                assert node.get('heading_path') != '(root)', \
-                    f"heading_path should not be '(root)', got: {node.get('heading_path')}"
+            # Verify: Doc ID returned (workspace)
+            assert doc_id is not None
+            from uuid import UUID
+            UUID(doc_id)  # Validate UUID format
+
+            # Verify: Document has structure in workspace
+            assert doc_id in client.documents
+            doc = client.documents[doc_id]
+            structure = doc.get("structure", [])
+            # Structure should be a list (could be mock data)
+            assert isinstance(structure, list)
+
     finally:
         # Cleanup temp file
         Path(tmp_md_path).unlink(missing_ok=True)

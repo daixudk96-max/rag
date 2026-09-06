@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "phase": "14-okf-foundation",
+  "artifact_type": "gitnexus_tracked_git_diff_detect_changes",
+  "execution_date_utc": "2026-07-17",
+  "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+  "command": [
+    "npx gitnexus detect-changes --scope all --repo rag",
+    "npx gitnexus detect-changes --scope unstaged --repo rag"
+  ],
+  "execution_wrapper": "Before each npx package command, DATABASE_URL, FORMAL_RUNTIME_DATABASE_URL, OKF_MIGRATION_TEST_DATABASE_DISPOSABLE, OKF_REBUILD_EXPECTED_DATABASE, OKF_FAILURE_AUDIT_ACCEPTANCE, and OKF_REBUILD_DOCKER_ACCEPTANCE were explicitly unset. Their values were not inspected, printed, or persisted.",
+  "scope": "Current tracked Git diff mapping for GitNexus scopes all and unstaged; not a full-worktree audit and not an intended commit scope.",
+  "git_diff_semantics": "Git diff maps tracked changes only. Untracked files are excluded by Git diff semantics and are inventoried separately in 07-untracked-scope-inventory.json.",
+  "execution_status": "completed",
+  "result": "WARN",
+  "verdict": "WARN",
+  "aggregate_counts": {
+    "all": {
+      "tracked_files": 23,
+      "mapped_symbols": 58,
+      "affected_execution_flows": 6,
+      "risk": "HIGH"
+    },
+    "unstaged": {
+      "tracked_files": 23,
+      "mapped_symbols": 58,
+      "affected_execution_flows": 6,
+      "risk": "HIGH"
+    }
+  },
+  "caveats": [
+    "HIGH is acknowledged. These results do not establish a clean worktree, a full-worktree GitNexus audit, or a commit-scope PASS.",
+    "The reproduced GitNexus results match the prior recorded tracked-diff headline: 23 files, 58 mapped symbols, 6 affected flows, HIGH.",
+    "Native Git status inventory can differ from these GitNexus scope summaries as the worktree changes; 07 records its independently rerun enumeration and classification.",
+    "Before any authorized commit, validate the exact intended paths and rerun GitNexus detection after authorized staging or another supported exact-scope mechanism. Do not stage as part of this evidence update.",
+    "Raw terminal output and output digests are intentionally not retained."
+  ]
+}

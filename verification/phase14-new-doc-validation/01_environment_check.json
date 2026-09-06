@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-07-01T18:14:47.592507+00:00",
+  "corpus_path": "E:\\github\\rag\\docs\\research\\deep-research-report (1).md",
+  "corpus_exists": true,
+  "document_sha256": "c6b0da5998dc5b52f896aef247c57851d425f2d61a9ce96f88e313a7094f9770",
+  "database_url_configured": true,
+  "hotspot_selector": "hybrid_cluster",
+  "git_commit": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+  "phase": "14",
+  "validation_target": "Phase 13 hotspot traverse on new document",
+  "db_reachable": true,
+  "connection_autocommit": true,
+  "embedding_column_dimension": 384,
+  "registry_check": "PASS"
+}

@@ -1,0 +1,173 @@
+{
+  "verification_timestamp": "2026-05-27",
+  "verification_method": "whitebox",
+  "verification_scope": "PageIndex main functionality full chain",
+  "overall_status": "Level_2_能查但质量未验证",
+
+  "chain_runnable": true,
+  "ingestion_usable": true,
+  "retrieval_usable": "partial",
+  "quality_verified": false,
+  "evidence_chain_complete": true,
+
+  "pass_items": [
+    "Database connection established",
+    "Documents successfully ingested (2 documents)",
+    "Document versions management working (6 versions)",
+    "Embeddings fully generated (326/326 chunks)",
+    "Evidence chain complete (spans→chunks→nodes)",
+    "PostgreSQL + pgvector container healthy"
+  ],
+
+  "partial_items": [
+    "Tree structure exists but oversimplified (only root nodes)",
+    "Node-chunk mapping partial (70/326 = 21.5%)",
+    "Heading paths present but 20% are None",
+    "Vector chunks queryable (theory) but untested",
+    "Data structures complete but tree quality insufficient"
+  ],
+
+  "fail_items": [
+    "Tree structure lacks hierarchy (only level=0)",
+    "Query quality not verified (no real tests executed)",
+    "Node-chunk mapping rate too low (<80% threshold)",
+    "Heading path completeness below 95% threshold",
+    "Unable to confirm 'Level 3: 基本对' standard"
+  ],
+
+  "major_gaps": [
+    {
+      "gap": "树结构完善",
+      "priority": "P0",
+      "severity": "critical",
+      "description": "Tree nodes only have root level, no hierarchical structure",
+      "impact": "Cannot support chapter-level positioning, cannot achieve '查得好'"
+    },
+    {
+      "gap": "查询质量验证",
+      "priority": "P1",
+      "severity": "critical",
+      "description": "No real query tests executed, quality unverified",
+      "impact": "Cannot verify hit rate, relevance, stability, cannot confirm Level 3+"
+    },
+    {
+      "gap": "Node-chunk映射率提升",
+      "priority": "P2",
+      "severity": "important",
+      "description": "Only 21.5% chunks mapped to nodes (70/326)",
+      "impact": "Low tree retrieval coverage, most chunks unreachable via tree path"
+    },
+    {
+      "gap": "Heading path完整性",
+      "priority": "P2",
+      "severity": "important",
+      "description": "20% spans have None heading_path (64/326)",
+      "impact": "Affects retrieval precision, cannot locate by chapter"
+    }
+  ],
+
+  "database_state": {
+    "documents_count": 2,
+    "document_versions_count": 6,
+    "tree_nodes_count": 10,
+    "tree_node_spans_count": 198,
+    "vector_chunks_count": 326,
+    "vector_chunk_spans_count": 326,
+    "canonical_spans_count": 326,
+    "embeddings_generated": 326,
+    "chunks_mapped_to_nodes": 70
+  },
+
+  "tree_structure_quality": {
+    "max_level": 0,
+    "has_hierarchy": false,
+    "active_version_nodes": 2,
+    "heading_paths_distribution": {
+      "root_count": 2,
+      "child_count": 0,
+      "leaf_count": 0
+    }
+  },
+
+  "level_progression": {
+    "Level_1_能跑": {
+      "status": "pass",
+      "evidence": [
+        "Database running",
+        "Data ingested",
+        "Evidence chain complete"
+      ]
+    },
+    "Level_2_能查": {
+      "status": "pass",
+      "evidence": [
+        "Embeddings generated",
+        "Vector chunks queryable",
+        "Data structures complete"
+      ]
+    },
+    "Level_3_查得基本对": {
+      "status": "unverified",
+      "reason": [
+        "Tree structure oversimplified",
+        "No heading hierarchy",
+        "No real query tests"
+      ]
+    },
+    "Level_4_查得稳定好": {
+      "status": "fail",
+      "gaps": [
+        "Tree structure insufficient",
+        "Node-chunk mapping rate low",
+        "Query quality unverified"
+      ]
+    },
+    "Level_5_可以主打": {
+      "status": "fail",
+      "reason": [
+        "Main functionality incomplete",
+        "Quality unverified",
+        "Not production-ready"
+      ]
+    }
+  },
+
+  "recommendations": {
+    "immediate_actions": [
+      {
+        "priority": "P0",
+        "action": "Diagnose tree generation algorithm",
+        "expected_result": "Generate 3+ level tree structure"
+      },
+      {
+        "priority": "P1",
+        "action": "Execute 10+ real query tests",
+        "expected_result": "Verify hit rate >80%, stability, relevance"
+      },
+      {
+        "priority": "P2",
+        "action": "Fix heading_path None issue",
+        "expected_result": "Heading path completeness >95%"
+      },
+      {
+        "priority": "P2",
+        "action": "Increase node-chunk mapping rate",
+        "expected_result": "Mapping rate >80%"
+      }
+    ],
+    "completion_criteria": {
+      "min_tree_levels": 3,
+      "min_node_chunk_mapping_rate": 0.8,
+      "min_heading_path_completeness": 0.95,
+      "min_query_hit_rate": 0.8,
+      "min_test_queries": 10
+    }
+  },
+
+  "verification_evidence_files": [
+    "00-VERIFICATION-ARTICLE.md",
+    "01-VERIFICATION-SUMMARY.json",
+    "02-STATUS-BOARD.html",
+    "03-EVIDENCE.md"
+  ]
+}

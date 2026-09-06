@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-06-23T01:37:56.961184+00:00",
+  "version_id": "8abb98c4-a70f-4176-924a-d26d3f4da1bb",
+  "query_count": 20,
+  "judgment_count": 18,
+  "status": "LEVEL_ASSessed",
+  "metrics": {
+    "timestamp": "2026-06-23T01:37:56.959651+00:00",
+    "status": "CALCULATED",
+    "hit_rate": 0.1,
+    "top1_relevance": 0.2,
+    "stability": 0.2
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85
+  },
+  "level": {
+    "level": "Level_2",
+    "level_description": "能查但质量未验证 - retrieval works, quality not verified",
+    "passed_thresholds": {
+      "hit_rate": false,
+      "top1_relevance": false,
+      "stability": false
+    },
+    "blocking_factors": [
+      "hit_rate: 10.00% (need ≥ 80.00%)",
+      "top1_relevance: 20.00% (need ≥ 90.00%)",
+      "stability: 20.00% (need ≥ 85.00%)"
+    ]
+  }
+}

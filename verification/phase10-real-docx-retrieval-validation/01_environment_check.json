@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-06-16T17:39:20Z",
+  "validation_script_version": "2026-06-12-v2",
+  "git_commit_sha": "1ddaead5ceab20037b52c0a888d0bff4eaa84396",
+  "source_document": "ANONYMIZED_LOCAL_DOCX",
+  "source_document_location": "local_user_supplied_path_redacted",
+  "document_exists": true,
+  "database_url_configured": true,
+  "database_url_raw_value_printed": false,
+  "db_reachable": true,
+  "registry_check": "PASS",
+  "document_sha256": "ceca40d582ea6c90fbbe128591367f6f18442a15ca81bceee8a1a08ef07b9562",
+  "document_identity_note": "Local path and file URI are redacted from artifacts; SHA-256 is retained for reproducibility."
+}

@@ -29,12 +29,9 @@ def QueryAgent(
     source_path: str | None = None,
     registry: Any | None = None,
     embed_model: Any | None = None,
-    driver: Any | None = None,
-    entity_id: Any | None = None,
     similarity_top_k: int | None = None,
     version_id: Any | None = None,
     limit: int | None = None,
-    depth: int | None = None,
     vector_backend: Any | None = None,
     **kwargs: Any,
 ) -> FunctionAgent:
@@ -57,18 +54,13 @@ def QueryAgent(
         A RegistryWriter instance. Required if tools is None.
     embed_model:
         Embedding model for vector/tree retrieval paths. Required if tools is None.
-    driver:
-        Optional Neo4j driver instance for graph path.
-    entity_id:
-        Optional UUID for graph path (must be paired with driver).
+    similarity_top_k:
     similarity_top_k:
         Optional top-k for vector/tree backends.
     version_id:
         Optional version filter for keyword search.
     limit:
         Optional maximum results for keyword search.
-    depth:
-        Optional traversal depth for graph queries.
     **kwargs:
         Additional kwargs passed to FunctionAgent (e.g., memory, system_prompt).
 
@@ -103,12 +95,9 @@ def QueryAgent(
                 source_path=source_path,
                 registry=registry,
                 embed_model=embed_model,
-                driver=driver,
-                entity_id=entity_id,
                 similarity_top_k=similarity_top_k,
                 version_id=version_id,
                 limit=limit,
-                depth=depth,
                 vector_backend=vector_backend,
             )
         ]

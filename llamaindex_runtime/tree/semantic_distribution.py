@@ -31,6 +31,10 @@ class SemanticDistributionRegistry(Protocol):
 
     def query_doc_id_by_version(self, version_id: UUID) -> UUID: ...
 
+    def query_node_embeddings_by_version(
+        self, version_id: UUID
+    ) -> list[dict[str, Any]]: ...
+
 
 @runtime_checkable
 class TreeSemanticDistributionAdapter(Protocol):
@@ -64,7 +68,9 @@ _MAX_DEPTH_BONUS_LEVELS = 4
 _ROOT_ROUTE_PENALTY = 0.06
 _SUPPORT_BONUS_PER_CHUNK = 0.003
 _MAX_SUPPORT_BONUS_CHUNKS = 10
-_MISSING_CHUNK_ID = UUID(int=0)  # mirrors runtime.MISSING_CHUNK_ID (runtime.py:86); defined locally to avoid circular import
+_MISSING_CHUNK_ID = UUID(
+    int=0
+)  # mirrors runtime.MISSING_CHUNK_ID (runtime.py:86); defined locally to avoid circular import
 
 
 @dataclass(frozen=True)
@@ -440,6 +446,17 @@ def _required_value(row: dict[str, Any], key: str) -> Any:
 def _coerce_embedding(value: Any) -> list[float] | None:
     if value is None:
         return None
+    # Handle numpy.ndarray (psycopg pgvector extension returns this)
+    if (
+        hasattr(value, "__iter__")
+        and hasattr(value, "__len__")
+        and not isinstance(value, (str, bytes, memoryview))
+    ):
+        try:
+            vector = [float(part) for part in value]
+            return vector or None
+        except (TypeError, ValueError):
+            pass
     if isinstance(value, memoryview):
         value = value.tobytes().decode("utf-8")
     if isinstance(value, bytes):
@@ -584,7 +601,9 @@ class HotspotSelectionContext:
     vector_candidates: list[NodeSemanticHit]
     keyword_hits: list[KeywordSpanHit]
     rerank_scores: dict[UUID, float] | None = None
-    parent_to_children: dict[UUID | None, tuple[UUID, ...]] = field(default_factory=dict)
+    parent_to_children: dict[UUID | None, tuple[UUID, ...]] = field(
+        default_factory=dict
+    )
 
 
 @dataclass(frozen=True)
@@ -949,7 +968,9 @@ class HybridClusterHotspotSelector:
         *,
         coverage_theta: float = _COVERAGE_THETA,
         min_support: int = _MIN_SUPPORT,
-        theta: float | None = None,  # Alias for coverage_theta (backward compat for tests)
+        theta: (
+            float | None
+        ) = None,  # Alias for coverage_theta (backward compat for tests)
     ) -> None:
         """Initialize cluster-hot selector with configurable thresholds.
 
@@ -1048,26 +1069,14 @@ class HybridClusterHotspotSelector:
             if len(all_matched_terms) > 1 and all_matched_terms.issubset(matched_terms)
         }
 
-        # Normalize rerank scores if present
-        rerank_by_node: dict[UUID, float] | None = None
-        if context.rerank_scores:
-            rerank_scores_raw = list(context.rerank_scores.values())
-            rerank_scores_normalized = _normalize_scores(rerank_scores_raw)
-            rerank_by_node = {
-                node_id: norm_score
-                for node_id, norm_score in zip(
-                    context.rerank_scores.keys(), rerank_scores_normalized
-                )
-            }
-
         # Phase 12: Cluster-hot coverage selection
         # Step 2: Compute hotness sets (dual-hot intersection gate)
         vector_hot = {
-            nid for nid, s in vector_by_node.items()
-            if s >= self._VECTOR_HOT_THRESHOLD
+            nid for nid, s in vector_by_node.items() if s >= self._VECTOR_HOT_THRESHOLD
         }
         keyword_hot = {
-            nid for nid, terms in terms_by_node.items()
+            nid
+            for nid, terms in terms_by_node.items()
             if len(terms) >= self._KEYWORD_HOT_MIN_TERMS
         }
         dual_hot = vector_hot & keyword_hot  # INTERSECTION (D-02)
@@ -1113,7 +1122,8 @@ class HybridClusterHotspotSelector:
             # Parent score = coverage_ratio * 0.50 + avg_child_vector * 0.30 + support_bonus * 0.20
             avg_child_vector = 0.0
             dual_hot_children = [
-                c for c in context.parent_to_children.get(parent_id, ())
+                c
+                for c in context.parent_to_children.get(parent_id, ())
                 if c in dual_hot
             ]
             if dual_hot_children:
@@ -1299,9 +1309,9 @@ def _apply_leaf_fallback(
 
     # Priority 3: Pure vector fallback (if no exact/dual candidates)
     if not leaf_candidates and vector_by_node:
-            top_vector_node = max(vector_by_node.items(), key=lambda p: p[1])
-            nid, vector_score = top_vector_node
-            leaf_candidates.append((nid, vector_score))
+        top_vector_node = max(vector_by_node.items(), key=lambda p: p[1])
+        nid, vector_score = top_vector_node
+        leaf_candidates.append((nid, vector_score))
 
     # Sort and take top limit
     leaf_candidates.sort(key=lambda p: p[1], reverse=True)
@@ -1904,7 +1914,8 @@ class RecursiveTreeTraversalRunner:
                                 similarity=child_similarity,
                                 chunk_to_span_ids=chunk_to_span_ids,
                                 hotspot_node_id=hotspot_node_id,
-                                navigation_node_ids=navigation_node_ids + (child_node["node_id"],),
+                                navigation_node_ids=navigation_node_ids
+                                + (child_node["node_id"],),
                                 drill_depth=current_depth + 1,
                             )
                         )
@@ -2083,12 +2094,14 @@ class RecursiveTreeTraversalRunner:
                 # Pitfall 5 — do not let empty prototype yield silent 0.0
                 continue
             similarity = _cosine_similarity(query_embedding, prototype)
-            child_stats_with_similarity.append({
-                **cstats,
-                "query_distance": 1.0 - similarity,
-                "similarity": similarity,
-                "parent_query_distance": None,
-            })
+            child_stats_with_similarity.append(
+                {
+                    **cstats,
+                    "query_distance": 1.0 - similarity,
+                    "similarity": similarity,
+                    "parent_query_distance": None,
+                }
+            )
 
         # Step 4: Build evidence hits from children that carry direct chunk_ids
         # Route-only children (no chunk_ids) yield none — P13-06

@@ -40,8 +40,7 @@ class TestPageIndexUnifiedLLMIntegration:
         # Restore
         pageindex_utils.llm_acompletion = original
 
-    @pytest.mark.asyncio
-    async def test_adapter_tree_parser_calls_unified_seam(
+    def test_adapter_tree_parser_calls_unified_seam(
         self,
     ) -> None:
         """When tree_parser runs, it must call unified LLM seam."""
@@ -75,8 +74,7 @@ class TestPageIndexUnifiedLLMIntegration:
             # (Fallback may occur if PageIndex import fails, which is OK)
             # Test purpose: verify monkey-patch mechanism works when PageIndex runs
 
-    @pytest.mark.asyncio
-    async def test_real_pageindex_tree_parser_routes_through_unified_seam(
+    def test_real_pageindex_tree_parser_routes_through_unified_seam(
         self,
     ) -> None:
         """Real PageIndex tree_parser must route LLM calls through unified seam."""

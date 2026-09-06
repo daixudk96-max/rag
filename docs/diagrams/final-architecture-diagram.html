@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>最终架构图 - Provenance-Centric Multi-View RAG</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --panel2: #182247;
+      --text: #ecf2ff;
+      --muted: #aab7d8;
+      --accent: #7aa2ff;
+      --accent2: #7ef0c2;
+      --border: #2c3b69;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #0a0f1d 0%, #101833 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap { max-width: 1480px; margin: 0 auto; padding: 30px 20px 72px; }
+    h1 { margin: 0 0 8px; font-size: 34px; }
+    .lead { margin: 0 0 20px; color: var(--muted); }
+    .hero {
+      border: 1px solid rgba(122,162,255,.28);
+      background: rgba(122,162,255,.08);
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: rgba(18,25,51,.94);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 38px rgba(0,0,0,.24);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin: 0;
+      padding: 18px 20px 10px;
+      font-size: 22px;
+      background: linear-gradient(180deg, rgba(122,162,255,.08), rgba(0,0,0,0));
+    }
+    .card p.desc {
+      margin: 0;
+      padding: 0 20px 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .body { padding: 10px 12px 20px; }
+    .mermaid {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      overflow: auto;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .panel {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .panel h3 { margin: 0 0 8px; font-size: 18px; }
+    ul { margin: 8px 0 0 18px; }
+    code {
+      background: rgba(255,255,255,.08);
+      color: #dce7ff;
+      border-radius: 6px;
+      padding: 2px 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>最终架构图：Provenance-Centric Multi-View RAG</h1>
+    <p class="lead">目标：构建一个统一身份层、版本层、证据层的多视图 RAG 内核，内部支持 Keyword / Vector / Graph / Deep Hybrid 四条路径，对外暴露成 Tool / API / CLI。</p>
+
+    <div class="hero">
+      <strong>一句话总结：</strong>
+      不要统一 chunk，要统一 <code>doc_id / version_id / span_id</code>；
+      不要统一三层结构，要统一身份、版本和证据回链。
+    </div>
+
+    <section class="card">
+      <h2>1. 最终系统总图</h2>
+      <p class="desc">原文只解析一次，先进入统一的 provenance / registry 层，再派生为 Keyword / Vector / Tree / Graph 多视图，由 LlamaIndex 编排查询路径。</p>
+      <div class="body">
+        <div class="mermaid">
+flowchart LR
+    subgraph Source[原始文档层]
+        A[PDF / DOCX / HTML / TXT]
+    end
+
+    subgraph Parse[一次解析层]
+        B[Docling Parser]
+        C[Normalization Contract]
+        D[Canonical Spans\nspan_id + offsets + page_no + heading_path]
+    end
+
+    subgraph Registry[PostgreSQL Registry / Mapping / Provenance]
+        E[documents]
+        F[document_versions]
+        G[canonical_spans]
+        H[tree_nodes]
+        I[vector_chunks]
+        J[entities / relations registry]
+        K[evidence_links]
+        L[alias / mention / mappings]
+    end
+
+    subgraph Views[多视图投影层]
+        M[Keyword View]
+        N[Vector View]
+        O[Tree View]
+        P[Graph Evidence View]
+    end
+
+    subgraph Stores[执行存储层]
+        Q[(PostgreSQL FTS / BM25 / trigram)]
+        R[(Milvus / Qdrant)]
+        S[(Tree / Docstore)]
+        T[(Neo4j)]
+    end
+
+    subgraph Brain[LlamaIndex Internal Brain]
+        U[Query Classifier]
+        V[Keyword Path]
+        W[Vector Path]
+        X[Graph Path]
+        Y[Deep Hybrid Path]
+        Z[Hit Distribution Analyzer]
+        AA[Rerank Stage\nPhase 2]
+        AB[Unified Response Builder]
+    end
+
+    subgraph External[对外暴露]
+        AC[knowledge_router_tool]
+        AD[API / CLI / LangChain / langclaw / Claude]
+    end
+
+    A --> B --> C --> D
+    D --> E
+    D --> F
+    D --> G
+    G --> H
+    G --> I
+    G --> J
+    G --> K
+    G --> L
+
+    G --> M --> Q
+    G --> N --> R
+    G --> O --> S
+    G --> P --> T
+
+    AD --> AC --> U
+    U --> V --> Q
+    U --> W --> R
+    U --> X --> T
+    U --> Y
+
+    Y --> T
+    Y --> Q
+    Y --> R
+    Y --> S
+    Y --> Z --> AA --> AB
+    V --> AB
+    W --> AB
+    X --> AB
+    AC --> AB
+    AB --> AD
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. 四条查询路径</h2>
+      <p class="desc">系统不是一个检索器，而是一个内部有四种检索逻辑的 Router。不同问题走不同路径。</p>
+      <div class="body">
+        <div class="mermaid">
+flowchart TD
+    Q[用户问题] --> C[Query Classifier]
+
+    C -->|精确术语 / 指标 / 节目名 / 标准号| K1[Keyword Path]
+    C -->|轻量语义问题| V1[Vector Path]
+    C -->|概念 / 实体 / 关系问题| G1[Graph Path]
+    C -->|复杂跨章节 / 多跳推理| H1[Deep Hybrid Path]
+
+    subgraph KeywordPath[Keyword Path]
+        K1 --> K2[PostgreSQL FTS / trigram / BM25]
+        K2 --> K3[返回 span / chunk / node]
+    end
+
+    subgraph VectorPath[Vector Path]
+        V1 --> V2[VectorStoreIndex]
+        V2 --> V3[返回 semantic chunks + parent context]
+    end
+
+    subgraph GraphPath[Graph Path]
+        G1 --> G2[PropertyGraphIndex / Neo4j]
+        G2 --> G3[返回 entities / relations / evidence]
+    end
+
+    subgraph HybridPath[Deep Hybrid Path]
+        H1 --> H2[KG 先锁定概念与关系]
+        H2 --> H3[registry 找相关 span_id / chunk_id / node_id]
+        H3 --> H4[受约束关键词 / 向量检索]
+        H4 --> H5[树层级回并]
+        H5 --> H6[命中分布分析]
+        H6 --> H7[父节点 / 兄弟节点 / 相邻块扩展]
+        H7 --> H8[重排 + 统一答案生成]
+    end
+
+    K3 --> OUT[统一结果输出]
+    V3 --> OUT
+    G3 --> OUT
+    H8 --> OUT
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>3. 数据更新与版本切换图</h2>
+      <p class="desc">重点不是“原地更新”，而是“新版本写入 → 校验 → 切 active version / alias → 回收旧版本”。</p>
+      <div class="body">
+        <div class="mermaid">
+flowchart TD
+    A[原始文档变化] --> B[生成新 version_id]
+    B --> C[按当前 normalization contract 重新解析]
+    C --> D[生成 canonical spans]
+    D --> E[派生 tree nodes]
+    D --> F[派生 vector chunks]
+    D --> G[抽 graph evidence spans]
+
+    E --> H[写 PostgreSQL registry]
+    F --> H
+    G --> H
+
+    H --> I[写 Keyword View]
+    H --> J[写 Vector View]
+    H --> K[写 Tree View]
+    H --> L[写 Graph View]
+
+    I --> M[一致性校验]
+    J --> M
+    K --> M
+    L --> M
+
+    M --> N{校验通过?}
+    N -->|是| O[切 active version / alias]
+    N -->|否| P[回滚并保留旧版本]
+    O --> Q[回收旧版本投影视图]
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="panel">
+        <h3>最终使用的项目</h3>
+        <ul>
+          <li><strong>LlamaIndex</strong>：内部大脑、查询路由、四路径编排</li>
+          <li><strong>PostgreSQL</strong>：registry / provenance / versioning / keyword path</li>
+          <li><strong>Neo4j</strong>：知识图谱执行层</li>
+          <li><strong>Milvus / Qdrant</strong>：向量执行层</li>
+          <li><strong>Docling</strong>：一次解析层</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>对外暴露成什么</h3>
+        <ul>
+          <li><code>knowledge_router_tool</code></li>
+          <li>API：<code>/query</code></li>
+          <li>CLI：<code>knowledge-router</code></li>
+          <li>也可接入 LangChain / langclaw / Claude</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>最关键原则</h3>
+        <ul>
+          <li>原文只解析一次</li>
+          <li>统一的是 <code>span_id</code>，不是 chunk</li>
+          <li>图 / 向量 / 树都是 derived views</li>
+          <li>重切片按 version 更新，不原地覆盖</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: { curve: 'basis' }
+    });
+  </script>
+</body>
+</html>

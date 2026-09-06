@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-06-23T01:37:56.957651+00:00",
+  "checks": {
+    "retrieval_exists": true,
+    "query_count_correct": true,
+    "results_non_empty": true,
+    "hits_have_rank_node_id": true,
+    "judgment_columns_complete": true,
+    "row_count_aligned": true,
+    "query_rank_pairs_match": true,
+    "no_placeholders": true,
+    "corpus_sha256_match": true
+  },
+  "passed": true,
+  "violations": []
+}

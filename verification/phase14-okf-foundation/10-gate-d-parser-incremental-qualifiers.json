@@ -1,0 +1,126 @@
+{
+  "schema_version": "1.0",
+  "phase": "14-okf-foundation",
+  "artifact_type": "gate_d_parser_incremental_qualifiers_execution",
+  "gate": "D",
+  "verdict": "PASS",
+  "result": "PASS",
+  "execution": {
+    "started_at_utc": "2026-07-17T12:04:13Z",
+    "finished_at_utc": "2026-07-17T12:05:20Z",
+    "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+    "command": "rtk env -u DATABASE_URL -u FORMAL_RUNTIME_DATABASE_URL -u OKF_MIGRATION_TEST_DATABASE_DISPOSABLE -u OKF_REBUILD_EXPECTED_DATABASE -u OKF_FAILURE_AUDIT_ACCEPTANCE -u OKF_REBUILD_DOCKER_ACCEPTANCE python -m pytest tests/llamaindex_runtime/okf/test_raw_pair_protocol.py tests/llamaindex_runtime/okf/test_raw_pair_parser_admission.py tests/llamaindex_runtime/okf/test_okf_parser_completion_span_identity.py tests/llamaindex_runtime/okf/test_okf_canonical_hash.py tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserSidecarReading tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserFrontmatterValidation tests/llamaindex_runtime/okf/test_okf_parser_completion_bundle.py::TestParserIncrementalSync tests/llamaindex_runtime/okf/test_okf_parser_completion_bundle.py::TestParserDeleteDetection tests/llamaindex_runtime/okf/test_okf_parser_completion_frontmatter_contracts.py::TestKnownNonRawFrontmatterContracts::test_known_relation_preserves_extensions_and_original_timestamp tests/llamaindex_runtime/test_relation_qualifier_persistence.py tests/llamaindex_runtime/okf/test_diagnostic_redaction.py tests/llamaindex_runtime/okf/test_okf_parser_completion_error_safety.py",
+    "exit_code": 0,
+    "aggregate_counts": {
+      "collected": 153,
+      "passed": 153,
+      "failed": 0,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "sanitized_output_digest": {
+      "algorithm": "sha256",
+      "input": "pytest: collected=153; passed=153; failed=0; skipped=0; warnings=1; exit_code=0",
+      "value": "dd277eb49b52e0b61ce84e38f5a65179118fb19316fd049f04c8f894de732424",
+      "review_basis": "Reviewed pytest summary only; no raw terminal output is retained."
+    }
+  },
+  "isolation_policy": {
+    "database_execution": "prohibited for this Gate D run",
+    "environment_handling": "DATABASE_URL, FORMAL_RUNTIME_DATABASE_URL, OKF_MIGRATION_TEST_DATABASE_DISPOSABLE, OKF_REBUILD_EXPECTED_DATABASE, OKF_FAILURE_AUDIT_ACCEPTANCE, and OKF_REBUILD_DOCKER_ACCEPTANCE were explicitly unset for every Python/package command.",
+    "credential_handling": "Environment values and credentials were not inspected, printed, or persisted.",
+    "selection": "Existing focused non-DB tests only; no database migration, rebuild acceptance, Docker, network, or repository-wide test suites were selected."
+  },
+  "selected_tests": [
+    "tests/llamaindex_runtime/okf/test_raw_pair_protocol.py",
+    "tests/llamaindex_runtime/okf/test_raw_pair_parser_admission.py",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion_span_identity.py",
+    "tests/llamaindex_runtime/okf/test_okf_canonical_hash.py",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserSidecarReading",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserFrontmatterValidation",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion_bundle.py::TestParserIncrementalSync",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion_bundle.py::TestParserDeleteDetection",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion_frontmatter_contracts.py::TestKnownNonRawFrontmatterContracts::test_known_relation_preserves_extensions_and_original_timestamp",
+    "tests/llamaindex_runtime/test_relation_qualifier_persistence.py",
+    "tests/llamaindex_runtime/okf/test_diagnostic_redaction.py",
+    "tests/llamaindex_runtime/okf/test_okf_parser_completion_error_safety.py"
+  ],
+  "behavior_coverage": [
+    {
+      "behavior": "M-D-S-M raw-pair admission accepts complete immutable snapshots, validates bounded raw paths before reads, binds byte hashes, confirms manifest stability, and fails closed at manifest, member, canonical, and unstable stages.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_raw_pair_protocol.py",
+        "tests/llamaindex_runtime/okf/test_raw_pair_parser_admission.py"
+      ]
+    },
+    {
+      "behavior": "Raw frontmatter and raw-pair parser admission reject invalid input through fixed error classes without reopening or reparsing the admitted snapshot.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserFrontmatterValidation",
+        "tests/llamaindex_runtime/okf/test_raw_pair_parser_admission.py"
+      ]
+    },
+    {
+      "behavior": "Sidecar records remain the authoritative span source; persisted and recomputed span identities must agree and duplicates are rejected deterministically.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserSidecarReading",
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion_span_identity.py"
+      ]
+    },
+    {
+      "behavior": "Canonical hashing is deterministic and stable under frontmatter ordering and raw-body reflow, while canonical fields and source bytes retain their intended change sensitivity.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_okf_canonical_hash.py",
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion.py::TestParserSidecarReading"
+      ]
+    },
+    {
+      "behavior": "Incremental sync returns skipped for unchanged canonical hash, resynced for changed hash, and synced for absent state while preserving supplied current identity; deleted-path detection returns immutable set differences.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion_bundle.py::TestParserIncrementalSync",
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion_bundle.py::TestParserDeleteDetection"
+      ]
+    },
+    {
+      "behavior": "Known relation frontmatter retains recognized and unknown qualifier extensions, and non-DB registry-writer tests preserve valid unknown qualifier keys while rejecting invalid qualifier shapes before execution.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion_frontmatter_contracts.py::TestKnownNonRawFrontmatterContracts::test_known_relation_preserves_extensions_and_original_timestamp",
+        "tests/llamaindex_runtime/test_relation_qualifier_persistence.py"
+      ]
+    },
+    {
+      "behavior": "Parser and diagnostic surfaces redact source text, paths, arbitrary values, terminal controls, and lower-level errors through fixed or deterministic safe messages.",
+      "evidence": [
+        "tests/llamaindex_runtime/okf/test_diagnostic_redaction.py",
+        "tests/llamaindex_runtime/okf/test_okf_parser_completion_error_safety.py",
+        "tests/llamaindex_runtime/okf/test_raw_pair_protocol.py"
+      ]
+    }
+  ],
+  "scope": "Gate D evidence for current parser/admission, canonical identity, incremental synchronization, relation qualifier, and diagnostic-safety contracts.",
+  "non_goals": [
+    "Database migration, database-backed integration, rebuild acceptance, Docker acceptance, and external-service validation.",
+    "Repository-wide test execution, source/test changes, planning changes, README changes, staging, commit, or push.",
+    "Retention of raw terminal output, environment values, credentials, or absolute paths."
+  ],
+  "provenance": {
+    "evidence_conventions_reviewed": [
+      "verification/phase14-okf-foundation/01-contract-tests.json",
+      "verification/phase14-okf-foundation/02-okf-lint.json",
+      "verification/phase14-okf-foundation/07-untracked-scope-inventory.json"
+    ],
+    "contract_tests_reviewed": [
+      "tests/llamaindex_runtime/okf/test_raw_pair_protocol.py",
+      "tests/llamaindex_runtime/okf/test_raw_pair_parser_admission.py",
+      "tests/llamaindex_runtime/okf/test_okf_canonical_hash.py",
+      "tests/llamaindex_runtime/okf/test_okf_parser_completion_span_identity.py",
+      "tests/llamaindex_runtime/okf/test_diagnostic_redaction.py",
+      "tests/llamaindex_runtime/test_relation_qualifier_persistence.py"
+    ],
+    "caveats": [
+      "The single warning was an external dependency deprecation warning; no selected test failed or skipped.",
+      "This PASS demonstrates the selected current non-DB contract coverage only and is not a repository-wide quality, security, migration, or deployment verdict.",
+      "All paths in this artifact are repository-relative."
+    ]
+  }
+}

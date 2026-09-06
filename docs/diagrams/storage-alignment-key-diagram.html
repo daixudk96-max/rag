@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>三库对齐主键关系图</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --text: #eaf0ff;
+      --muted: #aeb9d6;
+      --accent: #7aa2ff;
+      --accent2: #7ef0c2;
+      --border: #2d3b6b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #0a0f1f 0%, #111933 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap { max-width: 1400px; margin: 0 auto; padding: 28px 20px 64px; }
+    h1 { margin: 0 0 10px; font-size: 34px; }
+    .lead { color: var(--muted); margin: 0 0 20px; }
+    .tip, .note {
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(122,162,255,.28);
+      background: rgba(122,162,255,.08);
+    }
+    .note {
+      border-color: rgba(126,240,194,.25);
+      background: rgba(126,240,194,.08);
+    }
+    .card {
+      background: rgba(18, 25, 51, 0.94);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 35px rgba(0,0,0,.24);
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      margin: 0;
+      padding: 18px 20px 10px;
+      font-size: 22px;
+      background: linear-gradient(180deg, rgba(122,162,255,.08), rgba(0,0,0,0));
+    }
+    .card p.desc {
+      margin: 0;
+      padding: 0 20px 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .body { padding: 10px 12px 20px; }
+    .mermaid {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      overflow: auto;
+    }
+    .cols {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+    .panel {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .panel h3 { margin: 0 0 8px; font-size: 17px; }
+    ul { margin: 8px 0 0 18px; }
+    code {
+      background: rgba(255,255,255,.08);
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: #dfe8ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>三库对齐主键关系图</h1>
+    <p class="lead">目标：让 KG / Vec / Tree 三层各自按最适合自己的方式存储，但通过统一身份层和版本层保持稳定对齐。</p>
+
+    <div class="tip">
+      <strong>核心原则：</strong>不要统一 chunk，要统一 <code>doc_id / version_id / span_id</code> 这套身份与版本坐标。
+    </div>
+
+    <div class="card">
+      <h2>1. 总体主键关系图</h2>
+      <p class="desc">PostgreSQL registry 做事实层；Neo4j 做图视图；Milvus/Qdrant 做向量视图；Tree/docstore 做层级视图。</p>
+      <div class="body">
+        <div class="mermaid">
+flowchart LR
+    subgraph Registry[PostgreSQL Registry / Mapping Layer]
+        D[documents\ndoc_id]
+        V[document_versions\nversion_id\ncontent_hash]
+        S[canonical_spans\nspan_id\nstart_offset/end_offset]
+        N[tree_nodes\nnode_id\nparent_node_id\nheading_path\npage_no]
+        C[vector_chunks\nchunk_id\nnode_id\nspan_ids]
+        E[evidence_links\nentity_id/relation_id\nspan_id]
+    end
+
+    subgraph Graph[Neo4j KG Layer]
+        G1[(Entity Nodes\nentity_id)]
+        G2[(Relation Edges\nrelation_id)]
+        G3[(Evidence Edges\nversion_id + span_id refs)]
+    end
+
+    subgraph Vector[Milvus / Qdrant]
+        V1[(Embedding Records\nchunk_id\ndoc_id\nversion_id\nnode_id\nentity_ids[])]
+    end
+
+    subgraph Tree[Tree / Docstore Layer]
+        T1[(Hierarchy Nodes\nnode_id\nparent_id\nchild_ids)]
+    end
+
+    D --> V --> S
+    V --> N
+    S --> N
+    S --> C
+    S --> E
+    N --> C
+
+    E --> G1
+    E --> G2
+    E --> G3
+
+    C --> V1
+    N --> T1
+    C -.回映.-> T1
+    G3 -.证据定位.-> S
+    V1 -.命中后回映.-> C
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. 更新顺序图</h2>
+      <p class="desc">关键是版本化写入，不做原地重写；新版本校验通过后，再切 active version / alias。</p>
+      <div class="body">
+        <div class="mermaid">
+flowchart TD
+    A[原始文档] --> B[写 documents]
+    B --> C[写 document_versions\nversion_id / content_hash]
+    C --> D[生成 canonical_spans]
+    D --> E[派生 tree_nodes]
+    D --> F[派生 vector_chunks]
+    E --> G[写 Tree / Docstore]
+    F --> H[写 Vector DB]
+    D --> I[跑图谱抽取]
+    I --> J[写 KG 实体 / 关系]
+    J --> K[写 evidence_links]
+    G --> L[端到端校验]
+    H --> L
+    K --> L
+    L --> M{校验通过?}
+    M -->|是| N[切 active version / alias]
+    M -->|否| O[废弃新版本并回滚]
+    N --> P[回收旧版本数据]
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3. 查询回链图</h2>
+      <p class="desc">复杂查询时，KG / Vec / Tree 三层通过统一 ID 和 span 关系串起来。</p>
+      <div class="body">
+        <div class="mermaid">
+flowchart TD
+    Q[用户问题] --> A1[KG 查询]
+    A1 --> A2[得到 entity_ids / relation_ids]
+    A2 --> B1[通过 registry 找到相关 span_id / chunk_id]
+    B1 --> B2[向量库中受约束检索]
+    B2 --> B3[返回命中 chunk_id]
+    B3 --> C1[回映到 node_id]
+    C1 --> C2[向上找 parent_id / sibling nodes]
+    C2 --> C3[命中分布分析 + 扩展决策]
+    C3 --> OUT[统一结果输出]
+        </div>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="panel">
+        <h3>推荐统一的东西</h3>
+        <ul>
+          <li><code>doc_id</code>：文档身份</li>
+          <li><code>version_id</code> / <code>content_hash</code>：版本身份</li>
+          <li><code>span_id</code>：规范证据坐标</li>
+          <li>映射与 provenance 关系</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>不推荐硬统一的东西</h3>
+        <ul>
+          <li>向量 chunk 的切法</li>
+          <li>树节点的切法</li>
+          <li>图谱证据跨度</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>最容易出错的点</h3>
+        <ul>
+          <li>把 <code>chunk_id</code> 当成全局主身份</li>
+          <li>没有 <code>version_id</code> 就直接覆盖写入</li>
+          <li>图谱证据强行贴合向量 chunk 边界</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>工程建议：</strong>采用“一个 canonical span 标准 + 多个派生切片标准”的架构：
+      向量层按 embedding 友好切，树层按结构友好切，图谱层按证据友好切；三者通过 registry 的 <code>span_id</code> 稳定对齐。
+    </div>
+  </div>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose', flowchart: { curve: 'basis' } });
+  </script>
+</body>
+</html>

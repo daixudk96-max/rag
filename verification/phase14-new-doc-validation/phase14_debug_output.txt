@@ -1,0 +1,145 @@
+C:\Python311\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+C:\Python311\Lib\site-packages\jieba\_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+[CLEANUP] Removed 2 stale status files: 02_document_ingestion_status.json, 03_tree_vector_status.json
+[01] Environment check OK �� corpus=deep-research-report (1).md
+[DB] Applying migrations...
+[04] Loaded 20 business queries
+[INGEST] Processing corpus...
+[02] Ingest OK �� spans=55, version=d4499bd3-0c64-4249-837f-61cc4d0e33c4
+[TREE] Generating tree...
+[NODE_EMB] Generating node prototype embeddings...
+[NODE_EMB] Written 8 node embeddings
+[VECTOR] Loading embeddings...
+[03] Tree+Vector OK �� nodes=10, vectors=0
+[05] Running retrieval for 20 queries...
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['�о�', '����', '����', '����', '�ĸ�', '��Ŀ', '�ӽ�', '����', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q1: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['KAG', 'NexusRAG', '֪ʶ', 'ͼ��', '����', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q2: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', '����', '����', '��Դ', '��̬', 'ϡȱ']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q3: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['LlamaIndex', 'ʵ��', '����', '����', '��ӳ', '�ڵ�']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q4: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['���', '����', 'POC', 'Ӧ��', 'ѡ��', '�ĸ�', '��Ŀ', '��Ҫ', 'ģ��']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q5: 1 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['LightRAG', '֧��', '����', '���ݿ�']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q6: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['ģ��', 'ƴ��', '��ͼ', '����', '����', '����', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q7: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['RAPTOR', 'HIRO', '����', '����', '����', '�ʺ�', '��Ϊ', '��ɫ']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q8: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['KAG', '��ǿ', 'ʵ��', '��Ҫ', '����', '����', '�ʺ�', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q9: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['KAG', 'mutual', 'indexing', '�ṹ', '����', 'ͼ��', 'ԭ��']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q10: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['NexusRAG', '����', '�ĵ�', '�ṹ', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q11: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['Agent', '����', '��չ', '����', '����', '˳��']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q12: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', '����', '�ж�', '��׼', '����', '����', '����', '��Ϊ']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q13: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['�ֿ�', '�����', '����', '�ĸ�', '��Ŀ', '����', '�ʺ�', '����', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q14: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', '����', '�ų�', 'GraphRAG', '��Ŀ']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q15: 3 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['NexusRAG', 'LightRAG', '�ֱ�', 'ʹ��', '����', '���ݿ�']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q16: 5 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', '����', '��ӳ', '�ڵ�', '�ۺ�', '��ʽ', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q17: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', '����', '�ĸ�', 'ģ��', '˳��', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q18: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', 'ִ��', '˳��', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q19: 0 hits
+[DEBUG runtime.py] Keyword matching results:
+  query_keywords: ['����', '����', '�ۺ�', '�ж�', '����', '����']
+  keyword_hits count: 0
+[DEBUG runtime.py] Hotspot selection results:
+  hotspots count: 0
+  Q20: 0 hits
+[06] Evidence chain: total=59, evidence=0, missing=59
+[07] Judgment template: judgment_template.csv (59 rows)
+
+[Phase 1 COMPLETE] Retrieve pipeline finished
+  - Total hits: 59
+  - Queries with hits: 13/20
+  - Evidence chunk hits: 0
+  - Missing chunk hits: 59 (target: 0)
+  [FAIL] Phase 13 validation: 59 missing chunk hits

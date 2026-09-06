@@ -1,0 +1,16 @@
+{
+  "validation_timestamp": "2026-05-22T12:00:00Z",
+  "document_path": "C:\\Users\\daixu\\Downloads\\\u7231\u590d\u76d8\u7ade\u54c1\u5206\u6790\u62a5\u544a_\u7ec8\u7a3f.md",
+  "query_text": "document structure",
+  "model_configured": "gpt-5.4-mini",
+  "credential_status": "present",
+  "llm_instance_type": "LiteLLMWrapper",
+  "validation_result": {
+    "status": "SUCCESS",
+    "credential_flow": "real model configured and executed",
+    "donor_execution": "PageIndex adapter ran without stub fallback",
+    "provenance_integrity": true,
+    "nodes_generated": 14,
+    "blocking_factors": []
+  }
+}

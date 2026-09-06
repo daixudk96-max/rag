@@ -48,11 +48,44 @@ load_dotenv(PROJECT_ROOT / ".env", override=False)
 
 # Import runtime components
 from llamaindex_runtime.ingestion.pipeline import IngestionPipeline  # noqa: E402
+from llamaindex_runtime.okf.e2a_contracts import E2aReconciliationResult  # noqa: E402
 from llamaindex_runtime.registry.tree_generator import TreeGenerator  # noqa: E402
 from llamaindex_runtime.registry.postgres_adapter import PostgresRegistryWriter  # noqa: E402
 from llamaindex_runtime.vector.loader import VectorLoader  # noqa: E402
 from llamaindex_runtime.tree.runtime import MISSING_CHUNK_ID, retrieve_tree_hits_from_pdf  # noqa: E402
 from llamaindex_runtime.embeddings import SentenceTransformersEmbedding  # noqa: E402
+
+
+class _FakeReconciler:
+    """Fake reconciler for verification scripts (non-DB path).
+
+    CLASSIFICATION: NON-E2A HISTORICAL/DIAGNOSTIC
+
+    This reconciler is used by Phase 13 historical validation scripts for
+    retrieval quality measurement WITHOUT database reconciliation. It returns
+    a typed-shaped E2aReconciliationResult for ingestion pipeline compatibility,
+    but this is NOT a real E2a reconciliation and MUST NOT be used for Phase 15
+    acceptance.
+
+    Phase 15 acceptance requires actual E2aReconciler provenance plus disposable
+    database authorization. This fake reconciler is structurally excluded from
+    the Phase 15 acceptance route.
+
+    See: verification/phase15-okf-ingestion-pipeline/run_e2a_verification.py
+    """
+
+    def reconcile(self, connection: object, desired: object) -> object:
+        return E2aReconciliationResult(
+            outcome="no_op",
+            manifest_sha256="a" * 64,
+            primary_dml_by_table={},
+            denylist_dml_counts={},
+            comparator_parity=None,
+            stale_deletion_counts={},
+            cache_invalidation_counts={},
+            failure_audit_outcome=None,
+            post_rollback_failure_audit_outcome=None,
+        )
 
 # Embedding adapters (copy from phase11 runner)
 class RealEmbedder:
@@ -224,7 +257,12 @@ def phase_retrieve() -> None:
 
     # 02 Ingestion
     print("[INGEST] Processing corpus...")
-    pipeline = IngestionPipeline(registry=registry)
+    pipeline = IngestionPipeline(
+        registry=registry,
+        bundle_root=OUTPUT_DIR / "e2a_bundle",
+        connection_factory=lambda: conn,
+        reconciler=_FakeReconciler(),
+    )
     ingest_result = pipeline.ingest(
         CORPUS_PATH,
         title="[real-doc] PageIndex完整功能分析与集成方案"

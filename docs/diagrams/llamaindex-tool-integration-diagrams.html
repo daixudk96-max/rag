@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LlamaIndex Tool Integration Diagrams</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121933;
+      --panel-2: #1a2347;
+      --text: #e9eefc;
+      --muted: #a9b5d6;
+      --accent: #7aa2ff;
+      --accent-2: #7ef0c2;
+      --border: #2d3b6b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #0b1020 0%, #111933 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      line-height: 1.2;
+    }
+    .lead {
+      color: var(--muted);
+      margin: 0 0 28px;
+      font-size: 16px;
+    }
+    .summary {
+      background: rgba(122, 162, 255, 0.08);
+      border: 1px solid rgba(122, 162, 255, 0.25);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .card {
+      background: rgba(18, 25, 51, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+    .card-header {
+      padding: 18px 20px 10px;
+      background: linear-gradient(180deg, rgba(122,162,255,0.08), rgba(0,0,0,0));
+    }
+    .card-header h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+    .card-header p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .card-body {
+      padding: 8px 12px 20px;
+      background: var(--panel);
+    }
+    .mermaid {
+      background: white;
+      border-radius: 12px;
+      padding: 12px;
+      overflow: auto;
+    }
+    .tips {
+      margin-top: 28px;
+      padding: 18px 20px;
+      background: rgba(126, 240, 194, 0.08);
+      border: 1px solid rgba(126, 240, 194, 0.24);
+      border-radius: 16px;
+      color: var(--text);
+    }
+    code {
+      background: rgba(255,255,255,0.08);
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #d9e5ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LlamaIndex 作为 Tool / 子模块的集成架构图</h1>
+    <p class="lead">把 LlamaIndex 作为内部检索与决策层，对外包装成 Tool，供 LangChain / langclaw / Claude / 其他 Agent 调用。</p>
+
+    <div class="summary">
+      <strong>一句话：</strong>外部 Agent 不负责复杂检索逻辑；它们只调用 Tool。真正的 Vector / Graph / Deep Hybrid 路由，都在 LlamaIndex 内部完成。
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <div class="card-header">
+          <h2>1. 总架构图</h2>
+          <p>外部 Agent 只看到 Tool，内部由 LlamaIndex 做路由与结果组装。</p>
+        </div>
+        <div class="card-body">
+          <div class="mermaid">
+flowchart LR
+    U[用户问题] --> A[外部 Agent / 编排层]
+    A --> B[Tool 调用层]
+
+    subgraph External[外部系统]
+        A1[LangChain Agent]
+        A2[langclaw]
+        A3[Claude / 其他 Agent]
+    end
+
+    A --> A1
+    A --> A2
+    A --> A3
+
+    B --> T1[knowledge_router_tool]
+    B --> T2[vector_search_tool 可选]
+    B --> T3[graph_reasoning_tool 可选]
+    B --> T4[deep_hybrid_tool 可选]
+
+    subgraph Internal[LlamaIndex 内部能力层]
+        R[查询分类 / 路由器]
+        V[轻量路径 Vector Path]
+        G[概念路径 Graph Path]
+        H[复杂路径 Deep Hybrid Path]
+        O[统一结果组装器]
+    end
+
+    T1 --> R
+    T2 --> V
+    T3 --> G
+    T4 --> H
+
+    R --> V
+    R --> G
+    R --> H
+
+    V --> O
+    G --> O
+    H --> O
+
+    O --> B
+    B --> A
+    A --> U
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>2. 内部决策图</h2>
+          <p>三类问题走三条路径：轻量向量、概念图谱、复杂混合。</p>
+        </div>
+        <div class="card-body">
+          <div class="mermaid">
+flowchart TD
+    Q[输入问题] --> C[问题分类器]
+
+    C -->|事实型 / 轻量型| V1[Vector 检索]
+    C -->|概念型 / 关系型| G1[KG 检索]
+    C -->|复杂知识型 / 多跳型| H1[Hybrid 深度流程]
+
+    subgraph VectorPath[轻量路径]
+        V1 --> V2[向量召回]
+        V2 --> V3[直接生成答案]
+    end
+
+    subgraph GraphPath[概念路径]
+        G1 --> G2[实体/关系查询]
+        G2 --> G3[图谱证据整理]
+        G3 --> G4[生成答案]
+    end
+
+    subgraph HybridPath[复杂路径]
+        H1 --> H2[先知识图谱锁定概念/实体]
+        H2 --> H3[再受约束的向量检索]
+        H3 --> H4[树层级回并]
+        H4 --> H5[命中分布分析]
+        H5 --> H6[父节点/兄弟节点/相邻块扩展]
+        H6 --> H7[生成答案]
+    end
+
+    V3 --> OUT[统一输出]
+    G4 --> OUT
+    H7 --> OUT
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>3. 复杂路径细化图</h2>
+          <p>这是你最关心的主链：KG → Vec → Tree → 分布分析 → 扩展。</p>
+        </div>
+        <div class="card-body">
+          <div class="mermaid">
+flowchart TD
+    Q[复杂问题] --> K1[知识图谱检索]
+    K1 --> K2[得到候选实体 / 关系 / 约束]
+
+    K2 --> V1[受约束向量检索]
+    V1 --> V2[召回叶子 Chunk]
+
+    V2 --> T1[树节点回并]
+    T1 --> T2[AutoMerging / Parent Rollup]
+
+    T2 --> D1[命中分布分析]
+    D1 --> D2{分布状态判断}
+
+    D2 -->|命中高度集中| E1[只取高得分节点]
+    D2 -->|命中中等集中| E2[取命中节点 + 父节点摘要]
+    D2 -->|命中较分散| E3[扩展父节点 + 兄弟分支]
+    D2 -->|信息残缺| E4[扩展相邻 Chunk]
+
+    E1 --> A1[答案生成]
+    E2 --> A1
+    E3 --> A1
+    E4 --> A1
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>4. 存储层图</h2>
+          <p>LlamaIndex 不是数据库，而是协调 KG / Vec / Tree 三层的能力编排器。</p>
+        </div>
+        <div class="card-body">
+          <div class="mermaid">
+flowchart LR
+    subgraph Parse[解析与切片层]
+        P1[Docling Reader]
+        P2[结构自适应切片]
+        P3[语义自适应切片 可选]
+    end
+
+    subgraph LlamaCore[LlamaIndex 内部索引层]
+        L1[PropertyGraphIndex]
+        L2[VectorStoreIndex]
+        L3[HierarchicalNodeParser]
+        L4[AutoMergingRetriever]
+        L5[Workflow / ReActAgent]
+    end
+
+    subgraph Storage[存储层]
+        S1[(Neo4j 知识图谱)]
+        S2[(Milvus / Qdrant 向量数据库)]
+        S3[(Docstore / Metadata 树关系与路径)]
+    end
+
+    P1 --> P2
+    P2 --> P3
+
+    P3 --> L1
+    P3 --> L2
+    P3 --> L3
+
+    L1 --> S1
+    L2 --> S2
+    L3 --> S3
+
+    L4 --> S2
+    L4 --> S3
+
+    L5 --> L1
+    L5 --> L2
+    L5 --> L4
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>5. 对外接入图</h2>
+          <p>langclaw / LangChain / Claude 如何通过一个 Tool 调用 LlamaIndex 内部大脑。</p>
+        </div>
+        <div class="card-body">
+          <div class="mermaid">
+flowchart LR
+    subgraph ExternalAgent[外部 Agent / 平台]
+        X1[LangChain]
+        X2[langclaw]
+        X3[Claude]
+    end
+
+    subgraph ToolLayer[Tool 暴露层]
+        T[knowledge_router_tool]
+    end
+
+    subgraph InternalBrain[LlamaIndex 内部大脑]
+        B1[Query Classifier]
+        B2[Vector Path]
+        B3[Graph Path]
+        B4[Deep Hybrid Path]
+        B5[Unified Response Builder]
+    end
+
+    X1 --> T
+    X2 --> T
+    X3 --> T
+
+    T --> B1
+    B1 --> B2
+    B1 --> B3
+    B1 --> B4
+
+    B2 --> B5
+    B3 --> B5
+    B4 --> B5
+
+    B5 --> T
+    T --> X1
+    T --> X2
+    T --> X3
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="tips">
+      <strong>建议你怎么用：</strong>
+      <ul>
+        <li>优先对外只暴露一个总工具：<code>knowledge_router_tool</code></li>
+        <li>内部再拆成三条路径：<code>vector_path</code> / <code>graph_path</code> / <code>deep_hybrid_path</code></li>
+        <li>这样外部 Agent 最简单，内部能力最可控，后续替换逻辑也不影响对外接口。</li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      flowchart: { curve: 'basis' }
+    });
+  </script>
+</body>
+</html>

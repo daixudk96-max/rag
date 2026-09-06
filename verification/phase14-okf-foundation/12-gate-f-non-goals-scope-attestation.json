@@ -1,0 +1,193 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "phase14_gate_f_non_goals_scope_attestation",
+  "date": "2026-07-17",
+  "phase": "14-okf-foundation",
+  "gate": "F",
+  "verdict": "PASS",
+  "verdict_scope": "PASS attests only that the authoritative §10-F non-goals are adhered to within the bounded Phase 14 scope declared here. It is not a Phase 14 aggregate-closure verdict, full-worktree review, Git-cleanliness verdict, security/production-readiness verdict, or intended-commit-scope PASS.",
+  "authoritative_source": {
+    "path": ".planning/OKF-MULTIROUTE-EXECUTION-HANDOFF-2026-07-12.md",
+    "section": "§10-F 阶段 A 明确非目标",
+    "items_found": 5,
+    "item_count_note": "§10-F contains exactly the five separately mapped checkbox items below; no additional §10-F checkbox was present to map."
+  },
+  "bounded_phase14_scope": {
+    "definition": "The reviewed surface is the Phase 14 OKF foundation delivery: admitted raw-sidecar format/contract, serializer and parser, canonical-span-only E1 rebuild, Phase 14 migrations and migration-runner boundary, focused tests/fixtures/bundle templates, and Phase 14 verification evidence. It excludes any unrelated dirty-worktree material. This is an evidence-review scope, not a declaration of Git attribution for untracked files and not an intended commit path set.",
+    "sources_used_to_establish_scope": [
+      ".planning/phases/14-okf-foundation/14-CONTEXT.md (Phase boundary, in-scope and do-not-touch boundary)",
+      ".planning/phases/14-okf-foundation/14-01-PLAN.md through 14-04-PLAN.md and 14-01-SUMMARY.md through 14-04-SUMMARY.md (plan/summary path sets and delivered E1 boundary)",
+      "verification/phase14-okf-foundation/07-untracked-scope-inventory.json category A implementation/tests/migrations/bundle/verification candidates and category B Phase 14 planning/admin candidates",
+      "verification/phase14-okf-foundation/05-gitnexus-whole-tree-detect-changes.json and 06-gitnexus-phase14-impacts.json only as relevant tracked-diff and targeted-impact warnings; neither artifact supplies an intended commit scope"
+    ],
+    "included_top_level_roots_or_files": [
+      "llamaindex_runtime/okf/",
+      "llamaindex_runtime/registry/migrations/015_okf_sync_state.sql",
+      "llamaindex_runtime/registry/migrations/016_entity_mentions.sql",
+      "llamaindex_runtime/registry/migrations/017_relation_qualifiers.sql",
+      "llamaindex_runtime/registry/migrations/018_okf_rebuild_failure_audit.sql",
+      "scripts/rebuild_from_okf.py",
+      "run_migrations.py (only the Phase 14 migration-list boundary recorded by 14-02)",
+      "llamaindex_runtime/config.py (only additive OKF_BUNDLE_ROOT boundary)",
+      "llamaindex_runtime/ingestion/docling_ingestor.py (only the authorized _build_default_reader/HeadingHierarchyModel boundary)",
+      "llamaindex_runtime/pyproject.toml (only the Phase 14 docling pin boundary)",
+      "pytest.ini",
+      "tests/llamaindex_runtime/okf/",
+      "tests/llamaindex_runtime/test_docling_2109_default_reader.py",
+      "tests/fixtures/okf_roundtrip/",
+      "tests/fixtures/okf_spec_bundles/",
+      "okf_bundle/",
+      "okf-bundles/main/entities/ (legacy sample/test-fixture boundary only)",
+      "verification/phase14-okf-foundation/",
+      ".planning/phases/14-okf-foundation/ and the two named Phase 14 ADRs as relevant category-B planning/admin evidence, not implementation"
+    ],
+    "artifact07_classification": {
+      "A_phase14_implementation_tests_migrations_bundle_verification": 201,
+      "B_phase14_planning_admin": 11,
+      "C_unrelated_preexisting_other_phase": 754,
+      "D_tool_cache_generated_transient": 441,
+      "untracked_total": 1407,
+      "classification_reconciliation": "201 + 11 + 754 + 441 = 1407"
+    },
+    "explicit_exclusions": [
+      "Category C: the 754 unrelated/pre-existing/other-phase untracked paths; including root debug scripts. They are not evidence for, or part of, this bounded attestation.",
+      "Category D: the 441 ignore-respecting tool/cache/generated/transient paths, including .autod/, .claude/, .claude-plugin/, .coverage, .pytest-okf-it/, .qoder/, and listed root transient artifacts.",
+      "Existing ingestion callers other than the narrowly authorized _build_default_reader boundary; Phase 15 caller switchover/E2a materialization; Phase 16 E2b NER-derived processing; Phase 17 entity-recall/fusion integration; Phase 18 agent writeback; Phase 19 D4 quality tuning; Phase 20 pilot work.",
+      "Unrelated PageIndex, hotspot, retrieval, quality-validation, package/lock, source, test, SQL, planning, evidence, and Git-state paths outside the listed bounded surface."
+    ],
+    "attribution_and_cleanliness_limit": "Category A/B are candidate classifications, not Git attribution. No claim is made that untracked files belong to a commit, that the worktree is clean, or that this is a full-worktree/commit-scope review."
+  },
+  "gitnexus_scope_and_risk_evidence": {
+    "04_current_index": {
+      "path": "verification/phase14-okf-foundation/04-gitnexus-index-status.json",
+      "result": "PASS",
+      "finding": "GitNexus index was up-to-date at recorded revision 9c1922c."
+    },
+    "05_tracked_diff": {
+      "path": "verification/phase14-okf-foundation/05-gitnexus-whole-tree-detect-changes.json",
+      "result": "WARN",
+      "finding": "Tracked Git-diff mapping recorded 23 tracked files, 58 mapped symbols, 6 affected execution flows, HIGH risk. Git diff excludes untracked paths by semantics."
+    },
+    "06_targeted_impacts": {
+      "path": "verification/phase14-okf-foundation/06-gitnexus-phase14-impacts.json",
+      "result": "WARN",
+      "finding": "Targeted depth-3 impacts retain HIGH/CRITICAL warnings for selected symbols and are explicitly non-exhaustive for untracked symbols."
+    },
+    "07_inventory": {
+      "path": "verification/phase14-okf-foundation/07-untracked-scope-inventory.json",
+      "result": "WARN",
+      "finding": "Ignore-respecting inventory classified 1,407 untracked paths into A/B/C/D; A candidates remain outside tracked-diff detection."
+    },
+    "interpretation": "These are scope and risk warnings only. They do not establish full-worktree or commit-scope PASS, and do not alter this bounded non-goal-adherence PASS."
+  },
+  "review_method": {
+    "read_only": true,
+    "no_database_docker_or_package_download": true,
+    "protected_variable_isolation": "For any non-DB shell validation, DATABASE_URL, FORMAL_RUNTIME_DATABASE_URL, OKF_MIGRATION_TEST_DATABASE_DISPOSABLE, OKF_REBUILD_EXPECTED_DATABASE, OKF_FAILURE_AUDIT_ACCEPTANCE, and OKF_REBUILD_DOCKER_ACCEPTANCE were explicitly unset without inspecting, printing, or persisting their values.",
+    "path_filtered_searches": [
+      {
+        "surface": "llamaindex_runtime/okf/*.py",
+        "pattern": "(?i)\\b(entity extraction|named entity recognition|\\bner\\b|node[ _-]?entity[ _-]?link)\\b",
+        "summary": "0 occurrences in 0 files."
+      },
+      {
+        "surface": "llamaindex_runtime/okf/*.py",
+        "pattern": "(?i)\\b(pageindex|hotspot|fusion|entity[ _-]?recall)\\b",
+        "summary": "0 occurrences in 0 files."
+      },
+      {
+        "surface": "scripts/rebuild_from_okf.py",
+        "pattern": "(?i)\\b(pageindex|hotspot|fusion|entity[ _-]?recall|agent|git[ _-]?(add|commit|push)|writeback|quality|evaluation|comparison|entity extraction|\\bner\\b)\\b",
+        "summary": "0 occurrences."
+      },
+      {
+        "surface": "tests/llamaindex_runtime/okf/*.py",
+        "pattern": "(?i)\\b(pageindex|hotspot|fusion|entity[ _-]?recall|agent|git[ _-]?(add|commit|push)|writeback|quality[ _-]?(uplift|improvement)|large[ _-]?scale|\\bner\\b|entity extraction|node[ _-]?entity[ _-]?link)\\b",
+        "summary": "1 occurrence in test_okf_parser_cli.py, an import-blocking test reference to llamaindex_runtime.agent; it is not agent writeback or Git authorization."
+      },
+      {
+        "surface": "llamaindex_runtime/registry/migrations/015-018",
+        "pattern": "(?i)\\b(insert|update|delete|copy|entity extraction|\\bner\\b|node[ _-]?entity[ _-]?link|pageindex|hotspot|fusion|entity[ _-]?recall|git)\\b",
+        "summary": "4 occurrences in 016/018: FK ON DELETE semantics and a trigger guard, not entity extraction, NER population, recall/fusion, or Git behavior."
+      },
+      {
+        "surface": "credential/URL heuristic over bounded implementation and evidence",
+        "pattern": "(?i)(api[_-]?key|secret|password|authorization:\\s*bearer|https?://[^\\s/@]+:[^\\s/@]+@)",
+        "summary": "No credential URL or credential literal was found in scripts/rebuild_from_okf.py. Four source hits are imports/calls to Python's secrets.token_hex for temporary names, not credential values. Evidence hits are redacted safety/acceptance descriptions only; no value was emitted or retained."
+      }
+    ],
+    "interpretation_limit": "Search results are bounded to the declared Phase 14 surface. They intentionally do not claim that the corresponding strings are absent repository-wide."
+  },
+  "section_10_f_mapping": [
+    {
+      "id": "F-1",
+      "authoritative_non_goal": "Phase A does not introduce any entity-extraction model implementation; this is an A/C boundary and does not negate the frozen Phase 16-C1 RaNER main model.",
+      "verdict": "PASS",
+      "evidence": [
+        "llamaindex_runtime/okf/*.py exact extraction/NER/node-entity-link search: 0 occurrences.",
+        "scripts/rebuild_from_okf.py forbidden-feature search: 0 occurrences.",
+        "llamaindex_runtime/registry/migrations/016_entity_mentions.sql: schema-only placeholders for entity_aliases, entity_mentions, and entity_merge_log; its own header states Phase 16 populates these tables, and it contains no INSERT/UPDATE/COPY population logic.",
+        ".planning/phases/14-okf-foundation/14-CONTEXT.md: registered tables are created empty and Phase 16 owns NER/entity extraction."
+      ],
+      "finding": "Manual entity/relation/mention frontmatter contracts and schema placeholders are not NER, entity mention extraction, alias generation, or node-entity-link materialization. Existing pre-Phase-14 entity/relation facilities and Phase 16-owned schema boundary are distinguished rather than treated as repository-wide string absence."
+    },
+    {
+      "id": "F-2",
+      "authoritative_non_goal": "Do not change PageIndex-route configuration or tune Level 2 parameters.",
+      "verdict": "PASS",
+      "evidence": [
+        "llamaindex_runtime/okf/*.py PageIndex/hotspot/fusion/entity-recall search: 0 occurrences.",
+        "scripts/rebuild_from_okf.py combined PageIndex/Level/hotspot/fusion/quality search: 0 occurrences.",
+        ".planning/phases/14-okf-foundation/14-CONTEXT.md explicitly excludes PageIndex configuration, fusion weights, retrieval behavior, and level-assessment claims.",
+        ".planning/phases/14-okf-foundation/14-02-SUMMARY.md records the direct PageIndex migration tuple as unchanged because it does not read OKF tables."
+      ],
+      "finding": "The only Phase 14 docling reader exception is HeadingHierarchyModel for span identity/round-trip, not PageIndex configuration or Level-2 quality tuning. No Level 3/4 quality claim is made; D4 remains deferred/frozen until Phase 19."
+    },
+    {
+      "id": "F-3",
+      "authoritative_non_goal": "Do not change entity-recall weights and do not claim a quality improvement.",
+      "verdict": "PASS",
+      "evidence": [
+        "llamaindex_runtime/okf/*.py and scripts/rebuild_from_okf.py feature searches found 0 PageIndex/hotspot/fusion/entity-recall occurrences.",
+        "Focused test search found no recall/fusion/quality-uplift/large-scale-evaluation implementation; its sole agent import-blocking reference is non-executable writeback-wise.",
+        ".planning/phases/14-okf-foundation/14-CONTEXT.md assigns fusion/retrieval behavior outside Phase 14; 14-04-SUMMARY.md identifies E1 as canonical_spans-only."
+      ],
+      "finding": "Documentation references to downstream R3/entity-recall/fusion ownership are not an integration. No entity-recall weighting or fusion behavior is present in the bounded Phase 14 implementation, and no quality uplift is attributed. Phase 17 remains the integration owner."
+    },
+    {
+      "id": "F-4",
+      "authoritative_non_goal": "Do not allow an Agent to automatically commit writeback.",
+      "verdict": "PASS",
+      "evidence": [
+        "scripts/rebuild_from_okf.py combined agent/writeback/Git add-commit-push search: 0 occurrences.",
+        "Focused OKF-test search found one non-executable llamaindex_runtime.agent import-blocking reference in test_okf_parser_cli.py and zero Git/writeback matches.",
+        "okf_bundle/AGENT.md is a human guidance/bundle policy file; it contains no authorization or implementation for automatic Git add/commit/push.",
+        ".planning/phases/14-okf-foundation/14-CONTEXT.md explicitly places Agent writeback in Phase 18."
+      ],
+      "finding": "Historical plan instructions that mentioned agent work are superseded/non-executable documentation, not authorization. This attestation grants no staging, commit, push, or automatic writeback authority."
+    },
+    {
+      "id": "F-5",
+      "authoritative_non_goal": "Do not perform Phase 14 comparison work or expand a large-scale evaluation set.",
+      "verdict": "PASS",
+      "evidence": [
+        "Declared test/fixture surface is limited to contract/lint, three frozen round-trip fixture classes, parser/incremental/qualifier tests, migration acceptance, and E1 rebuild reconciliation evidence.",
+        "verification/phase14-okf-foundation/08-gate-b-roundtrip-cli-parity.json, 09-gate-c-migrations-disposable-postgres.json, 10-gate-d-parser-incremental-qualifiers.json, and 11-gate-e-rebuild-docker-reconciliation.json record bounded contract/parity/rebuild acceptance, not comparative or large-scale quality evaluation.",
+        "Focused test search found no quality-uplift or large-scale evaluation implementation; excluded category C/D paths include unrelated quality/transient material and are not used as Phase 14 evidence."
+      ],
+      "finding": "The 13 frozen spans across three fixture classes prove identity/parity, not retrieval quality. No comparison expansion, corpus-scale evaluation, Level claim, or quality uplift attribution is made."
+    }
+  ],
+  "limitations_and_residuals": [
+    "This review does not prove absence of forbidden concepts outside the bounded Phase 14 scope; unrelated repository matches may exist and are excluded deliberately.",
+    "Artifact 05's HIGH tracked-diff risk and artifact 06's HIGH/CRITICAL targeted-impact warnings remain acknowledged; artifact 07's candidate classification is not Git attribution.",
+    "Phase 15/E2a remains unstarted and requires separate explicit authorization; Phase 16/E2b, Phase 17, Phase 18, Phase 19, and Phase 20 retain their own gates and owners.",
+    "No authorization is granted for staging, commit, push, production activity, database activity, Docker activity, package download, or Phase 15 work.",
+    "This Gate F non-goals PASS does not override the recorded final comprehensive Phase 14 authority/evidence-chain closure review requirement."
+  ],
+  "validation": {
+    "json_syntax": "PASS — isolated Python JSON parse completed successfully.",
+    "internal_reference_existence": "PASS — 10 selected authoritative, planning, Gate F, implementation, and migration references were checked for existence.",
+    "credential_scan": "Completed with the bounded heuristic described in review_method; no credential URL or credential literal was found."
+  }
+}

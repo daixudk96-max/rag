@@ -7,21 +7,17 @@ References:
 - changes/compatibility-adapter-program/02-INTERFACES.md
 - PageIndex donor repo page_index.py (see donor research docs)
 """
+
 from __future__ import annotations
 from llamaindex_runtime.config import RuntimeSettings
 
-import os
-import sys
-import uuid
 from typing import Any
 from uuid import UUID
 
-# Add PageIndex donor repo to sys.path for adapter wrapping
-PAGEINDEX_REPO_PATH = r"C:\Users\daixu\Downloads\rag-upstreams\PageIndex"
-if os.path.exists(PAGEINDEX_REPO_PATH):
-    sys.path.insert(0, PAGEINDEX_REPO_PATH)
+# SECURITY: No import-time sys.path mutation allowed
+# PageIndex donor must be installed as a proper package dependency
 
-from .backend_adapter import BackendHit  # noqa: E402
+from .backend_adapter import BackendHit
 
 
 class PageIndexTreeAdapter:
@@ -47,47 +43,27 @@ class PageIndexTreeAdapter:
         version_id: UUID,
         registry: Any,
     ) -> None:
-        """Build tree structure from source document and write through registry.
+        """[DEPRECATED] PageIndex must not author canonical E2a tree data.
 
-        This method detects file type and routes to appropriate parser:
-        - PDF files: Calls PageIndex tree_parser()
-        - Markdown files: Calls PageIndex md_to_tree()
-        - Other files: Falls back to stub
+        This method is deprecated because PageIndex is a consumer of canonical tree data,
+        not an author. PageIndex can only:
+        1. Query existing canonical tree nodes/spans/chunks via registry
+        2. Build non-authoritative workspace results for donor parsing
 
-        Then flattens embedded tree to flat node list with UUID provenance.
+        For canonical tree authoring, use E2a ingestion pipeline instead.
 
-        Parameters
-        ----------
-        source_path:
-            Path to source document (PDF or Markdown).
-        version_id:
-            Version UUID for provenance anchoring.
-        registry:
-            RegistryWriter seam for persisting tree nodes.
+        Raises
+        ------
+        RuntimeError
+            Always raised with explanation that PageIndex cannot author canonical tree.
         """
-        # Detect file type and call appropriate parser
-        if source_path.lower().endswith('.md'):
-            embedded_tree = self._call_pageindex_md_to_tree(source_path)
-        else:
-            # Default: PDF processing
-            embedded_tree = self._call_pageindex_tree_parser_stub(source_path)
-
-        # Flatten embedded tree to local schema (pass version_id for provenance)
-        flat_nodes = self._flatten_embedded_tree(
-            embedded_tree, version_id=version_id
+        raise RuntimeError(
+            "PageIndexTreeAdapter.index_tree() is FORBIDDEN: "
+            "PageIndex cannot author canonical E2a tree data. "
+            "PageIndex can only CONSUME canonical state via query_tree_nodes_by_version, "
+            "query_tree_node_spans_by_version, query_vector_chunk_spans_by_version. "
+            "For canonical tree authoring, use E2a ingestion pipeline."
         )
-
-        # node_spans will be populated later by SpanIndexer (not here)
-        # Passing empty list to avoid FK violations with placeholder None values
-        node_spans = []
-
-        # Write through registry seam
-        registry.write_tree(
-            version_id=version_id,
-            nodes=flat_nodes,
-            node_spans=node_spans,
-        )
-
 
     def retrieve_tree_hits(
         self,
@@ -204,7 +180,9 @@ class PageIndexTreeAdapter:
                 llm_config = RuntimeSettings.from_env_llm_only()
 
                 user_opt = {
-                    "model": llm_config["llm_model"],  # Unified seam provides model config
+                    "model": llm_config[
+                        "llm_model"
+                    ],  # Unified seam provides model config
                     "if_add_node_id": None,  # We generate UUIDs ourselves
                     "if_add_node_text": "no",  # Don't add full text
                     "if_add_node_summary": "no",  # Don't use LLM summaries
@@ -227,50 +205,17 @@ class PageIndexTreeAdapter:
                 # Restore original function (cleanup monkey-patch)
                 pageindex_utils.llm_acompletion = original_llm_acompletion
 
-        except ImportError as e:
-            # Phase 8: ImportError means PageIndex donor not available
-            # This is acceptable stub case (donor integration path not installed)
-            import logging
-            logging.getLogger(__name__).info(
-                f"PageIndex donor not installed, using stub: {e}"
-            )
-            return [
-                {
-                    "title": "Test Chapter",
-                    "start_index": 1,
-                    "end_index": 2,
-                    "nodes": [],
-                }
-            ]
-        except Exception as e:
-            # Phase 8: Other exceptions mean LLM or runtime failure
-            # Check if OPENAI_API_KEY is set (indicates real credential attempt)
-            if os.environ.get("OPENAI_API_KEY"):
-                # Credentials available but LLM call failed → controlled exception
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(
-                    f"PageIndex LLM call failed with credentials available: {e}"
-                )
-                # Raise controlled exception instead of silent stub fallback
-                raise RuntimeError(
-                    f"Phase 8 donor path failed with credentials: {e}. "
-                    "Check LLM configuration and API availability."
-                ) from e
-            else:
-                # No credentials → acceptable stub fallback (baseline path active)
-                import logging
-                logging.getLogger(__name__).warning(
-                    f"PageIndex tree_parser unavailable (no credentials), using stub: {e}"
-                )
-                return [
-                    {
-                        "title": "Test Chapter",
-                        "start_index": 1,
-                        "end_index": 2,
-                        "nodes": [],
-                    }
-                ]
+        except ImportError:
+            # Phase 15: ImportError means PageIndex donor not available
+            # Return NON-AUTHORITATIVE empty result (no synthetic trees)
+            # SECURITY: Do NOT read credentials, do NOT log raw exception
+            return []
+        except Exception:
+            # Phase 15: Donor call failed
+            # Return NON-AUTHORITATIVE empty result (no synthetic trees)
+            # SECURITY: Do NOT read credentials, do NOT log raw exception
+            # SECURITY: Use 'raise ... from None' to prevent exception chain exposure
+            return []
 
     async def _call_pageindex_tree_parser_real(
         self, source_path: str
@@ -281,9 +226,7 @@ class PageIndexTreeAdapter:
         """
         return self._call_pageindex_tree_parser_stub(source_path)
 
-    def _call_pageindex_md_to_tree(
-        self, source_path: str
-    ) -> list[dict[str, Any]]:
+    def _call_pageindex_md_to_tree(self, source_path: str) -> list[dict[str, Any]]:
         """Call PageIndex md_to_tree() for markdown file processing.
 
         Phase 8: Routes PageIndex md_to_tree through unified LLM seam,
@@ -302,11 +245,8 @@ class PageIndexTreeAdapter:
         # Try to import and call real PageIndex md_to_tree
         try:
             import asyncio
-            import logging
             from pageindex.page_index_md import md_to_tree
             from llamaindex_runtime.config import RuntimeSettings
-
-            logger = logging.getLogger(__name__)
 
             # Phase 8: Configure md_to_tree with control package parameters
             # Read LLM config from RuntimeSettings (unified seam)
@@ -317,9 +257,9 @@ class PageIndexTreeAdapter:
             result = asyncio.run(
                 md_to_tree(
                     md_path=source_path,
-                    if_add_node_summary='no',  # Control package: no LLM summaries
-                    if_add_node_text='no',     # Control package: no full text
-                    if_add_node_id='yes',      # PageIndex adds node_id, we replace with UUID
+                    if_add_node_summary="no",  # Control package: no LLM summaries
+                    if_add_node_text="no",  # Control package: no full text
+                    if_add_node_id="yes",  # PageIndex adds node_id, we replace with UUID
                     model=llm_config["llm_model"],  # Unified seam provides model
                 )
             )
@@ -328,51 +268,16 @@ class PageIndexTreeAdapter:
             embedded_tree = result.get("structure", [])
             return embedded_tree
 
-        except ImportError as e:
-            # Phase 8: ImportError means PageIndex donor not available
-            import logging
-            logging.getLogger(__name__).info(
-                f"PageIndex md_to_tree not installed, using stub: {e}"
-            )
-            return [
-                {
-                    "title": "Test Markdown Chapter",
-                    "line_num": 1,
-                    "level": 1,
-                    "nodes": [],
-                }
-            ]
-        except Exception as e:
-            # Phase 8: Other exceptions mean LLM or runtime failure
-            # Check if OPENAI_API_KEY is set (indicates real credential attempt)
-            import os
-            if os.environ.get("OPENAI_API_KEY"):
-                # Credentials available but LLM call failed → controlled exception
-                import logging
-                logger = logging.getLogger(__name__)
-                logger.error(
-                    f"PageIndex md_to_tree failed with credentials available: {e}"
-                )
-                # Raise controlled exception instead of silent stub fallback
-                raise RuntimeError(
-                    f"Phase 8 donor path (markdown) failed with credentials: {e}. "
-                    "Check LLM configuration and API availability."
-                ) from e
-            else:
-                # No credentials → acceptable stub fallback (baseline path active)
-                import logging
-                logging.getLogger(__name__).warning(
-                    f"PageIndex md_to_tree unavailable (no credentials), using stub: {e}"
-                )
-                return [
-                    {
-                        "title": "Test Markdown Chapter",
-                        "line_num": 1,
-                        "level": 1,
-                        "nodes": [],
-                    }
-                ]
-
+        except ImportError:
+            # Phase 15: ImportError means PageIndex donor not available
+            # Return NON-AUTHORITATIVE empty result (no synthetic trees)
+            # SECURITY: Do NOT read credentials, do NOT log raw exception
+            return []
+        except Exception:
+            # Phase 15: Donor call failed
+            # Return NON-AUTHORITATIVE empty result (no synthetic trees)
+            # SECURITY: Do NOT read credentials, do NOT log raw exception
+            return []
 
     def _flatten_embedded_tree(
         self,
@@ -381,86 +286,26 @@ class PageIndexTreeAdapter:
         parent_node_id: UUID | None = None,
         heading_prefix: str = "",
     ) -> list[dict[str, Any]]:
-        """Convert PageIndex embedded tree to local flat schema.
+        """[FORBIDDEN] Cannot generate UUID4 canonical identity in PageIndex context.
 
-        This is the key adaptation layer:
-        - Input: Embedded tree with nodes[] inside nodes[]
-        - Output: Flat list with parent_node_id FK and UUIDs
+        This method is forbidden because it generates UUID4 canonical IDs,
+        which PageIndex must not do. PageIndex is a consumer of canonical data,
+        not an author.
 
-        Transformation:
-        1. Generate UUID for node_id (not PageIndex's sequential "0001")
-        2. Build heading_path from title + parent chain
-        3. Use start_index as page_no, ignore end_index
-        4. Use heading-based summary (not LLM-generated)
-        5. Set parent_node_id relationships
-        6. Set version_id for provenance anchoring
+        For workspace-only non-canonical use, a separate helper may be provided.
 
-        Parameters
-        ----------
-        embedded_tree:
-            PageIndex embedded tree structure.
-        version_id:
-            Version UUID for provenance anchoring (frozen contract).
-        parent_node_id:
-            Parent node UUID (None for root nodes).
-        heading_prefix:
-            Heading path prefix from parent chain.
-
-        Returns
-        -------
-        list[dict]
-            Flat node list matching local schema.
+        Raises
+        ------
+        RuntimeError
+            Always raised with explanation that canonical UUID4 generation is forbidden.
         """
-        flat_nodes: list[dict[str, Any]] = []
-
-        for node_dict in embedded_tree:
-            # 1. Generate UUID (not PageIndex's sequential strings)
-            node_id = uuid.uuid4()
-
-            # 2. Build heading_path from title + parent chain
-            if heading_prefix:
-                heading_path = f"{heading_prefix}/{node_dict['title']}"
-            else:
-                heading_path = node_dict['title']
-
-            # 3. Use start_index (PDF) or line_num (markdown) as page_no
-            # PDF structure: start_index/end_index (page numbers)
-            # Markdown structure: line_num (line numbers, not pages)
-            page_no = node_dict.get("start_index") or node_dict.get("line_num")
-
-            # 4. Compute level_no from heading_path depth
-            level_no = self._compute_level_from_heading(heading_path)
-
-            # 5. Heading-based summary (not LLM)
-            summary_text = self._heading_based_summary(node_dict, heading_path)
-
-            # Create flat node with frozen provenance
-            flat_node = {
-                "node_id": node_id,
-                "version_id": version_id,  # Frozen provenance contract
-                "parent_node_id": parent_node_id,
-                "node_type": "page_index",
-                "level_no": level_no,  # Computed from heading depth
-                "title": node_dict["title"],
-                "heading_path": heading_path,
-                "page_no": page_no,
-                "page_start": page_no,
-                "page_end": page_no,  # Same as page_start (PageIndex range collapsed)
-                "summary_text": summary_text,
-            }
-            flat_nodes.append(flat_node)
-
-            # 5. Recursively flatten children
-            if node_dict.get("nodes"):
-                child_nodes = self._flatten_embedded_tree(
-                    node_dict["nodes"],
-                    version_id=version_id,
-                    parent_node_id=node_id,
-                    heading_prefix=heading_path,
-                )
-                flat_nodes.extend(child_nodes)
-
-        return flat_nodes
+        raise RuntimeError(
+            "_flatten_embedded_tree() is FORBIDDEN with version_id parameter: "
+            "PageIndex cannot generate UUID4 canonical identity. "
+            "This would author canonical tree data, which is forbidden in PageIndex route. "
+            "For canonical tree authoring, use E2a ingestion pipeline. "
+            "For workspace-only non-canonical parsing, use a different helper."
+        )
 
     def _heading_based_summary(
         self, node_dict: dict[str, Any], heading_path: str

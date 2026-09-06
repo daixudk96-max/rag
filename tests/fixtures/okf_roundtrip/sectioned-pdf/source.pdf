@@ -1,0 +1,124 @@
+%PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document http://www.reportlab.com
+1 0 obj
+<<
+/F1 2 0 R /F2 3 0 R /F3 4 0 R
+>>
+endobj
+2 0 obj
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
+endobj
+3 0 obj
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
+endobj
+4 0 obj
+<<
+/BaseFont /Helvetica-BoldOblique /Encoding /WinAnsiEncoding /Name /F3 /Subtype /Type1 /Type /Font
+>>
+endobj
+5 0 obj
+<<
+/Contents 16 0 R /MediaBox [ 0 0 612 792 ] /Parent 15 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 /Trans <<
+
+>> 
+  /Type /Page
+>>
+endobj
+6 0 obj
+<<
+/Outlines 8 0 R /PageMode /UseNone /Pages 15 0 R /Type /Catalog
+>>
+endobj
+7 0 obj
+<<
+/Author (\(anonymous\)) /CreationDate (D:20000101000000+00'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20000101000000+00'00') /Producer (ReportLab PDF Library - www.reportlab.com) 
+  /Subject (\(unspecified\)) /Title (\(anonymous\)) /Trapped /False
+>>
+endobj
+8 0 obj
+<<
+/Count 9 /First 9 0 R /Last 9 0 R /Type /Outlines
+>>
+endobj
+9 0 obj
+<<
+/Count 5 /Dest [ 5 0 R /Fit ] /First 10 0 R /Last 13 0 R /Parent 8 0 R /Title (Introduction to Machine Learning)
+>>
+endobj
+10 0 obj
+<<
+/Count 2 /Dest [ 5 0 R /Fit ] /First 11 0 R /Last 12 0 R /Next 13 0 R /Parent 9 0 R 
+  /Title (Chapter 1: Foundations)
+>>
+endobj
+11 0 obj
+<<
+/Dest [ 5 0 R /Fit ] /Next 12 0 R /Parent 10 0 R /Title (1.1 Supervised Learning)
+>>
+endobj
+12 0 obj
+<<
+/Dest [ 5 0 R /Fit ] /Parent 10 0 R /Prev 11 0 R /Title (1.2 Unsupervised Learning)
+>>
+endobj
+13 0 obj
+<<
+/Count 1 /Dest [ 5 0 R /Fit ] /First 14 0 R /Last 14 0 R /Parent 9 0 R /Prev 10 0 R 
+  /Title (Chapter 2: Applications)
+>>
+endobj
+14 0 obj
+<<
+/Dest [ 5 0 R /Fit ] /Parent 13 0 R /Title (2.1 Natural Language Processing)
+>>
+endobj
+15 0 obj
+<<
+/Count 1 /Kids [ 5 0 R ] /Type /Pages
+>>
+endobj
+16 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 599
+>>
+stream
+Gat=(a_mV6&A?Ck]OR,BA@g$%^*QW-7Db([i")c;#!.?jo]!rAT5)Bcp)Foc+V6+h]re:<<d]b_RCBu`%%j^+KLAj-,g-<nMXT6Xmm9-c\_U]#Qi&Si<^Y,4$iWkZSbShC]1@``llp$-n_o8n[OX]4F_BVo>Z4sEUQ?t27[rZfZ9QDo7Bg-H]a!9YV?#]iOD1m&g./rNpWD?.oab>blP*na"guKtC><hBls^Uo=^<e5m09e52>(9YLeCuq&LkkEP;$J;G"kc0234V#3tPXV39?o1Z<ikYf@3&)YF7p^b2`oD-4a\OcmT.ni4Nf1$t8@PdWR401/7VNhQLN&^)1Kq+=rf[^I'*,E2o9?p3Je*kJW`((o'%+Z.Od@Wo9teUk`^7q(04U^5l9cNaX]@7q8)8n$,.;cF>g%+Qjl<R.(Go[%Yi!ms#WgC0_OrTI8'\C)i9?JpB-8D#VP*P1&u/a@gpFqaTc3(F.U.Sh;f8K3k4eob=/Z%kP6sc<IEJK2.RibBX`-jB95@+"V>;8u;qp.GWW0=3d@n4-Atk$uXMJEMrE2m=UHCo4[ak_f),?JU$oZ$E+&2^^G-mG,cXBs!`5WK)~>endstream
+endobj
+xref
+0 17
+0000000000 65535 f 
+0000000073 00000 n 
+0000000124 00000 n 
+0000000231 00000 n 
+0000000343 00000 n 
+0000000462 00000 n 
+0000000657 00000 n 
+0000000742 00000 n 
+0000001025 00000 n 
+0000001096 00000 n 
+0000001230 00000 n 
+0000001371 00000 n 
+0000001475 00000 n 
+0000001581 00000 n 
+0000001723 00000 n 
+0000001822 00000 n 
+0000001882 00000 n 
+trailer
+<<
+/ID 
+[<93f779ecd1f2924a75b2cd56e4383cfa><93f779ecd1f2924a75b2cd56e4383cfa>]
+% ReportLab generated PDF document -- digest (http://www.reportlab.com)
+
+/Info 7 0 R
+/Root 6 0 R
+/Size 17
+>>
+startxref
+2572
+%%EOF

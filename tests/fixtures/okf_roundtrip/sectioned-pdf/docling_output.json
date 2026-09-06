@@ -1,0 +1,262 @@
+[
+  {
+    "text": "Overview of ML fundamentals.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/1",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 677.18,
+                "r": 213.05000000000004,
+                "b": 667.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                28
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Introduction to Machine Learning"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4799064000489052172,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "Machine learning is a subset of artificial intelligence that enables systems to learn from data.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/3",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 625.18,
+                "r": 485.9499999999998,
+                "b": 615.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                96
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Introduction to Machine Learning",
+        "Chapter 1: Foundations"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4799064000489052172,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "Supervised learning uses labeled training data to learn mapping functions.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/5",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 579.18,
+                "r": 405.94000000000005,
+                "b": 569.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                74
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Introduction to Machine Learning",
+        "Chapter 1: Foundations",
+        "1.1 Supervised Learning"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4799064000489052172,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "Unsupervised learning discovers hidden patterns in unlabeled data.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/7",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 533.18,
+                "r": 375.92,
+                "b": 523.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                66
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Introduction to Machine Learning",
+        "Chapter 1: Foundations",
+        "1.2 Unsupervised Learning"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4799064000489052172,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "Machine learning applications span many industries.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/9",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 481.18,
+                "r": 309.7600000000001,
+                "b": 471.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                51
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Introduction to Machine Learning",
+        "Chapter 2: Applications"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4799064000489052172,
+        "filename": "source.pdf"
+      }
+    }
+  },
+  {
+    "text": "NLP enables computers to understand and process human language.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/11",
+          "parent": {
+            "$ref": "#/body"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": [
+            {
+              "page_no": 1,
+              "bbox": {
+                "l": 78.0,
+                "t": 435.18,
+                "r": 385.94000000000005,
+                "b": 425.93,
+                "coord_origin": "BOTTOMLEFT"
+              },
+              "charspan": [
+                0,
+                63
+              ]
+            }
+          ]
+        }
+      ],
+      "headings": [
+        "Introduction to Machine Learning",
+        "Chapter 2: Applications",
+        "2.1 Natural Language Processing"
+      ],
+      "origin": {
+        "mimetype": "application/pdf",
+        "binary_hash": 4799064000489052172,
+        "filename": "source.pdf"
+      }
+    }
+  }
+]

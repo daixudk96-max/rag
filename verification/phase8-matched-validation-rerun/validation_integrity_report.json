@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "retrieval_file": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\retrieval_results.json",
+  "judgment_file": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\judgment_completed.csv",
+  "counts_file": "E:\\github\\rag\\verification\\phase7-db-backed-evidence-chain-rerun\\active_version_counts.after.json",
+  "retrieval_judgment_integrity": {
+    "passed": true,
+    "retrieval_hit_rows": 95,
+    "judgment_rows": 95,
+    "blocking_reasons": []
+  },
+  "evidence_chain_gate": {
+    "passed": true,
+    "classification": "evidence_chain_ready",
+    "blocking_reasons": []
+  },
+  "blocking_reasons": [],
+  "next_allowed_action": "calculate_metrics"
+}

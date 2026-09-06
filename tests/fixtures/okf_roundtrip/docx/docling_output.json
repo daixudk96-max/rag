@@ -1,0 +1,87 @@
+[
+  {
+    "text": "Our product is now available worldwide: Americas, Europe, Asia-Pacific.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/2",
+          "parent": {
+            "$ref": "#/texts/1"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": []
+        }
+      ],
+      "headings": [
+        "全球产品公告 / Global Product Announcement",
+        "国际市场 / International Markets"
+      ],
+      "origin": {
+        "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "binary_hash": 5051537842704025917,
+        "filename": "source.docx"
+      }
+    }
+  },
+  {
+    "text": "我们很高兴地宣布进入中国市场。 We are excited to announce expansion.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/4",
+          "parent": {
+            "$ref": "#/texts/3"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": []
+        }
+      ],
+      "headings": [
+        "全球产品公告 / Global Product Announcement",
+        "国际市场 / International Markets",
+        "中国市场 / Chinese Market"
+      ],
+      "origin": {
+        "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "binary_hash": 5051537842704025917,
+        "filename": "source.docx"
+      }
+    }
+  },
+  {
+    "text": "Emoji: 🌐🌍🌎🕊 Symbols: ☕❤✓ Math: Σ ≠ ≤ ≥ π.",
+    "metadata": {
+      "schema_name": "docling_core.transforms.chunker.DocMeta",
+      "version": "1.0.0",
+      "doc_items": [
+        {
+          "self_ref": "#/texts/6",
+          "parent": {
+            "$ref": "#/texts/5"
+          },
+          "children": [],
+          "content_layer": "body",
+          "label": "text",
+          "prov": []
+        }
+      ],
+      "headings": [
+        "全球产品公告 / Global Product Announcement",
+        "特殊字符测试 / Special Characters Test"
+      ],
+      "origin": {
+        "mimetype": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "binary_hash": 5051537842704025917,
+        "filename": "source.docx"
+      }
+    }
+  }
+]

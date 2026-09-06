@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-06-16T17:39:36Z",
+  "validation_script_version": "2026-06-12-v2",
+  "git_commit_sha": "1ddaead5ceab20037b52c0a888d0bff4eaa84396",
+  "source_document": "ANONYMIZED_LOCAL_DOCX",
+  "source_document_location": "local_user_supplied_path_redacted",
+  "doc_id": "6d742c06-3c5a-4996-ac36-614510bd729f",
+  "version_id": "a287ec5a-604b-416e-8ec5-a541d3d23cbe",
+  "query_count": 12,
+  "query_failures": 0,
+  "total_hits": 60,
+  "zero_chunk_hits": 0,
+  "parent_only_hits": 0,
+  "missing_span_hits": 0,
+  "missing_node_hits": 0,
+  "empty_preview_hits": 0,
+  "hotspot_metadata_hits": 60,
+  "navigation_path_hits": 60,
+  "subtree_hotspot_traversal_hits": 60,
+  "hotspot_metadata_rate": 1.0,
+  "navigation_path_rate": 1.0,
+  "subtree_hotspot_traversal_rate": 1.0,
+  "functional_status": "PASS",
+  "hierarchy_precondition_status": "PASS",
+  "rationale": "All queries returned evidence-bearing hits with hotspot/navigation metadata preserved.",
+  "failure_samples": {
+    "zero_chunk_hits": [],
+    "parent_only_hits": [],
+    "empty_preview_hits": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "slug": "feat-09-06-retrieval-fixes-022-ocr",
+  "title": "Migration 022 keyword-FTS promotion + OCR lazy-init",
+  "workType": "feat",
+  "mode": "standard",
+  "status": "completed",
+  "created": "2026-09-06",
+  "completed": "2026-09-06",
+  "created_by": "manual directory creation authorized by user 2026-09-06 (trellis_task_create tool blocked: E:\\github\\rag not in trellis-workflow.allowlist)",
+  "record": ".planning/phases/retrieval-fixes-022-ocr/2026-09-06-RECORD.md",
+  "summary": "Migration 022_keyword_fts_indexes.sql promoted into official root chain (catalog 21->22, tail contract evolved in 4 gate/c2 files, live disposable-PG proof: 22 migrations + trigger + 3 indexes + keyword query returns rows); OCR lazy-init in llamaindex_runtime/ingestion/bundle.py (_pdf_has_raster_images pypdf pre-scan fail-safe True + _build_default_converter gating do_ocr), text-only PDFs no longer start RapidOCR; retrieval+rerank smoke PASS (Q1 2/3, Q2 3/3, keyword=0 by design for natural-language questions)."
+}

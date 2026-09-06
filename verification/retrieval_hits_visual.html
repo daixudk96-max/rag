@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tree Retrieval Hits</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121935;
+      --text: #edf2ff;
+      --muted: #a9b5d6;
+      --line: #30406f;
+      --accent: #79c0ff;
+      --accent-2: #7ee787;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", sans-serif;
+      background: linear-gradient(180deg, var(--bg), #0a0f1a 60%);
+      color: var(--text);
+      padding: 32px 24px;
+    }
+    h1 { font-size: 28px; margin-bottom: 24px; }
+    .hit-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .hit-header {
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .hit-fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+    }
+    .field {
+      background: rgba(0,0,0,0.2);
+      padding: 8px 12px;
+      border-radius: 6px;
+    }
+    .field-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .field-value {
+      color: var(--text);
+      font-size: 13px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tree Retrieval Hits (14 results)</h1>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #1: 第二阶段-竞品分析-代旭</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">1</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">第二阶段-竞品分析-代旭</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">8387d14a-6cc3-41cd-900e-85581f96f8ae (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">167acb7a-ca30-4d00-876d-7c029035423e</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #2: 第二阶段-竞品分析-代旭/目的</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">7247da86-def0-40f6-9bae-d4c7ea055fe5</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">10</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">目的</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">101120d2-93d5-4920-b240-e3298d11efee (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">ff563c1e-d620-4d2f-b360-e346be4851cc</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #3: 第二阶段-竞品分析-代旭/1. 竞品识别与定义</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">443436bb-7112-4132-94c3-8b3ac3dd648f</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">15</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">1. 竞品识别与定义</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">88cb45ca-cce9-4bab-8442-bdaa07797daf (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">818fd7e2-d78f-4a57-8913-54b44effb0ab</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #4: 第二阶段-竞品分析-代旭/1. 竞品识别与定义/竞品全景图</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">ce79e2ad-3260-412e-8c96-bc6c1749e21d</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">18</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品全景图</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">2dc13a86-6607-4788-94c0-9027e006ffcb (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">2863f097-338c-4708-8bbc-0aa70850042b</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #5: 第二阶段-竞品分析-代旭/2. 核心分析对象确认</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">82e4227b-dfc5-4f4e-8f07-b64a035d149c</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">24</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">2. 核心分析对象确认</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">ef995599-660b-46e5-92d1-c93b07fc583b (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">33be7cbc-fd9c-4984-b345-b4e8e6f5ea54</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #6: 第二阶段-竞品分析-代旭/3. 竞品深度剖析</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">33</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">3. 竞品深度剖析</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">a82eba9e-7b0a-453f-8932-36ed17a667e6 (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">d5319192-ac37-4e2d-adcc-6e079277535c</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #7: 第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 A：爱复盘</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">98b21ba0-59b8-4e0f-89d5-eba5a177bb67</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">36</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品 A：爱复盘</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">1bad5d16-7cc6-4b89-91ab-af7a7578a8cc (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">a1ba3655-f492-4e09-8b09-c656c9253d2e</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #8: 第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 B：DeepSeek 智能场控看板 (直接竞品)</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">ad716195-5d1a-437f-b776-128ff1ebfadd</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">63</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品 B：DeepSeek 智能场控看板 (直接竞品)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">4b2e303f-af66-461f-81ec-f6ba716e8b52 (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">02dbf6ac-3d93-4b7b-a5fc-5458a2404dde</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #9: 第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 C：巨量千川智投星 (间接竞品)</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">d10a3f8c-0577-4d08-ba50-133c58c352c8</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">85</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品 C：巨量千川智投星 (间接竞品)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">a98ffc79-dcdc-46ec-9f7c-16e31262b7ad (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">a73c193e-9c94-4e64-86d8-c42428210a7b</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #10: 第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 D：飞书多维表格AI辅助（间接竞品）</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">3b71ca17-3402-49b3-92ee-48656a7d5556</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">103</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品 D：飞书多维表格AI辅助（间接竞品）</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">408b5846-5cf1-4811-b3be-73b9d5737d14 (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">bc7e368a-aaed-479e-8538-b17799aea9b9</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #11: 第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 E：Plaud Note等智能硬件（间接竞品）</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">256c7d54-abcc-4888-b20a-83a6c9d5b2df</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">121</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品 E：Plaud Note等智能硬件（间接竞品）</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">5d460922-f4e6-41ca-9b50-1801c219304c (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">25ce94c0-2289-4a9c-bc48-de7fc6d077b2</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #12: 第二阶段-竞品分析-代旭/4. 市场机会与差异化定位</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">f6dc7dfa-67e0-40fc-bdb1-aebce3d8f099</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">139</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">4. 市场机会与差异化定位</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">facb25b2-6a15-45d1-a6ad-74363aedf909 (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">28c960c6-c61b-4087-92c4-347bd59f895c</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #13: 第二阶段-竞品分析-代旭/4. 市场机会与差异化定位/竞品对比矩阵</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">1c8b3eba-5319-4b6c-b004-471d59e161ff</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">142</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">竞品对比矩阵</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">ae036d69-4f57-49d0-8e2a-26e95343f933 (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">1f688bc9-d0c9-4208-b667-5c6a4baa2401</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hit-card">
+    <div class="hit-header">Hit #14: 第二阶段-竞品分析-代旭/4. 市场机会与差异化定位/差异化策略</div>
+    <div class="hit-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">f5989d72-6f7e-44ba-9cc4-70f6cb3a699c</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">152</div>
+      </div>
+      <div class="field">
+        <div class="field-label">text_preview</div>
+        <div class="field-value">差异化策略</div>
+      </div>
+      <div class="field">
+        <div class="field-label">span_ids</div>
+        <div class="field-value">989fb13e-ad23-41bf-84ae-a0a8d4c51b55 (1 span)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">chunk_id</div>
+        <div class="field-value">b2cf44ac-8733-4678-a91e-6b072f3060c7</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="color: var(--muted); margin-top: 24px; font-size: 14px;">
+    Total hits: 14 | Query: "爱复盘竞品分析" | Model: gpt-5.4-mini
+  </div>
+</body>
+</html>

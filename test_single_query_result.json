@@ -1,0 +1,66 @@
+{
+  "query": "为什么数据对AI产品如此重要？",
+  "total_hits": 5,
+  "hits": [
+    {
+      "rank": 1,
+      "node_id": "aebce135-4f0e-5755-af47-a53a687f0718",
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据闭环飞轮",
+      "score": 0.6529726492492379,
+      "text_preview": "- AI产品部门的命门",
+      "hotspot_node_id": "aebce135-4f0e-5755-af47-a53a687f0718",
+      "navigation_path": [
+        "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据闭环飞轮"
+      ],
+      "drill_depth": 0
+    },
+    {
+      "rank": 2,
+      "node_id": "d4125a2f-0f9d-5b83-adf2-c09ee97090de",
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 李菲菲案例",
+      "score": 0.5889996989526148,
+      "text_preview": "- AI 1.0 时代 - 困惑点 - 没有数据 - 解决手段 - 造数据 - 做dirty work - 做笨拙的数据工作",
+      "hotspot_node_id": "d4125a2f-0f9d-5b83-adf2-c09ee97090de",
+      "navigation_path": [
+        "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 李菲菲案例"
+      ],
+      "drill_depth": 0
+    },
+    {
+      "rank": 3,
+      "node_id": "d0937774-9d1a-5462-97e3-e35ef2f1329d",
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据工作的重要性",
+      "score": 0.4595293624257255,
+      "text_preview": "- 浪费大量时间 - 过程枯燥 - 决定最后产出的准确率",
+      "hotspot_node_id": "d0937774-9d1a-5462-97e3-e35ef2f1329d",
+      "navigation_path": [
+        "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据工作的重要性"
+      ],
+      "drill_depth": 0
+    },
+    {
+      "rank": 4,
+      "node_id": "fc4c3adf-7512-599a-89ac-00fa53d0713b",
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > AB test 预演",
+      "score": 0.7169061997050444,
+      "text_preview": "- AI预演 - 怎么开 - 急转弯 - 对比逻辑 - 用户操作与AI相反 - 用户操作与AI有出入",
+      "hotspot_node_id": "fc4c3adf-7512-599a-89ac-00fa53d0713b",
+      "navigation_path": [
+        "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > AB test 预演"
+      ],
+      "drill_depth": 0
+    },
+    {
+      "rank": 5,
+      "node_id": "88e6b1bc-2c42-5b46-926a-b3f5b6a7981d",
+      "heading_path": "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 本节课讲解重点",
+      "score": 0.6791732776681928,
+      "text_preview": "- AI产品经理后续的流程 - 整体AI产品的样貌 - 关注点 - 目前市面上的分类",
+      "hotspot_node_id": "88e6b1bc-2c42-5b46-926a-b3f5b6a7981d",
+      "navigation_path": [
+        "AI产品经理项目实战与深度思考架构分析 > 00:01 - 课程开始 > 本节课讲解重点"
+      ],
+      "drill_depth": 0
+    }
+  ]
+}

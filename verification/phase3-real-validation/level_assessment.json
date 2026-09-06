@@ -1,0 +1,40 @@
+{
+  "assessment_date": "2026-05-31T17:16:26.921066",
+  "validation_date": "2026-05-31T16:06:00.282335",
+  "version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count": 20,
+  "judgment_count": 33,
+  "metrics": {
+    "hit_rate": 1.0,
+    "top1_relevance": 0.34500000000000003,
+    "stability": 1.0526315789473684
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85
+  },
+  "level": {
+    "level": "Level_3",
+    "level_description": "查得基本对 - hit_rate passing, other thresholds failing",
+    "passed_thresholds": {
+      "hit_rate": true,
+      "top1_relevance": false,
+      "stability": true
+    },
+    "blocking_factors": [
+      "top1_relevance: 34.50% (need ≥ 90.00%)"
+    ]
+  },
+  "bottlenecks": {
+    "query_quality": {
+      "queries_with_no_relevant_hits": 0,
+      "percentage": 0.0,
+      "affected_queries": []
+    },
+    "judgment_quality": {
+      "low_relevance_count": 26,
+      "avg_relevance": 0.3833333333333333
+    }
+  }
+}

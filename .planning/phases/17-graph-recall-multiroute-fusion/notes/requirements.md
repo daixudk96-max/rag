@@ -1,0 +1,18 @@
+# W7 requirements (tdd-graph wave requirements; authored by coordinator, 2026-09-02)
+
+## Verified facts (all personally checked this session)
+- extraction.trial: decide_route(report, *, threshold=COVERAGE_THRESHOLD) -> RouteDecision{batch_id, route, coverage_ratio, threshold, uncovered_items, new_type_proposals, rationale}; MIN_TRIAL_SAMPLES=3; TrialReport 8 fields; TrialEngine Protocol run_trial(batch_id, sample_texts) -> TrialReport.
+- graph/lightrag_backend: LightragRuntimeConfig(workspace, embedding_base_url, embedding_model='text-embedding-v4', embedding_dimensions=1024); DashScopeEmbedding(model,*,base_url,api_key,dimensions=1024,transport=None,timeout_s=30).embed(texts); LightragKgIngestor(*,config,embedding=None,lightrag_factory=None).async ingest(payload,*,known_entity_names=frozenset()) -> IngestReceipt; LightragQueryClient(rag,*,param_factory=None).query_data(query,*,hl_keywords,ll_keywords,top_k?); CustomKgPayload(entities,relationships,chunks).to_custom_kg().
+- analysis/graph_channel: LightragGraphChannel(rag,*,param_factory=None).fetch(query,*,hl_keywords,ll_keywords,top_k=10) -> tuple[GraphHit,...]; ranked_fusion(graph_hits, bm25_titles, *, k=60, graph_weight=1.0, bm25_weight=1.0) -> tuple[RankedHit,...]; parse_keywords.
+- entity (frozen): resolve_identities(mentions) -> tuple[EntityIdentity,...]; build_review_basket(mentions, identities, *, threshold=DEFAULT_SUGGESTION_THRESHOLD) -> ReviewBasket; review_relation_claims(claims, engine) -> RelationReviewOutcome; KeywordEvidenceReviewer deterministic zero-LLM; MentionCandidate contract (input_id==span_id, mention_text exact slice of normalized_text, input_revision==document_revision).
+- entity/uie_adapter: map_entity_mentions, map_relation_triples, normalize_source_text, UIE_TYPE_TO_CANONICAL, RelationMappingResult, UieMappingResult.
+- llm_openai (post W6.5-R split): client.OpenAICompatClient(model,*,base_url,api_key,transport=None,timeout_s=30,temperature=0.0).complete(prompt,*,system=None) -> ChatResponse; trial_engine.LlmTrialEngine(client, relation_types, *, engine_id, coverage_threshold).run_trial(batch_id, sample_texts); relation_reviewer.LlmRelationReviewer(client, reviewer_id='llm-relation-judge-v1').review_claim(claim).
+- 16-17 runner convention (mirror): verification/<phase>/run_*.py, main(argv,*,target_uri) argv-routing-forbidden, evidence redacted single-line JSON, SKIPPED_STATUS='skipped_not_entered' exit 1, FAILED_STATUS='executed_failed' exit 3, executed exit 0.
+- Test import pattern: REPO_ROOT = Path(__file__).resolve().parents[3]; VERIFICATION_DIR = REPO_ROOT/'verification'/...; importlib.util.spec_from_file_location for runner module (16-17 convention).
+
+## Hard constraints
+- Disposable DB is authorized (2026-08-31 user decision) but ONLY via coordinator-executed live gates; graph waves use fakes, zero sockets, zero docker, zero LLM calls in tests.
+- Real LLM calls (R3: OpenAI-compat 127.0.0.1:8317, gpt-5.4-mini) and DashScope embedding (R8, text-embedding-v4 dims=1024) are authorized for the LIVE demo only.
+- Frozen: llamaindex_runtime/entity/** (contracts, label_map, normalization, identity, fuzzy_recall, review_basket, relation_review, coref_rules, uie_adapter), extraction/trial.py, graph/lightrag_backend.py, analysis/graph_channel.py, llm_openai/**, llamaindex_runtime/llm/__init__.py.
+- Baselines that must survive: combined 5-domain = 3 failed/1405 passed/1 skipped (3 = raner mirror trio); gate3 = 2 failed/598 passed/4 skipped; black/ruff/mypy clean on touched files.
+- pytest imports of verification runners use importlib.util.spec_from_file_location; tests key paths are relative to testsRoot ('tests').

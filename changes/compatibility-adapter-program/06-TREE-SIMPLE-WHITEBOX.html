@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>树流程超白话版</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f7f8fc;
+      color: #1f2a44;
+      line-height: 1.7;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 48px;
+    }
+    h1 { font-size: 30px; margin-bottom: 10px; }
+    h2 {
+      margin-top: 28px;
+      font-size: 22px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #dbe3ff;
+    }
+    p, li { font-size: 17px; }
+    .lead {
+      background: #eef4ff;
+      border: 1px solid #cfe0ff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin: 14px 0 22px;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 18px 0;
+      align-items: stretch;
+    }
+    .box {
+      flex: 1 1 180px;
+      min-width: 180px;
+      background: white;
+      border: 2px solid #dbe3ff;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(34,51,84,0.06);
+    }
+    .box h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      color: #2446b0;
+    }
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #4c6ef5;
+      min-width: 36px;
+    }
+    .ok { color: #137333; font-weight: 700; }
+    .warn { color: #b26a00; font-weight: 700; }
+    .bad { color: #c62828; font-weight: 700; }
+    .card {
+      background: white;
+      border: 2px solid #e4e8f5;
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+    .code {
+      white-space: pre-wrap;
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .tag {
+      display: inline-block;
+      background: #eef4ff;
+      border: 1px solid #cfe0ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      margin-right: 8px;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>树流程超白话版</h1>
+    <div class="lead">
+      一句话：系统先把文档切成很多小纸条，再把这些小纸条试着分组，做成一棵树。<br/>
+      现在的默认树 <span class="warn">能用</span>，但对“结构很乱的文档”不够聪明。<br/>
+      如果接入 donor（比如 PageIndex），树可能会更像人类看到的目录树，但通常更依赖 LLM。
+    </div>
+
+    <h2>1. 现在系统是怎么做树的？</h2>
+    <div class="row">
+      <div class="box">
+        <h3>第 1 步</h3>
+        <p>把文档切成很多小纸条。</p>
+        <p>每张小纸条里有一句或一小段话。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h3>第 2 步</h3>
+        <p>看看这些小纸条有没有“标题线索”。</p>
+        <p>比如 heading、层级、位置。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h3>第 3 步</h3>
+        <p>把差不多的一组纸条放到同一个小盒子里。</p>
+        <p>这个“小盒子”就是一个树节点。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h3>第 4 步</h3>
+        <p>给每个盒子再算一份“语义画像”。</p>
+        <p>也就是：这组内容大概在讲什么。</p>
+      </div>
+    </div>
+
+    <h2>2. 不用 LLM，会不会完全不能用？</h2>
+    <div class="card">
+      <p><span class="ok">不会完全不能用。</span></p>
+      <p>当前默认树，不用 LLM 也能跑。</p>
+      <p>它主要靠：</p>
+      <ul>
+        <li>文档被切出来的小纸条</li>
+        <li>这些纸条的位置关系</li>
+        <li>标题/层级线索</li>
+        <li>简单的向量统计</li>
+      </ul>
+      <p>所以它不是“坏掉”，而是：</p>
+      <ul>
+        <li>对结构清楚的文档：<span class="ok">够用</span></li>
+        <li>对讲话稿、流水文、弱结构文档：<span class="warn">容易长得比较粗糙</span></li>
+      </ul>
+    </div>
+
+    <h2>3. 那它现在到底是按什么来分树？</h2>
+    <div class="card">
+      <p><span class="ok">不是直接按 Markdown 文件硬切。</span></p>
+      <p>更准确地说：</p>
+      <ol>
+        <li>先把 PDF / DOCX 解析成很多 <b>span</b>（小纸条）</li>
+        <li>span 里会带一些结构线索，比如 heading_path</li>
+        <li>树生成器主要按这些结构线索分组</li>
+        <li>再加一点点语义聚合，把很像的内容放近一点</li>
+      </ol>
+      <p>所以它更像：</p>
+      <div class="tag">先看结构</div>
+      <div class="tag">再补一点语义</div>
+      <p>而不是：</p>
+      <div class="tag">完全靠 LLM 理解全文后再建树</div>
+    </div>
+
+    <h2>4. LLM 在树里现在起什么作用？</h2>
+    <div class="card">
+      <p>当前默认主线里，<span class="ok">LLM 不是必须的。</span></p>
+      <p>但如果你想要 donor（比如 PageIndex）做更像“目录树”的结构抽取，LLM 通常会有帮助。</p>
+      <p>简单说：</p>
+      <ul>
+        <li>默认 baseline：<span class="ok">不用 LLM 也能建树</span></li>
+        <li>donor 的结构增强：<span class="warn">通常更依赖 LLM</span></li>
+      </ul>
+    </div>
+
+    <h2>5. 当前主线 vs donor 路线</h2>
+    <div class="row">
+      <div class="box">
+        <h3>当前默认主线</h3>
+        <p>本地树生成</p>
+        <p>本地向量统计</p>
+        <p>本地下钻决策</p>
+        <p class="ok">稳定、可追溯</p>
+      </div>
+      <div class="arrow">vs</div>
+      <div class="box">
+        <h3>donor 路线</h3>
+        <p>更强的树结构逻辑</p>
+        <p>更强的目录/层级理解</p>
+        <p>更强的分支决策</p>
+        <p class="warn">但更依赖 LLM 或 donor 自身逻辑</p>
+      </div>
+    </div>
+
+    <h2>6. 你现在最该记住的一句话</h2>
+    <div class="lead">
+      <b>不用 LLM，树不是不能用；只是更容易“分得粗”。</b><br/>
+      <b>用 LLM 或 donor，树可能更像人类理解的目录树；但复杂度和依赖也会更高。</b>
+    </div>
+
+    <div class="code">这份图对应当前项目 E:\github\rag 的默认 tree 主线，而不是理想化未来架构。</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "phase": "14-okf-foundation",
+  "artifact_type": "contract_test_execution",
+  "executed_at_utc": "2026-07-17T11:35:23Z",
+  "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+  "command": "rtk env -u DATABASE_URL -u FORMAL_RUNTIME_DATABASE_URL -u OKF_MIGRATION_TEST_DATABASE_DISPOSABLE -u OKF_REBUILD_EXPECTED_DATABASE -u OKF_FAILURE_AUDIT_ACCEPTANCE -u OKF_REBUILD_DOCKER_ACCEPTANCE python -m pytest tests/llamaindex_runtime/okf/test_okf_contracts.py",
+  "scope": "tests/llamaindex_runtime/okf/test_okf_contracts.py",
+  "credential_handling": "All six named database/runtime/acceptance environment variables were explicitly unset. Their values were not inspected, printed, or persisted.",
+  "result": "PASS",
+  "verdict": "PASS",
+  "aggregate_counts": {
+    "collected": 120,
+    "passed": 120,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "provenance": ".planning/phases/14-okf-foundation/14-04-SUMMARY.md",
+  "caveats": [
+    "This is the dedicated contract suite only; it is not a repository-wide test run.",
+    "Raw terminal output and output digests are intentionally not retained."
+  ]
+}

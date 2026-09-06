@@ -1,0 +1,99 @@
+Total tree_nodes: 10
+=== Checking raw tree_nodes data ===
+
+[Node 1] node_id=44d15c94...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究
+  title: 排除 GraphRAG 后的混合 RAG 开源项目深度研究
+  summary_text length: 1000
+  Matched keywords: ['kag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: False
+  KAG context: ...`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 MC...
+
+[Node 2] node_id=781d3cac...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较
+  title: GitHub 候选项目比较
+  summary_text length: 1000
+  Matched keywords: ['kag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: False
+  KAG context: ...`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 MC...
+
+[Node 3] node_id=2706e5d1...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 实施建议
+  title: 实施建议
+  summary_text length: 1000
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...产系统** ，尤其强调“多跳事实问答、逻辑推理、专业规则、图谱语义边界”，我的优先选项会切换成 **KAG 作为主脑 + 外接显式向量库 + 外接树层级模块** 。原因是 KAG 在公开材料里对“图谱—原文互索引”和“逻辑形式混合求解”描述得最完整，也已经引入了 MCP 与 KAG-Thinker；...
+  NexusRAG context: ...如果你的目标是 **最短时间做出一个接近需求的系统** ，我的优先选项是 **NexusRAG** 。理由不是它在逻辑推理上最强，而是它已经具备了图谱、向量库、结构化 chunk、页码/标题路径、重排、引用与 Agent 交互，离 A-F 只差三块自研补丁：图优先触发向量检索、...
+
+[Node 4] node_id=a57c1527...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 执行摘要
+  title: 执行摘要
+  summary_text length: 1000
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...档结构层级、重排、引用与 Agent 式交互串成一条可运行流水线；最接近“专业域推理骨架”的是 **KAG** ，因为它明确提供图谱—原文互索引、逻辑形式驱动的混合推理、层级化索引类型和 MCP/Thinker 扩展；最适合“按模块拼成完整系统”的是 **LlamaIndex** ，因为它同时具备图...
+  NexusRAG context: ...单个开源仓库能够“明确且完整”同时覆盖你定义的 A-F 六项能力** 。最接近“开箱即用”的是 **NexusRAG** ，因为它已经把知识图谱、向量检索、文档结构层级、重排、引用与 Agent 式交互串成一条可运行流水线；最接近“专业域推理骨架”的是 **KAG** ，因为它明确提供图谱—原文互索...
+
+[Node 5] node_id=08463a14...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 最接近需求的项目深度分析
+  title: 最接近需求的项目深度分析
+  summary_text length: 1000
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——KAG 偏推理和多...
+  NexusRAG context: ...下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——KAG 偏推理和多索引，N...
+
+[Node 6] node_id=e8bfff87...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 检索范围与判定方法
+  title: 检索范围与判定方法
+  summary_text length: 1000
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...**主候选** ”：同时命中 KG、向量、层级或其中两项以上，并且仓库有持续维护与可运行代码，例如 KAG、NexusRAG、LightRAG、LlamaIndex、R2R、Cognee、RAPTOR、HIRO、VectorInstitute/kg-rag。第二类是“ **边缘候选** ”：只明显满...
+  NexusRAG context: ...选** ”：同时命中 KG、向量、层级或其中两项以上，并且仓库有持续维护与可运行代码，例如 KAG、NexusRAG、LightRAG、LlamaIndex、R2R、Cognee、RAPTOR、HIRO、VectorInstitute/kg-rag。第二类是“ **边缘候选** ”：只明显满足其中两...
+
+[Node 7] node_id=af383af0...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 模块拼接蓝图
+  title: 模块拼接蓝图
+  summary_text length: 1000
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...经很清楚地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO 的长项拼起来** 。下面这个蓝图，就是我基于这些项目公开能力综合出来的一条最实用路线。它不是某个仓库现成提供的...
+  NexusRAG context: ...地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO 的长项拼起来** 。下面这个蓝图，就是我基于这些项目公开能力综合出来的一条最实用路线。它不是某个仓库现成提供的流程，而...
+
+[Node 8] node_id=889ce876...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 模块拼接蓝图
+  title: 模块拼接蓝图
+  summary_text length: 865
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...的 page-aware chunk metadata 可以保证相邻扩展仍然保持原文位置一致性，而 KAG-Thinker/MCP 能给这层扩展器一个外部调用接口。这样得到的 Agent，不再只是聊天代理，而是一个 **懂图谱、懂树、懂原文位置** 的结构化阅读器。 citeturn11view...
+  NexusRAG context: ...xt_chunk_id` 做相邻扩展。HIRO 的 branch pruning 可以用来控制预算，NexusRAG 的 page-aware chunk metadata 可以保证相邻扩展仍然保持原文位置一致性，而 KAG-Thinker/MCP 能给这层扩展器一个外部调用接口。这样得到的 Age...
+
+[Node 9] node_id=ca1d2b67...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 仓库元数据与关键路径
+  title: 仓库元数据与关键路径
+  summary_text length: 1000
+  Matched keywords: ['kag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: False
+  KAG context: ...`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 MC...
+
+[Node 10] node_id=49816852...
+  heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 候选项目总表
+  title: 候选项目总表
+  summary_text length: 1000
+  Matched keywords: ['kag', 'nexusrag']
+  Contains KAG in summary: True
+  Contains NexusRAG in summary: True
+  KAG context: ...KAG, GitHub仓库 = KAG citeturn10view0turn13view0turn12search3turn33view5turn33view0. KAG, 最新提交/...
+  NexusRAG context: ...用. KAG, 可模块拼接 = 强. KAG, 成熟度 = 4：索引层级与推理强，但工程配置偏重. NexusRAG, GitHub仓库 = NexusRAG citeturn19search0turn20search0turn11view4turn11view3turn38view0...

@@ -1,0 +1,37 @@
+{
+  "doc_id": "00000000-0000-0000-0000-000000000001",
+  "version_id": "00000000-0000-0000-0000-000000000003",
+  "spans": [
+    {
+      "span_id": "6f314e9d-76db-5b1c-9607-47a08b9c9e5a",
+      "page_no": null,
+      "heading_path": [
+        "全球产品公告 / Global Product Announcement",
+        "国际市场 / International Markets"
+      ],
+      "offset": 0,
+      "text": "Our product is now available worldwide: Americas, Europe, Asia-Pacific."
+    },
+    {
+      "span_id": "b69eb390-f374-50a4-9409-7795053b6227",
+      "page_no": null,
+      "heading_path": [
+        "全球产品公告 / Global Product Announcement",
+        "国际市场 / International Markets",
+        "中国市场 / Chinese Market"
+      ],
+      "offset": 1,
+      "text": "我们很高兴地宣布进入中国市场。 We are excited to announce expansion."
+    },
+    {
+      "span_id": "8f0f10f2-1d70-5257-8126-7b795a027f75",
+      "page_no": null,
+      "heading_path": [
+        "全球产品公告 / Global Product Announcement",
+        "特殊字符测试 / Special Characters Test"
+      ],
+      "offset": 2,
+      "text": "Emoji: 🌐🌍🌎🕊 Symbols: ☕❤✓ Math: Σ ≠ ≤ ≥ π."
+    }
+  ]
+}

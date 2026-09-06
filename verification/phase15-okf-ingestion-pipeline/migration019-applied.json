@@ -1,0 +1,84 @@
+{
+  "status": "DELIVERED",
+  "migrations_applied": [
+    "001_initial.sql",
+    "002_version_lifecycle.sql",
+    "003_tree_persistence.sql",
+    "004_vector_extension.sql",
+    "005_kg_extension.sql",
+    "006_kg_graphrag_enrichment.sql",
+    "007_processing_status.sql",
+    "008_evidence_object.sql",
+    "009_kag_schema.sql",
+    "010_summary_index.sql",
+    "011_evidence_dedup_key.sql",
+    "012_mapping_table_enrichment.sql",
+    "013_node_embeddings.sql",
+    "014_semantic_distribution.sql",
+    "015_okf_sync_state.sql",
+    "016_entity_mentions.sql",
+    "017_relation_qualifiers.sql",
+    "018_okf_rebuild_failure_audit.sql",
+    "019_e2a_materialization_contract.sql"
+  ],
+  "tables_created": [
+    "okf_manual_fact_ownership",
+    "okf_manual_evidence_targets"
+  ],
+  "columns_added": [
+    {
+      "table": "okf_sync_state",
+      "column": "materialization_owner",
+      "type": "text",
+      "default": "'legacy_pre_e2a'::text"
+    },
+    {
+      "table": "evidence_links",
+      "column": "ownership_id",
+      "type": "uuid",
+      "nullable": true
+    },
+    {
+      "table": "evidence_links",
+      "column": "ownership_scope_version_id",
+      "type": "uuid",
+      "nullable": true
+    },
+    {
+      "table": "evidence_links",
+      "column": "manual_entity_id",
+      "type": "uuid",
+      "nullable": true
+    },
+    {
+      "table": "evidence_links",
+      "column": "manual_relation_id",
+      "type": "uuid",
+      "nullable": true
+    }
+  ],
+  "indexes_created": 21,
+  "constraints_created": [
+    "chk_evidence_links_manual_projection",
+    "chk_evidence_links_manual_scope",
+    "chk_okf_manual_evidence_targets_exactly_one_target",
+    "chk_okf_manual_fact_ownership_digest",
+    "chk_okf_manual_fact_ownership_kind"
+  ],
+  "test_results": {
+    "test_e2a_migration_019_postgres.py": {
+      "passed": 6,
+      "failed": 0
+    },
+    "test_e2a_disposable_postgres.py": {
+      "passed": 1,
+      "failed": 1
+    },
+    "test_e2a_wave1_tests": {
+      "passed": 204,
+      "failed": 1
+    }
+  },
+  "migration_019_apply_success": true,
+  "migration_019_final_output": "DO"
+}

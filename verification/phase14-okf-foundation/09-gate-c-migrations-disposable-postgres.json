@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.1",
+  "phase": "14-okf-foundation",
+  "artifact_type": "gate_c_disposable_postgres_migrations_execution",
+  "gate": "C",
+  "verdict": "PASS",
+  "result": "PASS",
+  "authorization": {
+    "basis": "User-authorized confirmed-disposable PostgreSQL/Docker acceptance boundary.",
+    "authorization_date": "2026-07-17"
+  },
+  "execution": {
+    "started_at_utc": "2026-07-17T13:44:54Z",
+    "finished_at_utc": "2026-07-17T13:45:53Z",
+    "target_verification_before_actions": {
+      "expected_disposable_database": "phase14_gate_c_disposable",
+      "exact_name_query": "rtk docker ps -a --filter name=^/phase14-gate-c-ec1aee1da77370f7$ -q",
+      "exact_name_match_count": 0,
+      "exact_label_query": "rtk docker ps -a --filter label=phase14.gate-c-run=ec1aee1da77370f7 -q",
+      "exact_label_match_count": 0,
+      "verified_no_preexisting_scoped_target": true
+    },
+    "container": {
+      "exact_name": "phase14-gate-c-ec1aee1da77370f7",
+      "exact_label": {
+        "key": "phase14.gate-c-run",
+        "value": "ec1aee1da77370f7"
+      },
+      "image_tag": "pgvector/pgvector:pg16",
+      "image_digest": "pgvector/pgvector@sha256:1d533553fefe4f12e5d80c7b80622ba0c382abb5758856f52983d8789179f0fb",
+      "image_id": "sha256:1d533553fefe4f12e5d80c7b80622ba0c382abb5758856f52983d8789179f0fb",
+      "loopback_database_target": {
+        "host": "127.0.0.1",
+        "port": 54702,
+        "database": "phase14_gate_c_disposable",
+        "database_equals_expected_disposable_database": true
+      },
+      "docker_inspect_port_binding": {
+        "source": "HostConfig.PortBindings[\\\"5432/tcp\\\"]",
+        "container_port": "5432/tcp",
+        "binding_count": 1,
+        "bindings": [
+          {
+            "host_ip": "127.0.0.1",
+            "host_port": 54702
+          }
+        ],
+        "raw_selected_binding": "127.0.0.1:54702",
+        "bound_only_to_expected_loopback_port": true
+      }
+    },
+    "command_templates": {
+      "docker_pull": "rtk docker pull pgvector/pgvector:pg16",
+      "docker_run_exact_nonsecret_scope": "rtk docker run -d --name phase14-gate-c-ec1aee1da77370f7 --label phase14.gate-c-run=ec1aee1da77370f7 -e POSTGRES_DB=phase14_gate_c_disposable -e POSTGRES_USER=phase14_gate_c_user -e <generated-process-local-credential> -p 127.0.0.1:54702:5432 pgvector/pgvector:pg16",
+      "repository_runner_isolated": "rtk env -u <six protected variables> -u <libpq routing variables> DATABASE_URL=<process-local-redacted-disposable-connection> OKF_MIGRATION_TEST_DATABASE_DISPOSABLE=1 python E:/github/rag/run_migrations.py",
+      "focused_integration_tests_isolated": "rtk env -u <six protected variables> -u <libpq routing variables> DATABASE_URL=<process-local-redacted-disposable-connection> OKF_MIGRATION_TEST_DATABASE_DISPOSABLE=1 python -m pytest E:/github/rag/tests/llamaindex_runtime/okf/test_okf_migrations.py -m integration"
+    },
+    "exit_codes": {
+      "image_pull": 0,
+      "container_setup": 0,
+      "readiness": 0,
+      "repository_runner": 0,
+      "focused_integration_tests": 0
+    },
+    "runner": {
+      "path": "run_migrations.py",
+      "key_migrations_expected": 10,
+      "applied_migrations_count": 10,
+      "includes_004_vector_extension_boundary": true,
+      "includes_phase14_015_to_018": true,
+      "outcome": "completed"
+    },
+    "focused_integration_tests": {
+      "selector": "tests/llamaindex_runtime/okf/test_okf_migrations.py -m integration",
+      "collected": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 10,
+      "outcome": "completed"
+    },
+    "cleanup": {
+      "exact_remove_command": "rtk docker rm -f phase14-gate-c-ec1aee1da77370f7",
+      "remove_exit_code": 0,
+      "post_removal_exact_name_query": "rtk docker ps -a --filter name=^/phase14-gate-c-ec1aee1da77370f7$ -q",
+      "post_removal_exact_name_match_count": 0,
+      "post_removal_exact_label_query": "rtk docker ps -a --filter label=phase14.gate-c-run=ec1aee1da77370f7 -q",
+      "post_removal_exact_label_match_count": 0,
+      "no_scoped_container_remains": true
+    }
+  },
+  "isolation_policy": {
+    "six_variable_isolation": "DATABASE_URL, FORMAL_RUNTIME_DATABASE_URL, OKF_MIGRATION_TEST_DATABASE_DISPOSABLE, OKF_REBUILD_EXPECTED_DATABASE, OKF_FAILURE_AUDIT_ACCEPTANCE, and OKF_REBUILD_DOCKER_ACCEPTANCE were unset before intentional process-local assignment. Only the disposable database connection and OKF_MIGRATION_TEST_DATABASE_DISPOSABLE=1 were assigned for the runner and focused integration tests.",
+    "libpq_isolation": "PGSERVICE, PGSERVICEFILE, PGSYSCONFDIR, PGHOST, PGHOSTADDR, PGPORT, PGDATABASE, PGUSER, and PGPASSWORD were unset before execution; no ambient libpq routing was used.",
+    "credential_handling": "Existing credentials were neither inspected, printed, nor persisted. A newly generated database credential was process-local and omitted from this artifact.",
+    "gate_e_opt_ins": "No Gate E opt-ins were assigned or used."
+  },
+  "key_assertions": [
+    "The repository-supported root runner executed the ten-key-migration sequence, including 004_vector_extension.sql and 015_okf_sync_state.sql through 018_okf_rebuild_failure_audit.sql.",
+    "The focused integration selector completed against the isolated disposable target.",
+    "The pgvector image exercises the vector-extension migration boundary only; this is not vector-search performance validation."
+  ],
+  "failure_class": "none",
+  "validation": {
+    "json_serialization_validated_before_write": true,
+    "credential_material_scan": "The serialized artifact was checked before write for database-URL schemes and credential-assignment signatures; no raw credential or complete database URL was retained."
+  },
+  "limitations": [
+    "This evidence is limited to one disposable loopback PostgreSQL container, the repository runner, and selected migration integration tests; it is not a production-readiness, RLS, load, backup, or performance verdict.",
+    "No raw command output, complete database URL, credential, or environment values are retained.",
+    "Gate E was not run."
+  ]
+}

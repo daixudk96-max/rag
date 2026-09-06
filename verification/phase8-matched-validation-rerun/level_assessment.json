@@ -1,0 +1,37 @@
+{
+  "assessment_date": "2026-06-08T10:51:18.006948+00:00",
+  "validation_date": "2026-06-08T06:29:24.568654+00:00",
+  "version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count": 20,
+  "judgment_count": 95,
+  "metrics": {
+    "hit_rate": 0.7,
+    "top1_relevance": 0.59,
+    "stability": 0.65
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85
+  },
+  "level": {
+    "level": "Level_2",
+    "level_description": "能查但质量未验证 - retrieval works, quality not verified",
+    "passed_thresholds": {
+      "hit_rate": false,
+      "top1_relevance": false,
+      "stability": false
+    },
+    "blocking_factors": [
+      "hit_rate: 70.00% (need ≥ 80.00%)",
+      "top1_relevance: 59.00% (need ≥ 90.00%)",
+      "stability: 65.00% (need ≥ 85.00%)"
+    ]
+  },
+  "baseline_update_allowed": true,
+  "source_artifacts": {
+    "retrieval_results": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\retrieval_results.json",
+    "judgment_completed": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\judgment_completed.csv",
+    "validation_integrity_report": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\validation_integrity_report.json"
+  }
+}

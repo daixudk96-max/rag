@@ -1,0 +1,395 @@
+"""Canonical tests for the Phase 17 dual-route demo pipeline.
+
+Covers run_phase17_demo.py (orchestrator) and uie_batch.py (subprocess
+extractor).  All engines are fakes; the real pipeline pieces come from
+the wave-1 acceptance runner module.  Zero sockets, zero docker, zero LLM.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+from pathlib import Path
+from types import SimpleNamespace
+from typing import Any
+
+import pytest
+
+from llamaindex_runtime.analysis.graph_channel import GraphHit
+from llamaindex_runtime.entity.relation_review import KeywordEvidenceReviewer
+from llamaindex_runtime.graph.lightrag_backend import IngestReceipt
+from llamaindex_runtime.extraction import trial
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+VERIFICATION_DIR = REPO_ROOT / "verification" / "phase17-graph-recall-multiroute-fusion"
+RUNNER_PATH = VERIFICATION_DIR / "run_graph_recall_acceptance.py"
+DEMO_PATH = VERIFICATION_DIR / "run_phase17_demo.py"
+UIE_BATCH_PATH = VERIFICATION_DIR / "uie_batch.py"
+AUTH_ENV = "OKF_PHASE17_DEMO_AUTHORIZED"
+
+
+def _load(name: str, path: Path) -> Any:
+    spec = importlib.util.spec_from_file_location(name, path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+RUNNER = _load("run_graph_recall_acceptance", RUNNER_PATH)
+DEMO = _load("run_phase17_demo", DEMO_PATH)
+UIE_BATCH = _load("uie_batch", UIE_BATCH_PATH)
+
+
+@pytest.fixture(autouse=True)
+def _isolate_demo_artifacts(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(DEMO, "VERIFICATION_DIR", tmp_path)
+
+
+class FakeTrialEngine:
+    def __init__(self, plans: dict[str, tuple[float, object]] | None = None) -> None:
+        self._plans = plans or {}
+        self.calls: list[str] = []
+
+    def run_trial(self, batch_id: str, sample_texts: Any) -> trial.TrialReport:
+        self.calls.append(batch_id)
+        coverage, homogeneity = self._plans.get(
+            batch_id, (1.0, trial.BatchHomogeneity.SIMILAR)
+        )
+        return trial.TrialReport(
+            batch_id=batch_id,
+            sample_texts=tuple(sample_texts),
+            coverage_ratio=coverage,
+            uncovered_items=(),
+            new_type_proposals=(),
+            homogeneity=homogeneity,
+            engine_id="fake-trial",
+            notes="",
+        )
+
+
+class FakeUieExtractor:
+    def __init__(self) -> None:
+        self.calls: list[tuple[str, ...]] = []
+
+    def extract(self, texts: Any) -> Any:
+        self.calls.append(tuple(texts))
+        return RUNNER.build_gate_bundle()
+
+
+class FakeLlmExtractor:
+    def __init__(self) -> None:
+        self.calls: list[tuple[str, ...]] = []
+
+    def __call__(self, texts: Any) -> Any:
+        self.calls.append(tuple(texts))
+        return RUNNER.build_gate_bundle()
+
+
+class FakeIngestor:
+    def __init__(self) -> None:
+        self.count = 0
+
+    def ingest(
+        self, payload: Any, *, known_entity_names: frozenset[str] = frozenset()
+    ) -> Any:
+        self.count += 1
+        return IngestReceipt(
+            inserted_entities=tuple(payload.entities),
+            skipped_entities=(),
+            inserted_relations=tuple(payload.relations),
+            skipped_relations=(),
+            inserted_chunks=tuple(payload.chunks),
+        )
+
+
+def _recall(query: str, *, hl_keywords: Any, ll_keywords: Any, top_k: int = 10) -> Any:
+    return (GraphHit(title="hit-1", summary="s", keywords=("k",), source_ids=("s1",)),)
+
+
+def _bm25_titles() -> tuple[str, ...]:
+    return ("bm25-a",)
+
+
+def _deps(
+    plans: dict[str, tuple[float, object]] | None = None,
+    *,
+    uie: Any = None,
+    llm: Any = None,
+) -> Any:
+    return DEMO.DemoDeps(
+        trial_engine=FakeTrialEngine(plans),
+        uie_extractor=uie or FakeUieExtractor(),
+        llm_extractor=llm or FakeLlmExtractor(),
+        reviewer=KeywordEvidenceReviewer(),
+        ingestor=FakeIngestor(),
+        recall=_recall,
+        bm25_titles=_bm25_titles,
+    )
+
+
+def _authorize(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(AUTH_ENV, "1")
+
+
+def _deauthorize(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv(AUTH_ENV, raising=False)
+
+
+def _report_path() -> Path:
+    return DEMO.VERIFICATION_DIR / DEMO.REPORT_NAME
+
+
+def test_demo_requires_authorization(monkeypatch: pytest.MonkeyPatch) -> None:
+    _deauthorize(monkeypatch)
+    uie = FakeUieExtractor()
+    llm = FakeLlmExtractor()
+    deps = _deps(uie=uie, llm=llm)
+    code = DEMO.main(
+        [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+    )
+    assert code == 1
+    assert uie.calls == []
+    assert llm.calls == []
+    report = _report_path().read_text(encoding="utf-8")
+    assert "skipped_not_entered" in report
+    assert "authorization gate not satisfied (redacted)" in report
+
+
+def test_similar_batch_routes_to_uie_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    uie = FakeUieExtractor()
+    llm = FakeLlmExtractor()
+    deps = _deps(uie=uie, llm=llm)
+    code = DEMO.main(
+        [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+    )
+    assert code == 0
+    assert llm.calls == []
+    assert uie.calls[0] == tuple(DEMO.DEMO_BATCHES[0].texts)
+    assert len(uie.calls) == 2
+
+
+def test_mixed_batch_routes_to_llm(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    plans = {
+        "mixed": (0.4, trial.BatchHomogeneity.HETEROGENEOUS),
+    }
+    uie = FakeUieExtractor()
+    llm = FakeLlmExtractor()
+    deps = _deps(plans, uie=uie, llm=llm)
+    code = DEMO.main(
+        [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+    )
+    assert code == 0
+    assert llm.calls == [tuple(DEMO.DEMO_BATCHES[1].texts)]
+    assert len(uie.calls) == 1
+
+
+def test_report_sections_in_demo_order(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    deps = _deps()
+    assert (
+        DEMO.main(
+            [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+        )
+        == 0
+    )
+    report = _report_path().read_text(encoding="utf-8")
+    assert report.index("## batch: similar") < report.index("## batch: mixed")
+
+
+def test_report_counts_match_pipeline(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    deps = _deps()
+    assert (
+        DEMO.main(
+            [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+        )
+        == 0
+    )
+    report = _report_path().read_text(encoding="utf-8")
+    assert "route: PURE_UIE" in report
+    assert "mentions_count: 7" in report
+    assert "relations_supported: 2" in report
+
+
+def test_extractor_failure_marks_failed(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+
+    class Broken:
+        def extract(self, texts: Any) -> Any:
+            raise RuntimeError("boom")
+
+    deps = _deps(uie=Broken())
+    code = DEMO.main(
+        [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+    )
+    assert code == 1
+    report = _report_path().read_text(encoding="utf-8")
+    assert "status: failed" in report
+    assert "RuntimeError" in report
+
+
+def test_real_pipeline_counts_via_runner(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    deps = _deps()
+    outcomes = DEMO.run_demo(deps)
+    assert [o.status for o in outcomes] == ["executed", "executed"]
+    assert outcomes[0].mentions_count == 7
+    assert outcomes[0].relations_supported == 2
+    assert outcomes[1].identities_count == 7
+
+
+def test_report_written_to_default_path(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    deps = _deps()
+    assert (
+        DEMO.main(
+            [], target_uri="postgresql://fixture/okf", deps_factory=lambda uri: deps
+        )
+        == 0
+    )
+    report = _report_path().read_text(encoding="utf-8")
+    assert report.startswith("# Phase 17 dual-route demo report")
+
+
+def test_subprocess_extractor_builds_expected_argv(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    document = {
+        "document_id": "d1",
+        "source_text": "李雷在北京使用华为Mate60",
+        "normalized_text": "李雷在北京使用华为Mate60",
+        "entities": [
+            {
+                "text": "李雷",
+                "label": "人名",
+                "char_start": 0,
+                "char_end": 2,
+                "confidence": 0.9,
+            }
+        ],
+        "relations": [],
+    }
+    payload = json.dumps({"documents": [document]}).encode("utf-8")
+    captured: dict[str, Any] = {}
+
+    def fake_run(
+        argv: Any,
+        input: Any = None,
+        capture_output: bool = False,
+        check: bool = False,
+        timeout: Any = None,
+        env: Any = None,
+    ) -> Any:
+        captured["argv"] = list(argv)
+        captured["input"] = input
+        return SimpleNamespace(returncode=0, stdout=payload, stderr=b"")
+
+    monkeypatch.setattr(UIE_BATCH.subprocess, "run", fake_run)
+    venv_python = tmp_path / "python.exe"
+    worker = tmp_path / "uie_worker.py"
+    venv_python.write_text("", encoding="utf-8")
+    worker.write_text("", encoding="utf-8")
+    extractor = UIE_BATCH.SubprocessUieBatchExtractor(str(venv_python), str(worker))
+    bundle = extractor.extract(("李雷在北京使用华为Mate60",))
+    assert captured["argv"] == [str(venv_python), str(worker)]
+    sent = json.loads(captured["input"].decode("utf-8"))
+    assert sent == {"texts": ["李雷在北京使用华为Mate60"]}
+    assert bundle.documents[0].entities[0].text == "李雷"
+
+
+def test_subprocess_extractor_fails_closed_on_nonzero(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    def fake_run(
+        argv: Any,
+        input: Any = None,
+        capture_output: bool = False,
+        check: bool = False,
+        timeout: Any = None,
+        env: Any = None,
+    ) -> Any:
+        return SimpleNamespace(returncode=3, stdout=b"", stderr=b"boom")
+
+    monkeypatch.setattr(UIE_BATCH.subprocess, "run", fake_run)
+    venv_python = tmp_path / "python.exe"
+    worker = tmp_path / "uie_worker.py"
+    venv_python.write_text("", encoding="utf-8")
+    worker.write_text("", encoding="utf-8")
+    extractor = UIE_BATCH.SubprocessUieBatchExtractor(str(venv_python), str(worker))
+    with pytest.raises(RuntimeError):
+        extractor.extract(("text",))
+
+
+def test_demo_argv_is_rejected() -> None:
+    with pytest.raises(ValueError):
+        DEMO.main(["--flag"], target_uri="postgresql://fixture/okf")
+
+
+def test_subprocess_env_strips_provider_keys(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    venv_python = tmp_path / "python.exe"
+    worker = tmp_path / "uie_worker.py"
+    venv_python.write_text("", encoding="utf-8")
+    worker.write_text("", encoding="utf-8")
+    captured: dict[str, Any] = {}
+
+    def fake_run(
+        argv: Any,
+        input: Any = None,
+        capture_output: bool = False,
+        check: bool = False,
+        timeout: Any = None,
+        env: Any = None,
+    ) -> Any:
+        captured["env"] = env
+        return SimpleNamespace(returncode=1, stdout=b"", stderr=b"")
+
+    monkeypatch.setenv("OPENAI_API_KEY", "secret-a")
+    monkeypatch.setenv("DASHSCOPE_API_KEY", "secret-b")
+    monkeypatch.setenv("SystemRoot", "C:\\Windows")
+    monkeypatch.setattr(UIE_BATCH.subprocess, "run", fake_run)
+    extractor = UIE_BATCH.SubprocessUieBatchExtractor(str(venv_python), str(worker))
+    with pytest.raises(RuntimeError):
+        extractor.extract(("text",))
+    assert "OPENAI_API_KEY" not in captured["env"]
+    assert "DASHSCOPE_API_KEY" not in captured["env"]
+    system_root = next(
+        v for k, v in captured["env"].items() if k.upper() == "SYSTEMROOT"
+    )
+    assert system_root == "C:\\Windows"
+
+
+def test_subprocess_extractor_rejects_non_absolute_paths() -> None:
+    with pytest.raises(ValueError):
+        UIE_BATCH.SubprocessUieBatchExtractor("python.exe", "uie_worker.py")
+
+
+def test_subprocess_extractor_rejects_missing_paths(tmp_path: Path) -> None:
+    with pytest.raises(ValueError):
+        UIE_BATCH.SubprocessUieBatchExtractor(
+            str(tmp_path / "missing-python.exe"),
+            str(tmp_path / "missing-worker.py"),
+        )
+
+
+def test_falsy_deps_factory_is_still_used(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    used: list[str] = []
+
+    class FalsyFactory:
+        def __bool__(self) -> bool:
+            return False
+
+        def __call__(self, target_uri: str) -> Any:
+            used.append(target_uri)
+            return _deps()
+
+    code = DEMO.main(
+        [], target_uri="postgresql://fixture/okf", deps_factory=FalsyFactory()
+    )
+    assert used == ["postgresql://fixture/okf"]
+    assert code == 0

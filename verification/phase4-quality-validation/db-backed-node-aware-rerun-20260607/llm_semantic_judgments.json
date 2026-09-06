@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "review_type": "LLM semantic judgment from archived DB-backed retrieval snippets",
+    "source_archive": "verification/phase4-quality-validation/db-backed-node-aware-rerun-20260607",
+    "query_count": 20,
+    "verdict": "ROOT_BIAS_IMPROVED_BUT_SEMANTIC_RELEVANCE_NOT_PASS",
+    "top1_full_relevance_rate_score_ge_0_8": 0.3,
+    "top1_relevance_rate_score_ge_0_5": 0.55,
+    "top1_average_relevance_score": 0.55,
+    "best_top3_average_relevance_score": 0.61,
+    "category_counts": {
+      "fully_relevant": 6,
+      "mostly_relevant": 3,
+      "partially_relevant": 3,
+      "marginally_relevant": 4,
+      "not_relevant": 4
+    },
+    "blocking_factors": [
+      "Some validation queries ask for content absent from the source document, especially case-study, error-handling, invalid-input handling, chunking details, and explicit vector-threshold questions.",
+      "Several top1 hits land on adjacent implementation/integration sections rather than answer-specific evidence.",
+      "Evidence chain is still incomplete in validation_status.json: chunks=0, mapped_chunks=0, heading_path_rate=0."
+    ]
+  },
+  "judgments": [
+    {"query_id":"Q01","score":0.45,"category":"partially_relevant","top1_pass":false,"best_top3_score":0.60,"best_rank":1,"notes":"Top1 is root title and only shows the document start plus the first major section; it does not list all first-level headings."},
+    {"query_id":"Q02","score":0.75,"category":"mostly_relevant","top1_pass":false,"best_top3_score":0.75,"best_rank":1,"notes":"Top1 hits clustering implementation and _detect_semantic_cluster, relevant to algorithms but not a comprehensive core-algorithm section."},
+    {"query_id":"Q03","score":0.05,"category":"not_relevant","top1_pass":false,"best_top3_score":0.10,"best_rank":3,"notes":"No case-study chapter found in source; top hits do not answer the case-study/page question."},
+    {"query_id":"Q04","score":0.65,"category":"partially_relevant","top1_pass":false,"best_top3_score":0.65,"best_rank":1,"notes":"Token consumption and function matrix are technical indicators, but the results do not provide a complete key-indicator list."},
+    {"query_id":"Q05","score":0.35,"category":"marginally_relevant","top1_pass":false,"best_top3_score":0.45,"best_rank":2,"notes":"Integration sections mention input/retrieval/output but do not explain how to use the system for data processing."},
+    {"query_id":"Q06","score":0.80,"category":"fully_relevant","top1_pass":true,"best_top3_score":0.85,"best_rank":1,"notes":"Token consumption and hybrid/integration sections support performance optimization methods."},
+    {"query_id":"Q07","score":0.80,"category":"fully_relevant","top1_pass":true,"best_top3_score":0.85,"best_rank":2,"notes":"Recommended integration architecture supports the design principles."},
+    {"query_id":"Q08","score":0.05,"category":"not_relevant","top1_pass":false,"best_top3_score":0.10,"best_rank":1,"notes":"No actual error-handling mechanism found; Client/CLI/Agent Workflow hits do not answer the query."},
+    {"query_id":"Q09","score":0.85,"category":"fully_relevant","top1_pass":true,"best_top3_score":0.85,"best_rank":1,"notes":"Top1 describes get_document_structure -> LLM reasoning -> get_page_content -> final answer flow."},
+    {"query_id":"Q10","score":0.65,"category":"partially_relevant","top1_pass":false,"best_top3_score":0.80,"best_rank":3,"notes":"Top3 Token consumption supports performance/cost tradeoff; top1 itself is only partial."},
+    {"query_id":"Q11","score":0.75,"category":"mostly_relevant","top1_pass":false,"best_top3_score":0.85,"best_rank":2,"notes":"Recommendation sections explain choice rationale, but top1 is not the strongest comparison evidence."},
+    {"query_id":"Q12","score":0.90,"category":"fully_relevant","top1_pass":true,"best_top3_score":0.90,"best_rank":1,"notes":"Top1 hits next steps/future work directly."},
+    {"query_id":"Q13","score":0.10,"category":"not_relevant","top1_pass":false,"best_top3_score":0.20,"best_rank":1,"notes":"No invalid-input/input-format error handling content found."},
+    {"query_id":"Q14","score":0.75,"category":"mostly_relevant","top1_pass":false,"best_top3_score":0.75,"best_rank":1,"notes":"Token cost and missing features are relevant constraints but not a complete constraints list."},
+    {"query_id":"Q15","score":0.35,"category":"marginally_relevant","top1_pass":false,"best_top3_score":0.35,"best_rank":1,"notes":"Embedding clustering is mentioned, but no vector retrieval threshold is returned."},
+    {"query_id":"Q16","score":0.10,"category":"not_relevant","top1_pass":false,"best_top3_score":0.15,"best_rank":3,"notes":"Top hits miss tree depth/depth limit content."},
+    {"query_id":"Q17","score":0.25,"category":"marginally_relevant","top1_pass":false,"best_top3_score":0.40,"best_rank":2,"notes":"Token comparison is weakly related, but no chunking strategy is returned."},
+    {"query_id":"Q18","score":0.40,"category":"marginally_relevant","top1_pass":false,"best_top3_score":0.45,"best_rank":1,"notes":"Embedding-based clustering is mentioned, but no model selection basis or concrete models are returned."},
+    {"query_id":"Q19","score":0.85,"category":"fully_relevant","top1_pass":true,"best_top3_score":0.90,"best_rank":2,"notes":"PageIndex vs current implementation and matrix directly answer technical-scheme comparison."},
+    {"query_id":"Q20","score":0.90,"category":"fully_relevant","top1_pass":true,"best_top3_score":0.95,"best_rank":1,"notes":"Recommended integration scheme directly answers integration method."}
+  ]
+}

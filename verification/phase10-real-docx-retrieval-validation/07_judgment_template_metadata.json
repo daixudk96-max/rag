@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-06-16T17:39:37Z",
+  "field_rules": {
+    "relevance": [
+      "relevant",
+      "partially_relevant",
+      "irrelevant"
+    ],
+    "evidence_quality": [
+      "strong",
+      "weak",
+      "none"
+    ],
+    "answer_support": [
+      "supports_answer",
+      "context_only",
+      "no_support"
+    ],
+    "comment": "free text"
+  },
+  "note": "The current run may contain zero rows if retrieval produced no hits."
+}

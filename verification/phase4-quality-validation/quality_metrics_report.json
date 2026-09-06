@@ -1,0 +1,60 @@
+{
+  "assessment_date": "2026-05-31T17:03:52.353952",
+  "validation_date": "2026-05-31T16:06:00.282335",
+  "version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count": 20,
+  "judgment_count": 71,
+  "judgment_errors": 0,
+  "metrics": {
+    "hit_rate": 0.95,
+    "top1_relevance": 0.5026315789473684,
+    "stability": 1.0,
+    "root_bias": 0.7894736842105263
+  },
+  "thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85,
+    "root_bias": 0.3
+  },
+  "threshold_status": {
+    "hit_rate": true,
+    "top1_relevance": false,
+    "stability": true,
+    "root_bias": false
+  },
+  "level": {
+    "level": "Level_3",
+    "level_description": "hit_rate passing, other thresholds failing",
+    "passed_thresholds": {
+      "hit_rate": true,
+      "top1_relevance": false,
+      "stability": true,
+      "root_bias": false
+    },
+    "blocking_factors": [
+      "top1_relevance: 50.26% (need >= 90.00%)",
+      "root_bias: 78.95% (need < 30.00%)"
+    ]
+  },
+  "improvement_vs_phase3": {
+    "hit_rate": {
+      "phase3": 0.05,
+      "phase4": 0.95,
+      "improvement": "+90.0 percentage points"
+    },
+    "root_bias": {
+      "phase3": 0.9,
+      "phase4": 0.7894736842105263,
+      "improvement": "-11.1 percentage points"
+    }
+  },
+  "judgment_detail": {
+    "top1_by_category": {
+      "fully_relevant": 4,
+      "marginally_relevant": 10,
+      "partially_relevant": 5
+    },
+    "queries_with_no_relevant": []
+  }
+}

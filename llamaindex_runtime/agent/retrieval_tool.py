@@ -3,6 +3,7 @@
 Delegates to the query() entrypoint with mode='hybrid', enabling
 ReActAgent to use hybrid retrieval as a tool without changing retrieval logic.
 """
+
 from __future__ import annotations
 
 import json
@@ -13,7 +14,7 @@ from uuid import UUID
 from llama_index.core.base.embeddings.base import BaseEmbedding
 from llama_index.core.tools import BaseTool, ToolMetadata, ToolOutput
 
-from llamaindex_runtime.entrypoints.query import query as query_entrypoint
+from llamaindex_runtime.entrypoints import query as query_entrypoint
 from llamaindex_runtime.vector.backend import VectorBackend
 
 
@@ -32,19 +33,13 @@ class RetrievalTool(BaseTool):
         A RegistryWriter instance. Required for keyword path.
     embed_model:
         Embedding model for vector/tree retrieval paths.
-    driver:
-        Optional Neo4j driver instance for graph path.
-    entity_id:
-        Optional UUID for graph path (must be paired with driver).
+    similarity_top_k:
     similarity_top_k:
         Optional top-k for vector/tree backends.
     version_id:
         Optional version filter for keyword search.
     limit:
         Optional maximum results for keyword search.
-    depth:
-        Optional traversal depth for graph queries.
-
     Raises
     ------
     ValueError
@@ -56,12 +51,9 @@ class RetrievalTool(BaseTool):
         source_path: str | Path,
         registry: Any | None,
         embed_model: BaseEmbedding | None,
-        driver: Any | None = None,
-        entity_id: UUID | None = None,
         similarity_top_k: int | None = None,
         version_id: UUID | None = None,
         limit: int | None = None,
-        depth: int | None = None,
         vector_backend: Any | None = None,
     ) -> None:
         if registry is None:
@@ -75,12 +67,9 @@ class RetrievalTool(BaseTool):
         self._source_path = source_path
         self._registry = registry
         self._embed_model = embed_model
-        self._driver = driver
-        self._entity_id = entity_id
         self._similarity_top_k = similarity_top_k
         self._version_id = version_id
         self._limit = limit
-        self._depth = depth
         self._vector_backend = vector_backend
 
         # Set metadata as instance attribute
@@ -88,7 +77,7 @@ class RetrievalTool(BaseTool):
             name="hybrid_retrieval",
             description=(
                 "Retrieve relevant evidence from a PDF document using hybrid search. "
-                "Combines keyword, vector, tree, and optionally graph retrieval paths. "
+                "Combines keyword, vector, and tree retrieval paths. "
                 "Returns structured evidence hits with scores and metadata."
             ),
         )
@@ -140,9 +129,6 @@ class RetrievalTool(BaseTool):
             similarity_top_k=self._similarity_top_k,
             version_id=self._version_id,
             limit=self._limit,
-            driver=self._driver,
-            entity_id=self._entity_id,
-            depth=self._depth,
             vector_backend=self._vector_backend,
         )
 

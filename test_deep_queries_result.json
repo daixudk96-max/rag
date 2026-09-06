@@ -1,0 +1,243 @@
+[
+  {
+    "query": "数据清洗标注的具体方法是什么？",
+    "total_hits": 3,
+    "hits": [
+      {
+        "rank": 1,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 数据清洗标注",
+        "score": 0.6051625401027942,
+        "drill_depth": 0,
+        "hotspot_node_id": "15a6e7e1-83d0-5c47-b327-df786c20f430",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 数据清洗标注"
+        ],
+        "span_ids": [
+          "997d74b7-b83a-5f9d-8b05-fed9ef8722b2"
+        ],
+        "text_preview": "- 针对不干净数据的处理"
+      },
+      {
+        "rank": 2,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 菜品清洗比喻",
+        "score": 0.6144451737737548,
+        "drill_depth": 0,
+        "hotspot_node_id": "da07bbc9-a03a-5e12-b6cc-ed7aee0b44f6",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 菜品清洗比喻"
+        ],
+        "span_ids": [
+          "9a0f5c84-4318-5a48-9a2e-d8ac43725c39"
+        ],
+        "text_preview": "- 菜买回来带有淤泥 - 洗掉菜上的淤泥"
+      },
+      {
+        "rank": 3,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据工作的重要性",
+        "score": 0.6277629596287032,
+        "drill_depth": 0,
+        "hotspot_node_id": "d0937774-9d1a-5462-97e3-e35ef2f1329d",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据工作的重要性"
+        ],
+        "span_ids": [
+          "4ab9b6ce-8db9-5b4f-8dec-59b1021e2f63"
+        ],
+        "text_preview": "- 浪费大量时间 - 过程枯燥 - 决定最后产出的准确率"
+      }
+    ]
+  },
+  {
+    "query": "李菲菲在AI 1.0时代遇到了什么困惑？",
+    "total_hits": 3,
+    "hits": [
+      {
+        "rank": 1,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论",
+        "score": 0.5937387413321041,
+        "drill_depth": 0,
+        "hotspot_node_id": "5ff424aa-d35a-5eb2-b197-e45430d95bbc",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论"
+        ],
+        "span_ids": [
+          "b5f548cd-83f1-5567-a7a8-35b986f9071a"
+        ],
+        "text_preview": "- 独家数据是真正的护城河 - 公开数据不具备竞争优势"
+      },
+      {
+        "rank": 2,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节",
+        "score": 0.5696884753097855,
+        "drill_depth": 0,
+        "hotspot_node_id": "362dc937-b4ba-59f6-ba68-a85cf52c5efe",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节"
+        ],
+        "span_ids": [
+          "4eede4a7-4da2-570c-8adc-5710b01c28cb"
+        ],
+        "text_preview": "- 思考数据从哪里来 - 数据来源分类 - 公开数据 - 用户使用过程中产生的数据"
+      },
+      {
+        "rank": 3,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据闭环飞轮",
+        "score": 0.5410666624071451,
+        "drill_depth": 0,
+        "hotspot_node_id": "aebce135-4f0e-5755-af47-a53a687f0718",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 04:40 - 数据工作重要性 > 数据闭环飞轮"
+        ],
+        "span_ids": [
+          "c0075191-59b9-55b5-a457-78be877028f4"
+        ],
+        "text_preview": "- AI产品部门的命门"
+      }
+    ]
+  },
+  {
+    "query": "抖音推荐机制是如何训练模型的？",
+    "total_hits": 3,
+    "hits": [
+      {
+        "rank": 1,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制",
+        "score": 0.5282263936537918,
+        "drill_depth": 0,
+        "hotspot_node_id": "0fdcc774-1dcd-54f4-b798-3c58ea68d8c3",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 05:40 - 抖音案例 > 推荐机制"
+        ],
+        "span_ids": [
+          "fc243af9-43dc-5b7c-9de8-4deb836bab74"
+        ],
+        "text_preview": "- 收集所有行为数据 - 训练推荐模型 - 用户提供数据 - 系统清洗数据 - 系统做优化 - 推荐变得懂用户"
+      },
+      {
+        "rank": 2,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > 摄像头配置",
+        "score": 0.7797182263074327,
+        "drill_depth": 0,
+        "hotspot_node_id": "ef3d77ae-af69-5ab3-8746-2cd85f9861a3",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 06:29 - 特斯拉案例 > 摄像头配置"
+        ],
+        "span_ids": [
+          "13d8e69b-d483-5279-a9cd-97330fccb54b"
+        ],
+        "text_preview": "- 隐藏的摄像头"
+      },
+      {
+        "rank": 3,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:02 - 角色转变 > AI产品经理的角色转变",
+        "score": 0.77089398748123,
+        "drill_depth": 0,
+        "hotspot_node_id": "a542624e-478f-5941-a3c1-633847e9809e",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:02 - 角色转变 > AI产品经理的角色转变"
+        ],
+        "span_ids": [
+          "e7e513e3-70d6-5bb5-8c55-0c5ab55bd4f4"
+        ],
+        "text_preview": "- 功能逻辑的设计者 - 数据驱动的设计者 - 数据逻辑的设计者"
+      }
+    ]
+  },
+  {
+    "query": "独家数据为什么是护城河？",
+    "total_hits": 3,
+    "hits": [
+      {
+        "rank": 1,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论",
+        "score": 0.8126975892064868,
+        "drill_depth": 0,
+        "hotspot_node_id": "5ff424aa-d35a-5eb2-b197-e45430d95bbc",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论"
+        ],
+        "span_ids": [
+          "b5f548cd-83f1-5567-a7a8-35b986f9071a"
+        ],
+        "text_preview": "- 独家数据是真正的护城河 - 公开数据不具备竞争优势"
+      },
+      {
+        "rank": 2,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 厨师比喻",
+        "score": 0.5605183873910627,
+        "drill_depth": 0,
+        "hotspot_node_id": "d877d90c-1d74-5227-b969-a8f0bfd61d4f",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 厨师比喻"
+        ],
+        "span_ids": [
+          "0ad80651-be80-5ea6-9805-598273f0b6f7"
+        ],
+        "text_preview": "- 关注原材料来自哪里"
+      },
+      {
+        "rank": 3,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节",
+        "score": 0.4787861035283868,
+        "drill_depth": 1,
+        "hotspot_node_id": "8cebd9ed-edae-5f09-b0a3-056c5cf93f09",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源",
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节"
+        ],
+        "span_ids": [
+          "4eede4a7-4da2-570c-8adc-5710b01c28cb"
+        ],
+        "text_preview": "- 思考数据从哪里来 - 数据来源分类 - 公开数据 - 用户使用过程中产生的数据"
+      }
+    ]
+  },
+  {
+    "query": "抖音会收集哪些用户行为数据？",
+    "total_hits": 3,
+    "hits": [
+      {
+        "rank": 1,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论",
+        "score": 0.6089956438620547,
+        "drill_depth": 0,
+        "hotspot_node_id": "5ff424aa-d35a-5eb2-b197-e45430d95bbc",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > 护城河理论"
+        ],
+        "span_ids": [
+          "b5f548cd-83f1-5567-a7a8-35b986f9071a"
+        ],
+        "text_preview": "- 独家数据是真正的护城河 - 公开数据不具备竞争优势"
+      },
+      {
+        "rank": 2,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节",
+        "score": 0.5906582138062048,
+        "drill_depth": 0,
+        "hotspot_node_id": "362dc937-b4ba-59f6-ba68-a85cf52c5efe",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 03:25 - 数据来源 > AI产品落地首个环节"
+        ],
+        "span_ids": [
+          "4eede4a7-4da2-570c-8adc-5710b01c28cb"
+        ],
+        "text_preview": "- 思考数据从哪里来 - 数据来源分类 - 公开数据 - 用户使用过程中产生的数据"
+      },
+      {
+        "rank": 3,
+        "heading_path": "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 菜品清洗比喻",
+        "score": 0.5591630030365515,
+        "drill_depth": 0,
+        "hotspot_node_id": "da07bbc9-a03a-5e12-b6cc-ed7aee0b44f6",
+        "navigation_path": [
+          "AI产品经理项目实战与深度思考架构分析 > 04:13 - 数据处理 > 菜品清洗比喻"
+        ],
+        "span_ids": [
+          "9a0f5c84-4318-5a48-9a2e-d8ac43725c39"
+        ],
+        "text_preview": "- 菜买回来带有淤泥 - 洗掉菜上的淤泥"
+      }
+    ]
+  }
+]

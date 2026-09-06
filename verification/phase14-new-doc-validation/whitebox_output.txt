@@ -1,0 +1,169 @@
+C:\Python311\Lib\site-packages\torch\cuda\__init__.py:61: FutureWarning: The pynvml package is deprecated. Please install nvidia-ml-py instead. If you did not install pynvml directly, please report this to the maintainers of the package that installed pynvml for you.
+  import pynvml  # type: ignore[import]
+C:\Python311\Lib\site-packages\jieba\_compat.py:18: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+================================================================================
+检索流程白盒演示
+================================================================================
+
+文档：deep-research-report (1).md
+Version ID: ec8ec3da-13c5-4180-963f-cc9a90db4093
+查询：KAG 和 NexusRAG 在知识图谱能力上有什么区别？
+
+================================================================================
+
+================================================================================
+STEP 1: 查询 Embedding 计算
+================================================================================
+
+查询文本：KAG 和 NexusRAG 在知识图谱能力上有什么区别？
+Embedding 维度：384
+Embedding 前5个值：[-0.009124900214374065, 0.08740226179361343, 0.06125057861208916, -0.03771401569247246, -0.046369463205337524]
+
+================================================================================
+STEP 2: 树结构加载
+================================================================================
+
+树节点总数：10
+树层级：2
+
+  Level 0: 1 个节点
+    [1] node_id=44d15c94-0a5d-503a-a4e0-0418e2573d39... title=排除 GraphRAG 后的混合 RAG 开源项目深度研究...
+
+  Level 1: 7 个节点
+    [1] node_id=781d3cac-d4d0-5340-abfa-5b142a0e0daa... title=GitHub 候选项目比较...
+    [2] node_id=2706e5d1-a45c-5b70-930d-4e72a0860ca9... title=实施建议...
+    [3] node_id=a57c1527-b973-5e94-a112-71e494a6d456... title=执行摘要...
+
+  Level 2: 2 个节点
+    [1] node_id=ca1d2b67-9d3e-58e7-8a3b-199e1f2d59d1... title=仓库元数据与关键路径...
+    [2] node_id=49816852-940d-5372-bfd4-684393af5acb... title=候选项目总表...
+
+================================================================================
+STEP 3: Node Stats 加载（包含 embeddings 和 chunk_ids）
+================================================================================
+
+Node stats 总数：8
+
+示例节点 stats（前3个）：
+  [1] node_id=ca1d2b67-9d3e-58e7-8a3b-199e1f2d59d1...
+      heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 仓库元数据与关键路径...
+      embedding 维度: 384
+      chunk_ids 数量: 3
+  [2] node_id=49816852-940d-5372-bfd4-684393af5acb...
+      heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 候选项目总表...
+      embedding 维度: 384
+      chunk_ids 数量: 2
+  [3] node_id=2706e5d1-a45c-5b70-930d-4e72a0860ca9...
+      heading_path: 排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 实施建议...
+      embedding 维度: 384
+      chunk_ids 数量: 6
+
+================================================================================
+STEP 4: Vector Candidates（语义相似度）
+================================================================================
+
+Vector candidates 总数：8
+Top 5 vector candidates:
+  [1] node_id=2706e5d1-a45c-5b70-930d-4e72a0860ca9...
+      similarity=0.6144
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 实施建议...
+  [2] node_id=49816852-940d-5372-bfd4-684393af5acb...
+      similarity=0.5562
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候...
+  [3] node_id=e8bfff87-8ab2-500d-8b1e-03559e69607c...
+      similarity=0.5511
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 检索范围与判定方...
+  [4] node_id=08463a14-708e-521d-910d-93f41eec8816...
+      similarity=0.5459
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 最接近需求的项目...
+  [5] node_id=ca1d2b67-9d3e-58e7-8a3b-199e1f2d59d1...
+      similarity=0.5013
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候...
+
+================================================================================
+STEP 5: Keyword Hits（关键词匹配）
+================================================================================
+
+Query terms: {'nexusrag', '和', '在知识图谱能力上有什么区别？', 'kag'}
+Keyword hits 总数：0
+Top 5 keyword hits:
+
+================================================================================
+STEP 6: Dual-hot 集合计算（vector_hot & keyword_hot）
+================================================================================
+
+参数：
+  VECTOR_HOT_THRESHOLD = 0.5
+  KEYWORD_HOT_MIN_TERMS = 1
+
+结果：
+  vector_hot nodes: 5
+  keyword_hot nodes: 0
+  dual_hot nodes（交集）: 0
+
+================================================================================
+STEP 7: Parent Coverage Selection（热点父节点选择）
+================================================================================
+
+Parent-child mappings: 2 parents
+
+Candidate parents（从 dual_hot children）: 0
+
+筛选参数：
+  COVERAGE_THETA = 0.5（覆盖率阈值）
+  MIN_SUPPORT = 2（最小 dual_hot 子节点数）
+  ROOT_CHILD_BREADTH_CAP = 8（根节点避免阈值）
+
+通过筛选的父节点：0
+
+================================================================================
+STEP 8: Hotspot Traverse（返回 waypoint + evidence）
+================================================================================
+
+================================================================================
+STEP 9: 实际 Retrieval 结果（run_validation.py）
+================================================================================
+
+实际返回 hits：5
+  Waypoint hits: 0
+  Evidence hits: 5
+
+Evidence hits 详情（前3个）:
+
+  [1] Evidence hit:
+      chunk_id=00000000-0000-0000-0000-000000000000
+      node_id=49816852-940d-5372-bfd4-684393af5acb
+      drill_depth=None
+      retrieval_path=None
+      backend_source=None
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 候选项目总表...
+      preview=KAG, GitHub仓库 = KAG ?cite?turn10view0?turn13view0?turn12search3?turn33view5?turn...
+
+  [2] Evidence hit:
+      chunk_id=00000000-0000-0000-0000-000000000000
+      node_id=2706e5d1-a45c-5b70-930d-4e72a0860ca9
+      drill_depth=None
+      retrieval_path=None
+      backend_source=None
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 实施建议...
+      preview=如果你的目标是 **最短时间做出一个接近需求的系统** ，我的优先选项是 **NexusRAG** 。理由不是它在逻辑推理上最强，而是它已经具备了图谱、向量库、...
+
+  [3] Evidence hit:
+      chunk_id=00000000-0000-0000-0000-000000000000
+      node_id=889ce876-0178-58f9-bae3-273be1781b7e
+      drill_depth=None
+      retrieval_path=None
+      backend_source=None
+      heading=排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 模块拼接蓝图...
+      preview=第三件关键事是 **“向量命中回映回树节点”** 。这里建议直接借鉴 LlamaIndex 的思想：先把每个 chunk 映射到一个树节点，再把命中分数沿祖先链...
+
+================================================================================
+白盒演示总结
+================================================================================
+Traceback (most recent call last):
+  File "E:\github\rag\verification\phase14-new-doc-validation\whitebox_retrieval_demo.py", line 543, in <module>
+    main()
+  File "E:\github\rag\verification\phase14-new-doc-validation\whitebox_retrieval_demo.py", line 507, in main
+    print("""
+UnicodeEncodeError: 'gbk' codec can't encode character '\u2713' in position 34: illegal multibyte sequence

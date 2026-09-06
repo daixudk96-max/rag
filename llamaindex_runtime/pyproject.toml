@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Formal LlamaIndex-first runtime for provenance-centric multi-view RAG"
 requires-python = ">=3.11"
 dependencies = [
-  "docling",
+  "docling==2.109.0",
   "llama-index-core",
   "llama-index-readers-docling",
   "llama-index-node-parser-docling",
@@ -20,11 +20,20 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pillow", "pytest>=8.3.0"]
-graph = ["llama-index-graph-stores-neo4j"]
 qdrant = ["qdrant-client>=1.9.0"]
 milvus = ["pymilvus>=2.3.0"]
-
 [tool.pytest.ini_options]
 markers = [
     "live_st: live SentenceTransformers integration tests (model download required)",
+    "disposable_db: tests that require a separately authorized disposable PostgreSQL/Docker target",
 ]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["."]
+exclude = ["pyproject.toml", "*.lock", ".venv", "dist", ".pytest_cache", ".ruff_cache", ".mypy_cache", ".claude", "__pycache__", "*.pyc", "*.pyo"]
+
+[tool.hatch.build.targets.wheel.sources]
+"." = "llamaindex_runtime"
+
+[tool.hatch.build]
+dev-mode-dirs = [".."]

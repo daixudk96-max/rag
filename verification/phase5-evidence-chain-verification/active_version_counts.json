@@ -1,0 +1,16 @@
+{
+  "active_version_id": "008442cf-ec96-47e5-8552-99962911587a",
+  "database_url_configured": true,
+  "data_available": false,
+  "stats": {
+    "canonical_spans": 0,
+    "canonical_spans_with_heading_path": 0,
+    "heading_path_rate": 0.0,
+    "vector_chunks": 0,
+    "vector_chunks_with_node_id": 0,
+    "mapped_chunks_rate": 0.0,
+    "vector_chunk_spans": 0,
+    "tree_node_spans": 0
+  },
+  "classification": "missing_canonical_spans"
+}

@@ -1,0 +1,5 @@
+{
+  "exact_terms": ["PM2.5", "GB3095-2012", "CCTV-1"],
+  "phrases": ["空气质量标准", "中央电视台"],
+  "prefixes": ["GB", "CCTV"]
+}

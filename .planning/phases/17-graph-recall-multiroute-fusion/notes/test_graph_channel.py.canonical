@@ -1,0 +1,134 @@
+from __future__ import annotations
+
+from typing import Any
+
+import pytest
+
+from llamaindex_runtime.analysis.fusion import reciprocal_rank_fusion
+from llamaindex_runtime.analysis.graph_channel import (
+    GraphHit,
+    LightragGraphChannel,
+    RankedHit,
+    parse_keywords,
+    ranked_fusion,
+)
+
+
+def _page_response() -> dict[str, Any]:
+    return {
+        "status": "success",
+        "message": "",
+        "data": {
+            "entities": [{"entity_name": "华为", "description": "公司"}],
+            "relationships": [
+                {
+                    "src_id": "华为",
+                    "tgt_id": "杭州",
+                    "description": "总部位于",
+                    "keywords": "总部位于,城市",
+                }
+            ],
+            "chunks": [{"content": "华为的总部在杭州。", "source_id": "doc-1"}],
+        },
+    }
+
+
+class StubRag:
+    def __init__(self, response: dict[str, Any]) -> None:
+        self._response = response
+        self.last_param: Any = None
+
+    async def aquery_data(self, param: Any) -> dict[str, Any]:
+        self.last_param = param
+        return dict(self._response)
+
+
+def _hit(title: str) -> GraphHit:
+    return GraphHit(title=title, summary="", keywords=(), source_ids=())
+
+
+def test_channel_parses_page_in_fixed_order() -> None:
+    rag = StubRag(_page_response())
+    ch = LightragGraphChannel(rag)
+    hits = ch.fetch("华为总部", hl_keywords=("华为",), ll_keywords=("总部",))
+    assert [h.title for h in hits] == ["华为->杭州", "华为", "doc-1"]
+    assert hits[0].summary == "总部位于"
+    assert hits[0].keywords == ("总部位于", "城市")
+    assert hits[1].summary == "公司"
+    assert hits[2].source_ids == ("doc-1",)
+    assert rag.last_param.only_need_context is True
+
+
+def test_channel_skips_malformed_entries() -> None:
+    response = {
+        "status": "success",
+        "data": {
+            "entities": [{"description": "no name"}, {"entity_name": "ok"}],
+            "relationships": [{"src_id": "a"}],
+            "chunks": [{"content": "x"}],
+        },
+    }
+    ch = LightragGraphChannel(StubRag(response))
+    hits = ch.fetch("q", hl_keywords=("k",), ll_keywords=("k",))
+    assert [h.title for h in hits] == ["ok"]
+
+
+def test_channel_rejects_failed_status() -> None:
+    ch = LightragGraphChannel(StubRag({"status": "fail", "message": "boom"}))
+    with pytest.raises(ValueError, match="status=fail"):
+        ch.fetch("q", hl_keywords=("k",), ll_keywords=("k",))
+
+
+def test_channel_rejects_blank_query() -> None:
+    ch = LightragGraphChannel(StubRag(_page_response()))
+    with pytest.raises(ValueError):
+        ch.fetch(" ", hl_keywords=("k",), ll_keywords=("k",))
+
+
+def test_channel_top_k_truncates() -> None:
+    ch = LightragGraphChannel(StubRag(_page_response()))
+    hits = ch.fetch("q", hl_keywords=("k",), ll_keywords=("k",), top_k=2)
+    assert len(hits) == 2
+
+
+def test_parse_keywords_variants() -> None:
+    assert parse_keywords("a, b；c，d") == ("a", "b", "c", "d")
+    assert parse_keywords(["x", "y"]) == ("x", "y")
+    assert parse_keywords(None) == ()
+    with pytest.raises(ValueError):
+        parse_keywords(123)
+
+
+def test_ranked_fusion_matches_existing_rrf() -> None:
+    g = (_hit("B"), _hit("A"))
+    b = ("B", "C")
+    fused = ranked_fusion(g, b, k=60)
+    by_title = {h.title: h for h in fused}
+    expected_b = reciprocal_rank_fusion({"graph": 0}, k=60)
+    expected_b = expected_b + reciprocal_rank_fusion({"bm25": 0}, k=60)
+    expected_a = reciprocal_rank_fusion({"graph": 1}, k=60)
+    expected_c = reciprocal_rank_fusion({"bm25": 1}, k=60)
+    assert by_title["B"].sources == ("graph", "bm25")
+    assert by_title["B"].score == pytest.approx(expected_b)
+    assert by_title["A"].sources == ("graph",)
+    assert by_title["A"].score == pytest.approx(expected_a)
+    assert by_title["C"].sources == ("bm25",)
+    assert by_title["C"].score == pytest.approx(expected_c)
+    assert [h.title for h in fused] == ["B", "A", "C"]
+
+
+def test_ranked_fusion_weights_reorder() -> None:
+    g = (_hit("A"),)
+    b = ("B",)
+    damped = ranked_fusion(g, b, k=60, graph_weight=0.5)
+    boosted = ranked_fusion(g, b, k=60, graph_weight=10.0)
+    assert [h.title for h in damped] == ["B", "A"]
+    assert [h.title for h in boosted] == ["A", "B"]
+
+
+def test_ranked_fusion_empty_and_dedupe() -> None:
+    assert ranked_fusion((), (), k=60) == ()
+    g = (_hit("X"), _hit("X"))
+    fused = ranked_fusion(g, (), k=60)
+    assert len(fused) == 1
+    assert isinstance(fused[0], RankedHit)

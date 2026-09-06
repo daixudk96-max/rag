@@ -1,0 +1,295 @@
+{
+  "assessment_date": "2026-06-01T00:00:00.000000",
+  "phase": "Phase 4 - PageIndex Quality Improvement and Baseline Reconciliation",
+  "validation_status": "BLOCKED - Validation rerun not executed",
+  "baseline_type": "authoritative",
+  "baseline_source": "Phase 3 Real Validation",
+  "current_level": {
+    "level": "Level_2",
+    "level_description": "能查但质量未验证 - Retrieval system can execute queries but quality far below main-function readiness thresholds",
+    "basis": "Phase 3 real validation with PostgreSQL, LLM retrieval, and human judgment",
+    "metrics": {
+      "hit_rate": 0.05,
+      "top1_relevance": 0.10,
+      "stability": 0.00
+    },
+    "assessment_authority": "AUTHORITATIVE"
+  },
+  "target_level": {
+    "level_3_criteria": {
+      "description": "查得基本对 - hit_rate passing only",
+      "required_thresholds": {
+        "hit_rate": ">= 80%"
+      },
+      "other_thresholds": "May fail (top1_relevance, stability)"
+    },
+    "level_4_criteria": {
+      "description": "质量已验证 - all thresholds passing",
+      "required_thresholds": {
+        "hit_rate": ">= 80%",
+        "top1_relevance": ">= 90%",
+        "stability": ">= 85%",
+        "tree_depth": ">= 3",
+        "node_chunk_mapping": ">= 80%",
+        "heading_path_completeness": ">= 95%"
+      }
+    }
+  },
+  "frozen_thresholds": {
+    "hit_rate": 0.80,
+    "top1_relevance": 0.90,
+    "stability": 0.85,
+    "tree_depth": 3,
+    "node_chunk_mapping_rate": 0.80,
+    "heading_path_completeness": 0.95,
+    "min_test_queries": 20,
+    "threshold_source": "Phase 2 validation framework - frozen, no relaxation allowed"
+  },
+  "phase4_preparation_status": {
+    "ws0_baseline_reconciliation": {
+      "status": "COMPLETED",
+      "completion_date": "2026-05-31",
+      "outcome": "Split-brain eliminated: Phase 2 Level 3 marked fixture-provisional, Phase 3 Level 2 established as unified authoritative baseline"
+    },
+    "ws1_corpus_alignment_tree_depth": {
+      "status": "COMPLETED",
+      "completion_date": "2026-05-31",
+      "outcome": {
+        "corpus_aligned": true,
+        "selected_corpus": "PageIndex完整功能分析与集成方案.md",
+        "keyword_coverage": "4.1 keywords/query",
+        "tree_depth_corrected": true,
+        "actual_tree_depth": "max_level_no=2 (3 levels)",
+        "tree_depth_threshold_met": true,
+        "root_bias_cause_identified": "Retrieval behavior + document structure, NOT depth issue"
+      }
+    },
+    "ws2_validation_rerun": {
+      "status": "BLOCKED",
+      "blocker_date": "2026-05-31",
+      "blocker": "Database infrastructure inactive (Docker Desktop not running)",
+      "tasks_blocked": [
+        "Aligned corpus ingestion (PageIndex完整功能分析与集成方案.md)",
+        "Evidence-chain statistics restoration (chunks/mapped_chunks/heading_path)",
+        "Real quality validation rerun (20 queries with aligned corpus)",
+        "Human judgment collection",
+        "Metrics calculation (hit_rate, top1_relevance, stability)",
+        "Final Level judgment determination (Level 3/4)"
+      ],
+      "expected_metrics_if_unblocked": {
+        "hit_rate": "60-80% (corpus alignment impact)",
+        "top1_relevance": "70-90% (tree depth + corpus alignment)",
+        "stability": "80-85% (consistent retrieval)",
+        "root_bias": "<30% top1 hits are root (vs Phase 3: 90%)"
+      }
+    }
+  },
+  "metrics_comparison": {
+    "phase3_baseline": {
+      "corpus": "竞品分析文档 (Mismatched - Competitive Analysis)",
+      "metrics": {
+        "hit_rate": "5%",
+        "top1_relevance": "10%",
+        "stability": "0%"
+      },
+      "root_bias": "90% top1 hits were root node",
+      "document_query_mismatch": true,
+      "tree_max_level_perception": "Level 1 (MISCONCEPTION - actual: max_level_no=2)"
+    },
+    "phase4_preparation": {
+      "aligned_corpus": "PageIndex完整功能分析与集成方案.md (Technical System)",
+      "keyword_coverage": "4.1 keywords/query",
+      "tree_depth_confirmed": "max_level_no=2 (3 levels, threshold met)",
+      "expected_improvement": {
+        "hit_rate": "60-80% (vs Phase 3: 5%)",
+        "top1_relevance": "70-90% (vs Phase 3: 10%)",
+        "stability": "80-85% (vs Phase 3: 0%)",
+        "root_bias": "<30% (vs Phase 3: 90%)"
+      },
+      "validation_executed": false,
+      "metrics_verified": false
+    }
+  },
+  "root_bias_analysis": {
+    "phase3_observation": "90% (18/20) top1 hits were root node",
+    "phase3_cause": {
+      "retrieval_backend": "ReasoningTreeBackend uses LLM reasoning",
+      "llm_behavior": "Prefers broad context first (root node)",
+      "document_structure": "Competitive analysis: root mentions everything superficially, lacks specifics",
+      "NOT_tree_depth": "Tree had sufficient depth (3 levels), depth was not the problem"
+    },
+    "phase4_resolution_prepared": {
+      "aligned_corpus_structure": "Technical system document has detailed subsections with specific content",
+      "expected_llm_behavior": "Will match queries to specific sections (e.g., Q04 '技术指标' -> PageIndex parameters section)",
+      "expected_improvement": "Top1 hits favor specific subsections, root-bias decreases to <30%",
+      "verification_pending": "Cannot verify until validation rerun executes (WS2 blocked)"
+    }
+  },
+  "corpus_alignment_impact": {
+    "phase3_mismatch": {
+      "corpus_domain": "竞品分析对比 (Competitive Analysis)",
+      "query_domain": "技术系统实现与架构 (Technical System)",
+      "impact": "90% queries (18/20) returned irrelevant results",
+      "judgment_notes": "Root node - might mention but lacks specifics"
+    },
+    "phase4_alignment": {
+      "selected_corpus": "PageIndex完整功能分析与集成方案.md",
+      "domain": "技术系统实现与架构",
+      "technical_keyword_coverage": {
+        "PageIndex": 41,
+        "检索": 14,
+        "embedding": 11,
+        "LLM": 8,
+        "树结构": 6,
+        "架构": 2,
+        "total_keywords": 82,
+        "keywords_per_query": 4.1
+      },
+      "content_coverage": "75% queries directly covered (15/20)",
+      "expected_impact": {
+        "hit_rate_improvement": "From 5% to 60-80% (+55-75%)",
+        "irrelevant_rate_decrease": "From 90% to <20%"
+      },
+      "validation_executed": false,
+      "impact_verified": false
+    }
+  },
+  "evidence_chain_completeness": {
+    "phase3_status": {
+      "chunks": 0,
+      "mapped_chunks": 0,
+      "mapped_chunks_rate": "0.0%",
+      "heading_path_complete": 0,
+      "heading_path_rate": "0.0%",
+      "tree_max_level": 4,
+      "status": "Incomplete - fake zeros due to database not running for ingestion"
+    },
+    "phase4_expected": {
+      "chunks": "200-400 (after aligned corpus ingestion)",
+      "mapped_chunks": "160-320 (80%+ mapping)",
+      "mapped_chunks_rate": ">=80%",
+      "heading_path_complete": "190-380 (95%+ completeness)",
+      "heading_path_rate": ">=95%",
+      "tree_depth": ">=3 (already confirmed max_level_no=2)",
+      "status": "PENDING - awaiting WS2 ingestion execution"
+    },
+    "thresholds": {
+      "node_chunk_mapping": ">=80%",
+      "heading_path_completeness": ">=95%",
+      "tree_depth": ">=3"
+    },
+    "verification_blocked": true
+  },
+  "final_judgment": {
+    "determination_status": "NOT DETERMINED",
+    "reason": "Phase 4 WS2 validation rerun blocked by database infrastructure",
+    "current_authoritative_level": "Level_2",
+    "expected_progression": {
+      "if_validation_passes": "Level 3 or Level 4",
+      "if_validation_fails": "Level 2 (remain at baseline)"
+    },
+    "go_no_go_decision": "NO-GO",
+    "blocking_factors": [
+      "Database infrastructure inactive (Docker Desktop not running)",
+      "Aligned corpus ingestion not executed (PageIndex完整功能分析与集成方案.md pending)",
+      "Evidence-chain statistics not restored (chunks/mapped_chunks/heading_path remain zero)",
+      "Real quality validation not rerun with aligned corpus",
+      "Human judgment not collected for new retrieval results",
+      "Metrics not calculated (hit_rate/top1_relevance/stability remain at Phase 3 values)",
+      "Final Level judgment cannot be determined without validation data"
+    ],
+    "resolution_actions": [
+      "Activate database infrastructure (start Docker Desktop, run PostgreSQL container)",
+      "Execute WS2-01: Database startup and connection verification",
+      "Execute WS2-02: Aligned corpus ingestion (PageIndex完整功能分析与集成方案.md)",
+      "Execute WS2-03: Evidence-chain statistics restoration",
+      "Execute WS2-04: Real quality validation rerun with 20 business queries",
+      "Execute WS2-05: Level assessment and go/no-go decision with frozen thresholds"
+    ],
+    "estimated_resolution_time": "3-5 hours after infrastructure activation"
+  },
+  "phase4_closure_status": {
+    "workstream_completion": {
+      "ws0": "COMPLETED (2026-05-31)",
+      "ws1": "COMPLETED (2026-05-31)",
+      "ws2": "BLOCKED (infrastructure inactive)"
+    },
+    "completion_percentage": "45% (5/11 tasks completed, 6 blocked)",
+    "closure_recommendation": "CLOSE-READY with blocker documentation",
+    "rationale": [
+      "WS0 baseline reconciliation completed successfully",
+      "WS1 corpus alignment and tree depth analysis completed successfully",
+      "WS2 execution plan documented with 5 clear tasks",
+      "Infrastructure blocker identified and documented",
+      "Remaining work well-defined with clear task sequence",
+      "Validation rerun can proceed immediately after infrastructure activation"
+    ]
+  },
+  "phase_history": {
+    "phase1": {
+      "phase": "PageIndex Bug Fix",
+      "level_assessment": "None (technical integration phase)",
+      "outcome": "Double donor call fixes verified"
+    },
+    "phase2": {
+      "phase": "Quality Validation Framework",
+      "level": "Level_3",
+      "authority": "NON-AUTHORITATIVE (fixture-provisional)",
+      "basis": "Fixture/mock data - NOT real PostgreSQL retrieval",
+      "metrics": {
+        "hit_rate": "100% (fixture artificial)",
+        "top1_relevance": "34.5%",
+        "stability": "105% (fixture)"
+      }
+    },
+    "phase3": {
+      "phase": "Real Quality Validation",
+      "level": "Level_2",
+      "authority": "AUTHORITATIVE",
+      "basis": "Real PostgreSQL, real LLM retrieval, human judgment",
+      "metrics": {
+        "hit_rate": "5%",
+        "top1_relevance": "10%",
+        "stability": "0%"
+      },
+      "blockers": [
+        "Document/query mismatch (RESOLVED in Phase 4 WS1)",
+        "Tree depth misconception (CORRECTED in Phase 4 WS1)",
+        "Evidence-chain gaps (PENDING Phase 4 WS2)"
+      ]
+    },
+    "phase4": {
+      "phase": "PageIndex Quality Improvement and Baseline Reconciliation",
+      "ws0_outcome": "Baseline unified: Level 2 authoritative",
+      "ws1_outcome": "Corpus aligned, tree depth confirmed, root-bias diagnosed",
+      "ws2_outcome": "BLOCKED - validation rerun pending",
+      "final_level": "NOT DETERMINED (blocked)",
+      "closure_status": "CLOSE-READY with blocker documentation"
+    }
+  },
+  "next_steps": {
+    "immediate_action": "Activate database infrastructure (Docker Desktop startup)",
+    "ws2_execution_sequence": [
+      "WS2-01: Database startup (15 min)",
+      "WS2-02: Corpus ingestion (30-60 min)",
+      "WS2-03: Evidence-chain restoration (15 min)",
+      "WS2-04: Validation rerun + human judgment (60-90 min)",
+      "WS2-05: Level assessment (15 min)"
+    ],
+    "total_estimated_time": "3-5 hours",
+    "expected_final_level": "Level 3 or Level 4 (if validation succeeds)",
+    "expected_metrics": {
+      "hit_rate": "60-80% (target: >=80%)",
+      "top1_relevance": "70-90% (target: >=90%)",
+      "stability": "80-85% (target: >=85%)"
+    }
+  },
+  "_metadata": {
+    "generated_by": "Claude Code Agent",
+    "generation_context": "Phase 4 closeout with WS2 validation rerun blocked",
+    "baseline_authority": "Phase 3 Level 2 (AUTHORITATIVE)",
+    "thresholds_frozen": true,
+    "threshold_relaxation": "NOT ALLOWED",
+    "validation_framework": "Phase 2 thresholds preserved"
+  }
+}

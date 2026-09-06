@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-07-01T18:15:09.702578+00:00",
+  "total_hits": 99,
+  "queries_with_hits": 20,
+  "zero_hit_queries": 0,
+  "zero_hit_query_rate": 0.0,
+  "missing_chunk_hits": 0,
+  "placeholder_chunk_hits": 0,
+  "evidence_chunk_hits": 99,
+  "chunk_id_present_rate": 1.0,
+  "evidence_chunk_rate": 1.0,
+  "measured_not_assumed": true,
+  "phase_13_validation": {
+    "target": "hotspot traverse returns waypoint + evidence",
+    "missing_chunk_hits_expected": 0,
+    "actual_missing_chunk_hits": 0,
+    "pass": true
+  }
+}

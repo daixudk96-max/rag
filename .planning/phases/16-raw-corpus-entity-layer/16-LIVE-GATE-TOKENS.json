@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "record_kind": "live_gate_token_materialization_ledger",
+  "record_purpose": "One-time planning-state reconciliation (Task #214, 2026-08-10). Materializes the historical single-use, non-retryable human authorizations for a future Gate 3 and Gate 4 launch. Materialization is NOT consumption: this record grants no runtime authority, records no execution, and must not be used as standing or runtime proof of authorization.",
+  "materialized_at": "2026-08-10T06:12:17.204888Z",
+  "materialized_at_source": "filesystem_creation_time (ctime) of this record file, read-only stat",
+  "materialized_at_precision": "known_time",
+  "materialized_date": "2026-08-10",
+  "token_materialized": true,
+  "prior_launch_verification": {
+    "method": "read-only direct verification of on-disk evidence and git history",
+    "gate_3_no_prior_launch_directly_verified": true,
+    "gate_4_no_prior_launch_directly_verified": true,
+    "gate_3_evidence_checked_absent": [
+      "raner_smoke_evidence.md",
+      "raner_resource_report.json"
+    ],
+    "gate_4_evidence_checked_absent": [
+      "e2b_full_corpus_acceptance_evidence",
+      "test_e2b_full_corpus_acceptance_runner.py"
+    ],
+    "git_history_check": "no commit references a gate 3 or gate 4 launch"
+  },
+  "gates": {
+    "gate_3": {
+      "plan": "16-13",
+      "token_id": "OKF_E2B_RANER_SMOKE_AUTHORIZED",
+      "authorization_kind": "single-use, no-retry, historical-reconciliation-only",
+      "purpose": "Real local RaNER smoke + Windows/WSL resource measurement (freeze runtime_compatibility_id)",
+      "prior_launch_directly_verified_absent": true,
+      "launch_committed": false,
+      "execution_claimed": false,
+      "status_at_materialization": "blocked_not_executed"
+    },
+    "gate_4": {
+      "plan": "16-15",
+      "token_id": "OKF_E2B_DISPOSABLE_TEST_AUTHORIZED",
+      "authorization_kind": "single-use, no-retry, historical-reconciliation-only",
+      "purpose": "Disposable full-corpus E2b acceptance (materialization / idempotence / changed-set convergence / failure rollback / concurrency / E2a-E2b shared-lock serialization)",
+      "prior_launch_directly_verified_absent": true,
+      "launch_committed": false,
+      "execution_claimed": false,
+      "status_at_materialization": "blocked_not_executed"
+    }
+  },
+  "constraints_recorded": {
+    "gate_3": "blocked_not_executed until measured Gate 3 evidence exists; runtime_compatibility_id remains None; run_raner_smoke.py is a static stub that always reports blocked/nonzero",
+    "gate_4": "blocked_not_executed; cannot run until Gate 3 and plan dependencies pass; strict loopback disposable PostgreSQL only; never DATABASE_URL",
+    "c2_remains_skipped_not_entered": true,
+    "d4_frozen_until_phase_19": true,
+    "phase_20_human_g6_go_no_go_mandatory": true,
+    "exact_scope_commit_only_after_all_authorized_roadmap_work_complete": true
+  },
+  "no_live_gate_launched_or_consumed_in_this_reconciliation": true,
+  "secret_integrity": "This record contains no secrets, no credential values, no raw routes/DSNs, and no corpus content."
+}

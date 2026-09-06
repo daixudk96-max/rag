@@ -1,0 +1,16 @@
+{
+  "database_url_configured": true,
+  "connection_status": "Connected successfully",
+  "data_available": true,
+  "stats": {
+    "documents": 2,
+    "active_versions": 2,
+    "chunks": 0,
+    "mapped_chunks": 0,
+    "mapped_chunks_rate": 0.0,
+    "tree_max_level": 2,
+    "heading_path_complete": 0,
+    "heading_path_rate": 0.0
+  },
+  "active_version_id": "008442cf-ec96-47e5-8552-99962911587a"
+}

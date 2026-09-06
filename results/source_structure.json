@@ -1,0 +1,48 @@
+[
+  {
+    "title": "Introduction to Machine Learning",
+    "node_id": "0000",
+    "start_index": 1,
+    "end_index": 1,
+    "summary": "The partial document introduces machine learning and covers its fundamental concepts and applications. It explains that machine learning is a subset of artificial intelligence that allows systems to learn from data. It then describes two core learning approaches: supervised learning, which uses labeled training data to learn mapping functions, and unsupervised learning, which finds hidden patterns in unlabeled data. Finally, it briefly highlights applications of machine learning across industries, with a specific focus on natural language processing as a field that helps computers understand and process human language."
+  },
+  {
+    "title": "Chapter 1: Foundations",
+    "node_id": "0001",
+    "start_index": 1,
+    "end_index": 1,
+    "summary": "The document introduces machine learning and covers its fundamentals. It explains that ML is a subset of artificial intelligence where systems learn from data. It then outlines two core learning approaches: supervised learning, which uses labeled training data to learn mapping functions, and unsupervised learning, which finds hidden patterns in unlabeled data. Finally, it highlights machine learning applications across industries, with a specific focus on natural language processing, which helps computers understand and process human language.",
+    "nodes": [
+      {
+        "title": "Supervised Learning",
+        "node_id": "0002",
+        "start_index": 1,
+        "end_index": 1,
+        "summary": "The document provides an introduction to machine learning, covering its basic definition as a subset of artificial intelligence that learns from data. It explains two core learning approaches: supervised learning, which uses labeled data to learn mappings, and unsupervised learning, which identifies hidden patterns in unlabeled data. It also introduces machine learning applications across industries, with a specific example in natural language processing, where computers understand and process human language."
+      },
+      {
+        "title": "Unsupervised Learning",
+        "node_id": "0003",
+        "start_index": 1,
+        "end_index": 1,
+        "summary": "The partial document introduces machine learning and covers its fundamentals, explaining that ML is a subset of artificial intelligence that learns from data. It outlines two core learning approaches: supervised learning, which uses labeled data to learn mapping functions, and unsupervised learning, which finds hidden patterns in unlabeled data. It also begins discussing applications of machine learning across industries, with a specific focus on natural language processing as a use case for understanding and processing human language."
+      }
+    ]
+  },
+  {
+    "title": "Chapter 2: Applications",
+    "node_id": "0004",
+    "start_index": 1,
+    "end_index": 1,
+    "summary": "The document introduces machine learning and covers its basic fundamentals, defining ML as a subset of artificial intelligence that learns from data. It explains two core learning approaches: supervised learning, which uses labeled data to learn mapping functions, and unsupervised learning, which finds hidden patterns in unlabeled data. It also highlights machine learning applications across industries, with a focus on natural language processing as a key example for understanding and processing human language.",
+    "nodes": [
+      {
+        "title": "Natural Language Processing",
+        "node_id": "0005",
+        "start_index": 1,
+        "end_index": 1,
+        "summary": "The partial document introduces machine learning and provides an overview of its fundamentals. It explains that machine learning is a branch of artificial intelligence that allows systems to learn from data, then covers two core learning approaches: supervised learning, which uses labeled training data, and unsupervised learning, which finds patterns in unlabeled data. It also begins discussing applications of machine learning across industries, with a focus on natural language processing as a key example of how machines can understand and process human language."
+      }
+    ]
+  }
+]

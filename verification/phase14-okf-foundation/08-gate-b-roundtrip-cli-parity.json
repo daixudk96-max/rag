@@ -1,0 +1,165 @@
+{
+  "schema_version": "1.0",
+  "artifact_type": "gate_b_roundtrip_cli_parity_execution",
+  "phase": "14-okf-foundation",
+  "gate": "B",
+  "verdict": "PASS",
+  "execution": {
+    "started_at_utc": "2026-07-17T12:06:53Z",
+    "finished_at_utc": "2026-07-17T12:08:51Z",
+    "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db"
+  },
+  "isolation_policy": {
+    "database_access": "prohibited",
+    "explicitly_unset_environment_variables": [
+      "DATABASE_URL",
+      "FORMAL_RUNTIME_DATABASE_URL",
+      "OKF_MIGRATION_TEST_DATABASE_DISPOSABLE",
+      "OKF_REBUILD_EXPECTED_DATABASE",
+      "OKF_FAILURE_AUDIT_ACCEPTANCE",
+      "OKF_REBUILD_DOCKER_ACCEPTANCE"
+    ],
+    "credential_handling": "The six named database/runtime/acceptance environment variables were explicitly unset for every Python command. Their values were not inspected, printed, or persisted. The actual CLI subprocess inherited the same sanitized environment.",
+    "temporary_bundle_handling": "Each fixture was serialized by the existing production serializer into a distinct OS temporary directory represented here as <temporary-bundle-root>; the directory was automatically removed after its real CLI invocation. No checked-in fixture was changed."
+  },
+  "commands": [
+    {
+      "purpose": "Frozen-fixture identity equality and deterministic first-mismatch coverage",
+      "command_pattern": "rtk env -u DATABASE_URL -u FORMAL_RUNTIME_DATABASE_URL -u OKF_MIGRATION_TEST_DATABASE_DISPOSABLE -u OKF_REBUILD_EXPECTED_DATABASE -u OKF_FAILURE_AUDIT_ACCEPTANCE -u OKF_REBUILD_DOCKER_ACCEPTANCE python -m pytest tests/llamaindex_runtime/okf/test_span_id_roundtrip.py::test_frozen_docling_spans_roundtrip_through_real_okf tests/llamaindex_runtime/okf/test_span_id_roundtrip.py::test_first_mismatch_report_selects_corrupted_sidecar_offset -q",
+      "exit_code": 0,
+      "pytest_counts": {
+        "collected": 4,
+        "passed": 4,
+        "skipped": 0,
+        "failed": 0
+      },
+      "coverage": {
+        "span_id_equality": "PASS: parameterized production serializer/parser round-trip selected sectioned-pdf, complex-layout-pdf, and docx.",
+        "first_mismatch_reporting": "PASS: the corrupted-sidecar offset case asserted the deterministic first mismatch at span[1], field=offset."
+      }
+    },
+    {
+      "purpose": "Frozen-fixture integrity and expected span-count validation",
+      "command_pattern": "rtk env -u DATABASE_URL -u FORMAL_RUNTIME_DATABASE_URL -u OKF_MIGRATION_TEST_DATABASE_DISPOSABLE -u OKF_REBUILD_EXPECTED_DATABASE -u OKF_FAILURE_AUDIT_ACCEPTANCE -u OKF_REBUILD_DOCKER_ACCEPTANCE python tests/fixtures/okf_roundtrip/validate_fixtures.py",
+      "exit_code": 0,
+      "result": "PASS: 13 frozen nodes and 13 expected spans across all three fixtures."
+    },
+    {
+      "purpose": "Actual no-DB rebuild CLI parity",
+      "command_pattern": "rtk env -u DATABASE_URL -u FORMAL_RUNTIME_DATABASE_URL -u OKF_MIGRATION_TEST_DATABASE_DISPOSABLE -u OKF_REBUILD_EXPECTED_DATABASE -u OKF_FAILURE_AUDIT_ACCEPTANCE -u OKF_REBUILD_DOCKER_ACCEPTANCE python -c '<ephemeral harness: for each frozen fixture, invoke llamaindex_runtime.okf.serializer.serialize_document into <temporary-bundle-root>, then invoke python scripts/rebuild_from_okf.py --bundle <temporary-bundle-root> --verify-roundtrip --fixture <sectioned-pdf|complex-layout-pdf|docx>; capture only stream lengths/SHA-256 digests; remove <temporary-bundle-root>>'",
+      "actual_cli_argument_pattern": "python scripts/rebuild_from_okf.py --bundle <temporary-bundle-root> --verify-roundtrip --fixture <fixture>",
+      "exit_code": 0,
+      "result": "PASS: real subprocess CLI invocation completed for every fixture."
+    }
+  ],
+  "fixture_results": [
+    {
+      "fixture": "sectioned-pdf",
+      "expected_span_count": 6,
+      "frozen_expected_id_input": {
+        "path": "tests/fixtures/okf_roundtrip/sectioned-pdf/expected_span_ids.json",
+        "sha256": "4966e79f88f0e56e466e4f0bf78151ea0e8ecaa88aeb9feb1dc4780a94ef7152"
+      },
+      "temporary_serialized_sidecar": {
+        "path": "<temporary-bundle-root>/raw/sectioned-pdf.spans.json",
+        "sha256": "8c24f8ec11b9767ac89176fda513b35d8b0bd523dc2ace0f7aa66a5c9166a6f1"
+      },
+      "span_id_equality": "PASS",
+      "cli_exit_code": 0,
+      "cli_result": "PASS",
+      "cli_stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cli_stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "fixture": "complex-layout-pdf",
+      "expected_span_count": 4,
+      "frozen_expected_id_input": {
+        "path": "tests/fixtures/okf_roundtrip/complex-layout-pdf/expected_span_ids.json",
+        "sha256": "5460238cf408b8111d53054b0ed37cf7dd5ffe40174809ba15ff0c472f60f73b"
+      },
+      "temporary_serialized_sidecar": {
+        "path": "<temporary-bundle-root>/raw/complex-layout-pdf.spans.json",
+        "sha256": "edbb68f04fad0e3c968e6d0972f1dd9f2d7fac3767d2e691b3d060df3f0a8c74"
+      },
+      "span_id_equality": "PASS",
+      "cli_exit_code": 0,
+      "cli_result": "PASS",
+      "cli_stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cli_stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "fixture": "docx",
+      "expected_span_count": 3,
+      "frozen_expected_id_input": {
+        "path": "tests/fixtures/okf_roundtrip/docx/expected_span_ids.json",
+        "sha256": "f343a910cfbb68b0df4b0b2ec706e3c89c5cfee53bc405da799eaded8e065c11"
+      },
+      "temporary_serialized_sidecar": {
+        "path": "<temporary-bundle-root>/raw/docx.spans.json",
+        "sha256": "f36f7a06efc90c0f9b82016cea0e7bc9ffc8b0cd192901700c3883f37835a417"
+      },
+      "span_id_equality": "PASS",
+      "cli_exit_code": 0,
+      "cli_result": "PASS",
+      "cli_stdout": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cli_stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "pytest_counts": {
+    "collected": 4,
+    "passed": 4,
+    "skipped": 0,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "cli_parity_counts": {
+    "fixtures": 3,
+    "passed": 3,
+    "skipped": 0,
+    "failed": 0,
+    "parity": "3/3",
+    "aggregate_exit_code": 0
+  },
+  "scope": {
+    "included": [
+      "Gate B S_direct-to-S_okf span identity for all three frozen fixture classes",
+      "Deterministic first-mismatch reporting coverage",
+      "Actual scripts/rebuild_from_okf.py --verify-roundtrip subprocess parity using temporary serializer-produced bundles"
+    ],
+    "non_goals": [
+      "Live Docling conversion or frozen-fixture regeneration",
+      "Database-backed --rebuild execution or derived-index reconstruction",
+      "Modification of source, tests, fixtures, README, planning, package, or git state",
+      "Stage, commit, push, or Phase 15 authorization"
+    ]
+  },
+  "provenance": {
+    "acceptance_summary": ".planning/phases/14-okf-foundation/14-04-SUMMARY.md",
+    "primary_roundtrip_test": "tests/llamaindex_runtime/okf/test_span_id_roundtrip.py",
+    "existing_cli_testkit": "tests/llamaindex_runtime/okf/_rebuild_cli_testkit.py",
+    "rebuild_cli": "scripts/rebuild_from_okf.py"
+  },
+  "caveats": [
+    "Normal frozen-fixture validation is offline and verifies the frozen direct-chain outputs; it does not rerun live Docling conversion.",
+    "Only sanitized counts, stream lengths, and SHA-256 digests are retained; raw terminal output, temporary paths, fixture text, and environment values are not retained.",
+    "A third-party import warning was observed in the parent Python process during commands and is intentionally not retained; every captured real CLI subprocess stream was empty."
+  ]
+}

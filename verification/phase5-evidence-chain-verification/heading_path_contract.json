@@ -1,0 +1,9 @@
+{
+  "authoritative_source": "canonical_spans.heading_path",
+  "derived_sources": [
+    "tree_nodes.heading_path",
+    "vector_chunks.heading_path"
+  ],
+  "metric_rule": "heading_path_rate = canonical_spans with non-null heading_path / canonical_spans for active_version_id",
+  "minimum_threshold": 0.95
+}

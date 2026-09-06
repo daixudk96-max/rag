@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-07-01T18:15:09.706817+00:00",
+  "csv_path": "E:\\github\\rag\\verification\\phase14-new-doc-validation\\judgment_template.csv",
+  "total_rows": 99,
+  "queries": 20,
+  "fill_instructions": "AI/human fills relevance_score (0-1), relevance_reason, level_match"
+}

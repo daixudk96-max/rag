@@ -1,0 +1,157 @@
+{
+  "validation_date": "2026-05-31T16:06:00.282335",
+  "version_id": "a376679b-3a95-4724-a31f-ece0c9fa35b8",
+  "query_count": 20,
+  "top_k": 5,
+  "backend_hit_analysis": {
+    "total_hits": 71,
+    "backend_hit_count": 71,
+    "backend_hit_rate": 1.0,
+    "notes": "All hits are BackendHit (LLM navigation path)"
+  },
+  "metrics": {
+    "hit_rate": {
+      "value": 0.95,
+      "queries_with_hits": 19,
+      "queries_total": 20,
+      "threshold": 0.8,
+      "status": "PASS",
+      "improvement_vs_phase3": "+90 percentage points (Phase 3: 5%)"
+    },
+    "root_bias": {
+      "value": 0.789,
+      "top1_hits_analyzed": 19,
+      "top1_hits_root_node": 15,
+      "threshold": 0.3,
+      "target": "<30%",
+      "status": "NEEDS IMPROVEMENT",
+      "improvement_vs_phase3": "-11.1 percentage points (Phase 3: 90%)",
+      "notes": "Root-bias improved but still above 30% target. Corpus alignment reduced root-bias from 90% to 78.9%."
+    },
+    "tree_depth": {
+      "value": 4,
+      "max_level_no": 4,
+      "threshold": 3,
+      "status": "PASS",
+      "notes": "Tree has max_level_no=4 (5 levels when counting from 0), exceeds threshold >=3"
+    },
+    "top1_relevance": {
+      "value": null,
+      "notes": "Requires human judgment - cannot be calculated from BackendHit data alone"
+    },
+    "stability": {
+      "value": null,
+      "notes": "Requires multiple retrieval runs and human judgment - cannot be calculated from single BackendHit execution"
+    },
+    "node_chunk_mapping": {
+      "value": 0.0,
+      "chunks_total": 0,
+      "mapped_chunks": 0,
+      "threshold": 0.8,
+      "status": "FAIL",
+      "notes": "Evidence-chain incomplete - no vector chunks generated during ingestion"
+    },
+    "heading_path_completeness": {
+      "value": 0.0,
+      "spans_total": 0,
+      "spans_with_heading": 0,
+      "threshold": 0.95,
+      "status": "FAIL",
+      "notes": "Evidence-chain incomplete - no canonical spans generated during ingestion"
+    }
+  },
+  "hit_distribution": {
+    "0_hits": 1,
+    "1_hits": 3,
+    "2_hits": 2,
+    "3_hits": 3,
+    "5_hits": 11
+  },
+  "heading_path_depth_distribution": {
+    "depth_1": 26,
+    "depth_2": 29,
+    "depth_3": 12,
+    "depth_4": 3,
+    "depth_5": 1
+  },
+  "zero_hit_queries": [
+    {
+      "query_id": "Q17",
+      "query_text": "文档中提到的 chunking 策略是什么？token 限制是多少？",
+      "category": "content",
+      "difficulty": "medium"
+    }
+  ],
+  "evidence_chain_status": {
+    "documents": 1,
+    "tree_nodes": 23,
+    "vector_chunks": 0,
+    "canonical_spans": 0,
+    "node_chunk_mapping_rate": 0.0,
+    "heading_path_rate": 0.0,
+    "notes": "Tree structure generated successfully, but vector chunking and span extraction not executed"
+  },
+  "frozen_thresholds": {
+    "hit_rate": 0.8,
+    "top1_relevance": 0.9,
+    "stability": 0.85,
+    "tree_depth": 3,
+    "node_chunk_mapping": 0.8,
+    "heading_path_completeness": 0.95
+  },
+  "threshold_pass_count": {
+    "passing": 2,
+    "failing": 2,
+    "pending_human_judgment": 2,
+    "total": 6
+  },
+  "level_assessment": {
+    "current_level": "Level_2",
+    "achievable_level": "Level_3_or_Level_4_pending_evidence_chain_and_human_judgment",
+    "passing_thresholds": [
+      "hit_rate (95% >= 80%)",
+      "tree_depth (4 >= 3)"
+    ],
+    "failing_thresholds": [
+      "node_chunk_mapping (0% < 80%)",
+      "heading_path_completeness (0% < 95%)"
+    ],
+    "pending_human_judgment": [
+      "top1_relevance",
+      "stability"
+    ],
+    "blocking_factors": [
+      "Evidence-chain incomplete: no vector chunks generated",
+      "Evidence-chain incomplete: no canonical spans generated",
+      "Root-bias still high: 78.9% (target <30%)",
+      "top1_relevance and stability require human judgment"
+    ]
+  },
+  "quality_improvement_vs_phase3": {
+    "hit_rate": {
+      "phase3": 0.05,
+      "phase4": 0.95,
+      "improvement": "+90 percentage points",
+      "driver": "Corpus alignment (PageIndex技术文档 vs 竞品分析)"
+    },
+    "root_bias": {
+      "phase3": 0.90,
+      "phase4": 0.789,
+      "improvement": "-11.1 percentage points",
+      "driver": "Corpus alignment + deeper tree structure (max_level 4 vs 2)"
+    },
+    "tree_depth": {
+      "phase3": 2,
+      "phase4": 4,
+      "improvement": "+2 levels",
+      "driver": "PageIndex adapter generated hierarchical tree from aligned corpus"
+    }
+  },
+  "next_steps": [
+    "Execute vector chunking and embedding generation to restore evidence-chain",
+    "Run human judgment for top1_relevance and stability assessment",
+    "Investigate root-bias mitigation (retrieval tuning or document structure optimization)",
+    "Re-run validation with complete evidence-chain and human judgment",
+    "Final Level assessment with all 6 thresholds"
+  ]
+}

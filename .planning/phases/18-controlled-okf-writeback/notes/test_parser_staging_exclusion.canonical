@@ -1,0 +1,64 @@
+"""Parser .staging exclusion contracts (Phase 18 wave-1; canonical)."""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+from llamaindex_runtime.okf.parser import OKFParser
+
+
+def _write_non_raw(root: Path, relative: str, content: str | None = None) -> None:
+    target = root / relative
+    target.parent.mkdir(parents=True, exist_ok=True)
+    body = content if content is not None else "---\ntype: legacy_entity\n---\nbody\n"
+    target.write_text(body, encoding="utf-8")
+
+
+def _bundle(root: Path) -> None:
+    _write_non_raw(root, "index.md", "# index\n")
+    _write_non_raw(root, "log.md", "# log\n")
+    _write_non_raw(root, "entities/keep.md")
+
+
+def test_staging_markdown_never_ingested(tmp_path: Path) -> None:
+    root = tmp_path / "bundle"
+    _bundle(root)
+    _write_non_raw(root, ".staging/draft.md")
+    _write_non_raw(root, ".staging/sub/nested.md")
+    parser = OKFParser()
+    result = parser.parse_bundle(root)
+    assert len(result) == 1
+    stats = parser.last_bundle_stats
+    assert stats.parsed == 1
+    assert stats.skipped == 4
+    assert stats.malformed == 0
+
+
+def test_deep_staging_excluded(tmp_path: Path) -> None:
+    root = tmp_path / "bundle"
+    _bundle(root)
+    _write_non_raw(root, ".staging/candidates/sub/deep.md")
+    parser = OKFParser()
+    result = parser.parse_bundle(root)
+    assert len(result) == 1
+    assert parser.last_bundle_stats.skipped == 3
+
+
+def test_staging_json_is_never_a_candidate(tmp_path: Path) -> None:
+    root = tmp_path / "bundle"
+    _bundle(root)
+    _write_non_raw(root, ".staging/32e71258-0224-5d5e-8626-98d3e1b62578.json", "{}\n")
+    parser = OKFParser()
+    result = parser.parse_bundle(root)
+    assert len(result) == 1
+    assert parser.last_bundle_stats.skipped == 2
+
+
+def test_existing_skip_behavior_preserved(tmp_path: Path) -> None:
+    root = tmp_path / "bundle"
+    _bundle(root)
+    parser = OKFParser()
+    result = parser.parse_bundle(root)
+    assert len(result) == 1
+    assert parser.last_bundle_stats.parsed == 1
+    assert parser.last_bundle_stats.skipped == 2

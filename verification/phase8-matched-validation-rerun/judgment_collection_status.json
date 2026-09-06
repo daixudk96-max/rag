@@ -1,0 +1,9 @@
+{
+  "status": "JUDGMENTS_COMPLETE",
+  "next_allowed_action": "calculate_metrics",
+  "blocking_reasons": [],
+  "template_file": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\judgment_template.csv",
+  "completed_file": "E:\\github\\rag\\verification\\phase8-matched-validation-rerun\\judgment_completed.csv",
+  "human_action_required": false,
+  "level_baseline": "Level 2 remains authoritative"
+}

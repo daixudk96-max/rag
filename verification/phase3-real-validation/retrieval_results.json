@@ -1,0 +1,1208 @@
+{
+  "validation_date": "2026-06-06T17:00:15.544562",
+  "version_id": "008442cf-ec96-47e5-8552-99962911587a",
+  "query_count": 20,
+  "top_k": 5,
+  "results": [
+    {
+      "query_id": "Q01",
+      "query_text": "文档的主要章节结构是什么？列出所有一级标题。",
+      "category": "structure",
+      "difficulty": "easy",
+      "expected_answer_type": "structure",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "0ce5cb29-b317-4c65-a618-61b61d5ee65f",
+          "heading_path": "PageIndex完整功能分析与集成方案",
+          "page_no": 1,
+          "text_preview": "PageIndex完整功能分析与集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "256f6227-1e82-4023-91c7-5b2c0f5bdeaf",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "关键发现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "c43a33c0-9d55-46f8-8907-9f9352f99343",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解",
+          "page_no": 154,
+          "text_preview": "用户意图理解",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q02",
+      "query_text": "哪个章节讨论了核心算法原理？",
+      "category": "structure",
+      "difficulty": "easy",
+      "expected_answer_type": "single_section",
+      "hit_count": 3,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "a42e538f-c66d-47c8-b22d-fce457a8e16f",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/1. **聚类功能已经实现了！**",
+          "page_no": 5,
+          "text_preview": "1. **聚类功能已经实现了！**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "256f6227-1e82-4023-91c7-5b2c0f5bdeaf",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "关键发现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "c64dc629-ce14-4c6d-a352-d01aad5e132e",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**",
+          "page_no": 43,
+          "text_preview": "2. **PageIndex完整功能清单**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q03",
+      "query_text": "文档中是否有案例研究章节？如果有，在哪些页？",
+      "category": "structure",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "932ce793-524f-42c8-aa80-836b445e1c73",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）",
+          "page_no": 110,
+          "text_preview": "agentic_vectorless_rag_demo.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "c64dc629-ce14-4c6d-a352-d01aad5e132e",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**",
+          "page_no": 43,
+          "text_preview": "2. **PageIndex完整功能清单**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "0ce5cb29-b317-4c65-a618-61b61d5ee65f",
+          "heading_path": "PageIndex完整功能分析与集成方案",
+          "page_no": 1,
+          "text_preview": "PageIndex完整功能分析与集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "fdfd5000-5cd9-42ee-bab9-2198675c44e7",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结",
+          "page_no": 385,
+          "text_preview": "总结",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q04",
+      "query_text": "文档中提到的关键技术指标有哪些？",
+      "category": "content",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "256f6227-1e82-4023-91c7-5b2c0f5bdeaf",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现",
+          "page_no": 3,
+          "text_preview": "关键发现",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "83709124-2ed1-4d58-8f0a-97cb0697b4ab",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "推荐方案：",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q05",
+      "query_text": "如何使用这个系统进行数据处理？",
+      "category": "content",
+      "difficulty": "easy",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "c43a33c0-9d55-46f8-8907-9f9352f99343",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解",
+          "page_no": 154,
+          "text_preview": "用户意图理解",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "846334d1-2ad0-4f6d-baa3-ecd047871055",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**",
+          "page_no": 158,
+          "text_preview": "**完整集成PageIndex，增强检索部分**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "5dfdf97c-ab6f-4806-803f-f8837b7a33a1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q06",
+      "query_text": "文档中列举了哪些性能优化方法？",
+      "category": "content",
+      "difficulty": "medium",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "9f46f96a-2a07-455c-81e4-c96f93e517df",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "Phase 2：检索backend增强（4天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q07",
+      "query_text": "系统的架构设计原则是什么？",
+      "category": "content",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "83709124-2ed1-4d58-8f0a-97cb0697b4ab",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "推荐方案：",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "fdfd5000-5cd9-42ee-bab9-2198675c44e7",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结",
+          "page_no": 385,
+          "text_preview": "总结",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q08",
+      "query_text": "文档中提到了哪些错误处理机制？",
+      "category": "content",
+      "difficulty": "medium",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "5dfdf97c-ab6f-4806-803f-f8837b7a33a1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "40e899c1-f898-4762-b14e-318a640db8c1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）",
+          "page_no": 82,
+          "text_preview": "2.2 **CLI工具**（run_pageindex.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "932ce793-524f-42c8-aa80-836b445e1c73",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）",
+          "page_no": 110,
+          "text_preview": "agentic_vectorless_rag_demo.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "9f46f96a-2a07-455c-81e4-c96f93e517df",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "Phase 2：检索backend增强（4天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "731c7764-949e-45c9-9678-b402f7ce9e7f",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 3：配置与测试（3天）",
+          "page_no": 333,
+          "text_preview": "Phase 3：配置与测试（3天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q09",
+      "query_text": "文档中前后章节如何描述数据流程的完整链路？",
+      "category": "synthesis",
+      "difficulty": "hard",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "c43a33c0-9d55-46f8-8907-9f9352f99343",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解",
+          "page_no": 154,
+          "text_preview": "用户意图理解",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "932ce793-524f-42c8-aa80-836b445e1c73",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）",
+          "page_no": 110,
+          "text_preview": "agentic_vectorless_rag_demo.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "eae87824-d424-4f05-bd4a-3b5f7f711286",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q10",
+      "query_text": "系统设计中如何平衡性能和准确性？不同章节的观点是否一致？",
+      "category": "synthesis",
+      "difficulty": "hard",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q11",
+      "query_text": "文档中技术方案的选择理由是什么？是否在不同章节有对比分析？",
+      "category": "synthesis",
+      "difficulty": "hard",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "83709124-2ed1-4d58-8f0a-97cb0697b4ab",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "推荐方案：",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q12",
+      "query_text": "文档中是否有未解决的局限性或未来工作部分？",
+      "category": "edge",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "b15372cc-6733-4d22-aad8-50670d6c2b13",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/下一步：",
+          "page_no": 411,
+          "text_preview": "下一步：",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "fdfd5000-5cd9-42ee-bab9-2198675c44e7",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结",
+          "page_no": 385,
+          "text_preview": "总结",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "d885cfe7-de5a-43af-b233-ace27fc3ca8a",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/关键发现：",
+          "page_no": 387,
+          "text_preview": "关键发现：",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "83709124-2ed1-4d58-8f0a-97cb0697b4ab",
+          "heading_path": "PageIndex完整功能分析与集成方案/总结/推荐方案：",
+          "page_no": 392,
+          "text_preview": "推荐方案：",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "eae87824-d424-4f05-bd4a-3b5f7f711286",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤",
+          "page_no": 230,
+          "text_preview": "具体实现步骤",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q13",
+      "query_text": "如果输入数据格式不符合预期，系统会如何处理？",
+      "category": "edge",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "5dfdf97c-ab6f-4806-803f-f8837b7a33a1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "40e899c1-f898-4762-b14e-318a640db8c1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）",
+          "page_no": 82,
+          "text_preview": "2.2 **CLI工具**（run_pageindex.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "9f46f96a-2a07-455c-81e4-c96f93e517df",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "Phase 2：检索backend增强（4天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "731c7764-949e-45c9-9678-b402f7ce9e7f",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 3：配置与测试（3天）",
+          "page_no": 333,
+          "text_preview": "Phase 3：配置与测试（3天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q14",
+      "query_text": "文档中提到了哪些系统限制或约束？",
+      "category": "edge",
+      "difficulty": "medium",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "9f46f96a-2a07-455c-81e4-c96f93e517df",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "Phase 2：检索backend增强（4天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q15",
+      "query_text": "文档中描述的向量检索阈值是多少？",
+      "category": "content",
+      "difficulty": "easy",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "9f46f96a-2a07-455c-81e4-c96f93e517df",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "Phase 2：检索backend增强（4天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "c43a33c0-9d55-46f8-8907-9f9352f99343",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解",
+          "page_no": 154,
+          "text_preview": "用户意图理解",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q16",
+      "query_text": "树结构构建的深度限制是什么？",
+      "category": "content",
+      "difficulty": "easy",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "5dfdf97c-ab6f-4806-803f-f8837b7a33a1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "40e899c1-f898-4762-b14e-318a640db8c1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.2 **CLI工具**（run_pageindex.py）",
+          "page_no": 82,
+          "text_preview": "2.2 **CLI工具**（run_pageindex.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "932ce793-524f-42c8-aa80-836b445e1c73",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.3 **Agent Workflow**（examples/agentic_vectorless_rag_demo.py）",
+          "page_no": 110,
+          "text_preview": "agentic_vectorless_rag_demo.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q17",
+      "query_text": "文档中提到的 chunking 策略是什么？token 限制是多少？",
+      "category": "content",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "5dfdf97c-ab6f-4806-803f-f8837b7a33a1",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**/2.1 **PageIndexClient**（client.py）",
+          "page_no": 45,
+          "text_preview": "2.1 **PageIndexClient**（client.py）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "c64dc629-ce14-4c6d-a352-d01aad5e132e",
+          "heading_path": "PageIndex完整功能分析与集成方案/关键发现/2. **PageIndex完整功能清单**",
+          "page_no": 43,
+          "text_preview": "2. **PageIndex完整功能清单**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q18",
+      "query_text": "embedding 模型的选择依据是什么？文档中使用了哪些模型？",
+      "category": "content",
+      "difficulty": "medium",
+      "expected_answer_type": "single_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "9f46f96a-2a07-455c-81e4-c96f93e517df",
+          "heading_path": "PageIndex完整功能分析与集成方案/具体实现步骤/Phase 2：检索backend增强（4天）",
+          "page_no": 270,
+          "text_preview": "Phase 2：检索backend增强（4天）",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q19",
+      "query_text": "文档中对比了哪些技术方案？各自的优缺点是什么？",
+      "category": "synthesis",
+      "difficulty": "hard",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "f00fe0eb-ad40-49b7-8a0d-5c8f27a56c53",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比/功能矩阵",
+          "page_no": 134,
+          "text_preview": "功能矩阵",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "075677b5-b734-4200-8443-57d8c5f93c6c",
+          "heading_path": "PageIndex完整功能分析与集成方案/Token消耗对比",
+          "page_no": 374,
+          "text_preview": "Token消耗对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    },
+    {
+      "query_id": "Q20",
+      "query_text": "文档中是否提到与其他系统的集成方案？如果有，集成方式是什么？",
+      "category": "synthesis",
+      "difficulty": "hard",
+      "expected_answer_type": "cross_section",
+      "hit_count": 5,
+      "hits": [
+        {
+          "rank": 1,
+          "node_id": "a548e0f9-3e91-4d1c-a887-c8bcec242874",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案/**方案：完整集成PageIndex + 增强检索**",
+          "page_no": 190,
+          "text_preview": "**方案：完整集成PageIndex + 增强检索**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 2,
+          "node_id": "de32600b-666d-44a1-81ad-82b73fac7680",
+          "heading_path": "PageIndex完整功能分析与集成方案/推荐集成方案",
+          "page_no": 188,
+          "text_preview": "推荐集成方案",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 3,
+          "node_id": "846334d1-2ad0-4f6d-baa3-ecd047871055",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解/**完整集成PageIndex，增强检索部分**",
+          "page_no": 158,
+          "text_preview": "**完整集成PageIndex，增强检索部分**",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 4,
+          "node_id": "c43a33c0-9d55-46f8-8907-9f9352f99343",
+          "heading_path": "PageIndex完整功能分析与集成方案/用户意图理解",
+          "page_no": 154,
+          "text_preview": "用户意图理解",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        },
+        {
+          "rank": 5,
+          "node_id": "6f189d97-92cf-4772-b335-8f9134d35fb6",
+          "heading_path": "PageIndex完整功能分析与集成方案/PageIndex vs 当前实现对比",
+          "page_no": 132,
+          "text_preview": "PageIndex vs 当前实现对比",
+          "score": null,
+          "backend_source": "reasoning",
+          "retrieval_path": "llm_navigation"
+        }
+      ],
+      "retrieval_status": "success"
+    }
+  ]
+}

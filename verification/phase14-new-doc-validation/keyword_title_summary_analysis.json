@@ -1,0 +1,183 @@
+{
+  "version_id": "ec8ec3da-13c5-4180-963f-cc9a90db4093",
+  "total_nodes": 10,
+  "keyword_matches": {
+    "kag": {
+      "title_matches": [],
+      "summary_matches": [
+        {
+          "node_id": "44d15c94-0a5d-503a-a4e0-0418e2573d39",
+          "summary_preview": "`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 M"
+        },
+        {
+          "node_id": "781d3cac-d4d0-5340-abfa-5b142a0e0daa",
+          "summary_preview": "`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 M"
+        },
+        {
+          "node_id": "ca1d2b67-9d3e-58e7-8a3b-199e1f2d59d1",
+          "summary_preview": "`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 M"
+        },
+        {
+          "node_id": "49816852-940d-5372-bfd4-684393af5acb",
+          "summary_preview": "KAG, GitHub仓库 = KAG citeturn10view0turn13view0turn12search3turn33view5turn33view0. KAG, 最新提交/"
+        },
+        {
+          "node_id": "2706e5d1-a45c-5b70-930d-4e72a0860ca9",
+          "summary_preview": "如果你的目标是 **最短时间做出一个接近需求的系统** ，我的优先选项是 **NexusRAG** 。理由不是它在逻辑推理上最强，而是它已经具备了图谱、向量库、结构化 chunk、页码/标题路径、重排"
+        },
+        {
+          "node_id": "a57c1527-b973-5e94-a112-71e494a6d456",
+          "summary_preview": "基于以 entity[\"company\",\"GitHub\",\"software hosting platform\"] 为起点的多轮仓库检索，以及对项目 README、提交历史、官方文档与原始论文"
+        },
+        {
+          "node_id": "08463a14-708e-521d-910d-93f41eec8816",
+          "summary_preview": "下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——K"
+        },
+        {
+          "node_id": "e8bfff87-8ab2-500d-8b1e-03559e69607c",
+          "summary_preview": "本次检索严格按你的要求，先从 GitHub 仓库开始，使用多组组合关键词反复检索： `RAG` 、 `knowledge graph` 、 `KG` 、 `graph retrieval` 、 `ve"
+        },
+        {
+          "node_id": "af383af0-2148-525f-b1f4-f3d91d555979",
+          "summary_preview": "上面的分析已经很清楚地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO"
+        },
+        {
+          "node_id": "889ce876-0178-58f9-bae3-273be1781b7e",
+          "summary_preview": "第三件关键事是 **“向量命中回映回树节点”** 。这里建议直接借鉴 LlamaIndex 的思想：先把每个 chunk 映射到一个树节点，再把命中分数沿祖先链路上卷。一个简单有效的聚合公式可以是： "
+        }
+      ]
+    },
+    "nexusrag": {
+      "title_matches": [],
+      "summary_matches": [
+        {
+          "node_id": "49816852-940d-5372-bfd4-684393af5acb",
+          "summary_preview": "KAG, GitHub仓库 = KAG citeturn10view0turn13view0turn12search3turn33view5turn33view0. KAG, 最新提交/"
+        },
+        {
+          "node_id": "2706e5d1-a45c-5b70-930d-4e72a0860ca9",
+          "summary_preview": "如果你的目标是 **最短时间做出一个接近需求的系统** ，我的优先选项是 **NexusRAG** 。理由不是它在逻辑推理上最强，而是它已经具备了图谱、向量库、结构化 chunk、页码/标题路径、重排"
+        },
+        {
+          "node_id": "a57c1527-b973-5e94-a112-71e494a6d456",
+          "summary_preview": "基于以 entity[\"company\",\"GitHub\",\"software hosting platform\"] 为起点的多轮仓库检索，以及对项目 README、提交历史、官方文档与原始论文"
+        },
+        {
+          "node_id": "08463a14-708e-521d-910d-93f41eec8816",
+          "summary_preview": "下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——K"
+        },
+        {
+          "node_id": "e8bfff87-8ab2-500d-8b1e-03559e69607c",
+          "summary_preview": "本次检索严格按你的要求，先从 GitHub 仓库开始，使用多组组合关键词反复检索： `RAG` 、 `knowledge graph` 、 `KG` 、 `graph retrieval` 、 `ve"
+        },
+        {
+          "node_id": "af383af0-2148-525f-b1f4-f3d91d555979",
+          "summary_preview": "上面的分析已经很清楚地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO"
+        },
+        {
+          "node_id": "889ce876-0178-58f9-bae3-273be1781b7e",
+          "summary_preview": "第三件关键事是 **“向量命中回映回树节点”** 。这里建议直接借鉴 LlamaIndex 的思想：先把每个 chunk 映射到一个树节点，再把命中分数沿祖先链路上卷。一个简单有效的聚合公式可以是： "
+        }
+      ]
+    },
+    "知识图谱": {
+      "title_matches": [],
+      "summary_matches": [
+        {
+          "node_id": "a57c1527-b973-5e94-a112-71e494a6d456",
+          "summary_preview": "基于以 entity[\"company\",\"GitHub\",\"software hosting platform\"] 为起点的多轮仓库检索，以及对项目 README、提交历史、官方文档与原始论文"
+        },
+        {
+          "node_id": "08463a14-708e-521d-910d-93f41eec8816",
+          "summary_preview": "下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——K"
+        },
+        {
+          "node_id": "e8bfff87-8ab2-500d-8b1e-03559e69607c",
+          "summary_preview": "本次检索严格按你的要求，先从 GitHub 仓库开始，使用多组组合关键词反复检索： `RAG` 、 `knowledge graph` 、 `KG` 、 `graph retrieval` 、 `ve"
+        },
+        {
+          "node_id": "af383af0-2148-525f-b1f4-f3d91d555979",
+          "summary_preview": "上面的分析已经很清楚地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO"
+        }
+      ]
+    },
+    "KAG": {
+      "title_matches": [],
+      "summary_matches": [
+        {
+          "node_id": "44d15c94-0a5d-503a-a4e0-0418e2573d39",
+          "summary_preview": "`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 M"
+        },
+        {
+          "node_id": "781d3cac-d4d0-5340-abfa-5b142a0e0daa",
+          "summary_preview": "`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 M"
+        },
+        {
+          "node_id": "ca1d2b67-9d3e-58e7-8a3b-199e1f2d59d1",
+          "summary_preview": "`kag/` 、 `knext/` 、 `docs/` 、 `tests/` `Outline/Summary/KnowledgeUnit/AtomicQuery/Chunk/Table` 索引与 M"
+        },
+        {
+          "node_id": "49816852-940d-5372-bfd4-684393af5acb",
+          "summary_preview": "KAG, GitHub仓库 = KAG citeturn10view0turn13view0turn12search3turn33view5turn33view0. KAG, 最新提交/"
+        },
+        {
+          "node_id": "2706e5d1-a45c-5b70-930d-4e72a0860ca9",
+          "summary_preview": "如果你的目标是 **最短时间做出一个接近需求的系统** ，我的优先选项是 **NexusRAG** 。理由不是它在逻辑推理上最强，而是它已经具备了图谱、向量库、结构化 chunk、页码/标题路径、重排"
+        },
+        {
+          "node_id": "a57c1527-b973-5e94-a112-71e494a6d456",
+          "summary_preview": "基于以 entity[\"company\",\"GitHub\",\"software hosting platform\"] 为起点的多轮仓库检索，以及对项目 README、提交历史、官方文档与原始论文"
+        },
+        {
+          "node_id": "08463a14-708e-521d-910d-93f41eec8816",
+          "summary_preview": "下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——K"
+        },
+        {
+          "node_id": "e8bfff87-8ab2-500d-8b1e-03559e69607c",
+          "summary_preview": "本次检索严格按你的要求，先从 GitHub 仓库开始，使用多组组合关键词反复检索： `RAG` 、 `knowledge graph` 、 `KG` 、 `graph retrieval` 、 `ve"
+        },
+        {
+          "node_id": "af383af0-2148-525f-b1f4-f3d91d555979",
+          "summary_preview": "上面的分析已经很清楚地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO"
+        },
+        {
+          "node_id": "889ce876-0178-58f9-bae3-273be1781b7e",
+          "summary_preview": "第三件关键事是 **“向量命中回映回树节点”** 。这里建议直接借鉴 LlamaIndex 的思想：先把每个 chunk 映射到一个树节点，再把命中分数沿祖先链路上卷。一个简单有效的聚合公式可以是： "
+        }
+      ]
+    },
+    "NexusRAG": {
+      "title_matches": [],
+      "summary_matches": [
+        {
+          "node_id": "49816852-940d-5372-bfd4-684393af5acb",
+          "summary_preview": "KAG, GitHub仓库 = KAG citeturn10view0turn13view0turn12search3turn33view5turn33view0. KAG, 最新提交/"
+        },
+        {
+          "node_id": "2706e5d1-a45c-5b70-930d-4e72a0860ca9",
+          "summary_preview": "如果你的目标是 **最短时间做出一个接近需求的系统** ，我的优先选项是 **NexusRAG** 。理由不是它在逻辑推理上最强，而是它已经具备了图谱、向量库、结构化 chunk、页码/标题路径、重排"
+        },
+        {
+          "node_id": "a57c1527-b973-5e94-a112-71e494a6d456",
+          "summary_preview": "基于以 entity[\"company\",\"GitHub\",\"software hosting platform\"] 为起点的多轮仓库检索，以及对项目 README、提交历史、官方文档与原始论文"
+        },
+        {
+          "node_id": "08463a14-708e-521d-910d-93f41eec8816",
+          "summary_preview": "下面我选择 **KAG、NexusRAG、LlamaIndex、LightRAG、RAPTOR/HIRO** 五条线做深入分析。原因很简单：这五条线几乎覆盖了你要的全部能力，只是分布在不同层面上——K"
+        },
+        {
+          "node_id": "e8bfff87-8ab2-500d-8b1e-03559e69607c",
+          "summary_preview": "本次检索严格按你的要求，先从 GitHub 仓库开始，使用多组组合关键词反复检索： `RAG` 、 `knowledge graph` 、 `KG` 、 `graph retrieval` 、 `ve"
+        },
+        {
+          "node_id": "af383af0-2148-525f-b1f4-f3d91d555979",
+          "summary_preview": "上面的分析已经很清楚地说明：如果想在非 GraphRAG 路线下实现你定义的 A-F，现实可行的方式是 **把 KAG/NexusRAG/LightRAG/LlamaIndex/RAPTOR-HIRO"
+        },
+        {
+          "node_id": "889ce876-0178-58f9-bae3-273be1781b7e",
+          "summary_preview": "第三件关键事是 **“向量命中回映回树节点”** 。这里建议直接借鉴 LlamaIndex 的思想：先把每个 chunk 映射到一个树节点，再把命中分数沿祖先链路上卷。一个简单有效的聚合公式可以是： "
+        }
+      ]
+    }
+  }
+}

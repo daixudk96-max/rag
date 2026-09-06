@@ -1,0 +1,53 @@
+{
+  "version_id": "ec8ec3da-13c5-4180-963f-cc9a90db4093",
+  "total_nodes_with_heading_path": 10,
+  "sample_heading_paths": [
+    {
+      "node_id": "44d15c94-0a5d-503a-a4e0-0418e2573d39",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究"
+    },
+    {
+      "node_id": "781d3cac-d4d0-5340-abfa-5b142a0e0daa",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较"
+    },
+    {
+      "node_id": "ca1d2b67-9d3e-58e7-8a3b-199e1f2d59d1",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 仓库元数据与关键路径"
+    },
+    {
+      "node_id": "49816852-940d-5372-bfd4-684393af5acb",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > GitHub 候选项目比较 > 候选项目总表"
+    },
+    {
+      "node_id": "2706e5d1-a45c-5b70-930d-4e72a0860ca9",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 实施建议"
+    },
+    {
+      "node_id": "a57c1527-b973-5e94-a112-71e494a6d456",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 执行摘要"
+    },
+    {
+      "node_id": "08463a14-708e-521d-910d-93f41eec8816",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 最接近需求的项目深度分析"
+    },
+    {
+      "node_id": "e8bfff87-8ab2-500d-8b1e-03559e69607c",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 检索范围与判定方法"
+    },
+    {
+      "node_id": "af383af0-2148-525f-b1f4-f3d91d555979",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 模块拼接蓝图"
+    },
+    {
+      "node_id": "889ce876-0178-58f9-bae3-273be1781b7e",
+      "heading_path": "排除 GraphRAG 后的混合 RAG 开源项目深度研究 > 模块拼接蓝图"
+    }
+  ],
+  "keyword_matches": {
+    "kag": [],
+    "nexusrag": [],
+    "知识图谱": [],
+    "KAG": [],
+    "NexusRAG": []
+  }
+}

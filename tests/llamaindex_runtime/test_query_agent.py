@@ -4,6 +4,7 @@ Scope: Minimal agent that uses RetrievalTool for evidence retrieval.
 This demonstrates formal runtime control-plane with LlamaIndex FunctionAgent
 without adding new retrieval features.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -40,15 +41,6 @@ def _make_registry() -> MagicMock:
     reg = MagicMock()
     reg.query_spans_by_keyword.return_value = []
     return reg
-
-
-def _make_driver() -> MagicMock:
-    driver = MagicMock()
-    session = MagicMock()
-    session.run.return_value = MagicMock(data=lambda: [])
-    driver.session.return_value.__enter__ = MagicMock(return_value=session)
-    driver.session.return_value.__exit__ = MagicMock(return_value=None)
-    return driver
 
 
 def _make_vector_backend() -> MagicMock:
@@ -143,9 +135,9 @@ class TestQueryAgentToolUsage:
     """QueryAgent should be able to use RetrievalTool."""
 
     @pytest.mark.asyncio
-    @patch("llamaindex_runtime.entrypoints.query.retrieve_tree_hits_from_pdf")
-    @patch("llamaindex_runtime.entrypoints.query.retrieve_keyword_hits")
-    @patch("llamaindex_runtime.entrypoints.query.retrieve_vector_hits_from_pdf")
+    @patch("llamaindex_runtime.entrypoints._query.retrieve_tree_hits_from_pdf")
+    @patch("llamaindex_runtime.entrypoints._query.retrieve_keyword_hits")
+    @patch("llamaindex_runtime.entrypoints._query.retrieve_vector_hits_from_pdf")
     async def test_agent_can_use_tool_for_retrieval(
         self, mock_vec, mock_kw, mock_tree
     ) -> None:
@@ -247,8 +239,6 @@ class TestQueryAgentAutoRetrievalTool:
         mock_llm = MockLLM()
         mock_registry = _make_registry()
         mock_embed = MockEmbedding(embed_dim=32)
-        test_driver = _make_driver()
-        test_entity_id = uuid.uuid4()
         test_version_id = uuid.uuid4()
 
         agent = QueryAgent(
@@ -256,22 +246,16 @@ class TestQueryAgentAutoRetrievalTool:
             source_path="/tmp/test.pdf",
             registry=mock_registry,
             embed_model=mock_embed,
-            driver=test_driver,
-            entity_id=test_entity_id,
             similarity_top_k=10,
             version_id=test_version_id,
             limit=20,
-            depth=3,
         )
 
         tool = agent.tools[0]
         assert tool.metadata.name == "hybrid_retrieval"
-        assert tool._driver is test_driver
-        assert tool._entity_id == test_entity_id
         assert tool._similarity_top_k == 10
         assert tool._version_id == test_version_id
         assert tool._limit == 20
-        assert tool._depth == 3
 
     def test_fails_without_source_path_when_tools_none(self) -> None:
         """QueryAgent should fail fast if tools is None and source_path is missing."""

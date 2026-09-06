@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>树流程超简单版</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f6f8fc;
+      color: #22314d;
+    }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+    h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+    .lead {
+      background: #eef5ff;
+      border: 1px solid #cfe0ff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: stretch;
+      margin: 20px 0;
+    }
+    .box {
+      flex: 1 1 180px;
+      min-width: 180px;
+      background: white;
+      border: 2px solid #dbe4ff;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(34, 49, 77, 0.06);
+    }
+    .box h2 {
+      font-size: 18px;
+      margin: 0 0 8px;
+      color: #1d4ed8;
+    }
+    .box p {
+      font-size: 16px;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #3b82f6;
+      min-width: 38px;
+    }
+    .note {
+      margin-top: 24px;
+      padding: 16px;
+      border-radius: 14px;
+      background: #fff8e6;
+      border: 1px solid #f5d98c;
+      line-height: 1.7;
+      font-size: 17px;
+    }
+    .ok { color: #177245; font-weight: 700; }
+    .warn { color: #b26a00; font-weight: 700; }
+    .footer {
+      margin-top: 28px;
+      font-size: 13px;
+      color: #5b6b88;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>树流程超简单版</h1>
+    <div class="lead">
+      现在系统做的事情很简单：<br/>
+      <b>先把文档切成很多小纸条 → 再把小纸条装进几个盒子 → 用户提问时，去找最像的盒子 → 把盒子里的原文拿出来。</b>
+    </div>
+
+    <div class="row">
+      <div class="box">
+        <h2>第 1 步</h2>
+        <p>把一整份文档，切成很多小段小段的话。<br/>你可以把它想成很多张小纸条。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h2>第 2 步</h2>
+        <p>看看哪些小纸条像是一组，就把它们放进同一个盒子里。<br/>这个盒子就是树里的一个节点。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h2>第 3 步</h2>
+        <p>给每个盒子算一个“大概意思”。<br/>也就是：这盒内容大概在讲什么。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h2>第 4 步</h2>
+        <p>用户来提一个问题。<br/>系统先看看这个问题大概像什么。</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="box">
+        <h2>第 5 步</h2>
+        <p>拿这个问题去和每个盒子比。<br/>看哪个盒子最像这个问题。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h2>第 6 步</h2>
+        <p>如果大盒子不够准，就继续打开它，往下看更小的盒子。<br/>这就是树检索。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h2>第 7 步</h2>
+        <p>找到最像的盒子以后，把它里面对应的原文片段找出来还给你。</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="box">
+        <h2>最终结果</h2>
+        <p>你拿到的不是空标签，而是：<br/><b>和问题最相关的原文内容。</b></p>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>补充：</b><br/>
+      <span class="ok">不用 LLM 也能跑。</span><br/>
+      只是不用 LLM 时，系统更多靠文档本身的结构和位置来分盒子，所以有时候会分得比较粗。<br/><br/>
+      <span class="warn">如果加上 LLM</span>，通常能更像人类理解的“目录树”那样去分，但也会更依赖模型和配置。
+    </div>
+
+    <div class="footer">
+      文件位置：E:\github\rag\changes\compatibility-adapter-program\07-TREE-FLOW-SIMPLE.html
+    </div>
+  </div>
+</body>
+</html>

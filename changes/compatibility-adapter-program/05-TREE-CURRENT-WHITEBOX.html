@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Current Tree Whitebox Flow</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121935;
+      --panel-2: #0f1530;
+      --text: #edf2ff;
+      --muted: #a9b5d6;
+      --line: #30406f;
+      --tree: #7ee787;
+      --vec: #f2cc60;
+      --store: #79c0ff;
+      --code: #d2a8ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, var(--bg), #0a0f1a 70%);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .page { max-width: 1480px; margin: 0 auto; padding: 32px 24px 56px; }
+    h1,h2,h3 { margin: 0 0 12px; }
+    h1 { font-size: 30px; }
+    h2 { font-size: 22px; margin-top: 28px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+    p, li { color: var(--muted); }
+    .lead { margin: 10px 0 22px; max-width: 980px; }
+    .section { margin-top: 18px; padding: 20px; border-radius: 18px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+    .flow-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 12px; margin-top: 18px; }
+    .box { min-width: 180px; max-width: 270px; padding: 14px 14px 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); }
+    .box h3 { font-size: 15px; margin-bottom: 8px; }
+    .box p { font-size: 13px; margin: 0; }
+    .box.store { border-color: rgba(121,192,255,0.55); }
+    .box.tree { border-color: rgba(126,231,135,0.55); }
+    .box.vec { border-color: rgba(242,204,96,0.55); }
+    .box.code { border-color: rgba(210,168,255,0.55); }
+    .arrow { display: flex; align-items: center; justify-content: center; min-width: 40px; font-size: 28px; color: var(--muted); }
+    .subgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap: 16px; margin-top: 18px; }
+    .card { padding: 16px; border-radius: 16px; background: var(--panel-2); border: 1px solid var(--line); }
+    .code { font-family: Consolas, Monaco, monospace; font-size: 12px; color: var(--text); white-space: pre-wrap; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; margin-top: 10px; }
+    .pill { display: inline-block; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid var(--line); font-size: 12px; margin-right: 8px; margin-top: 6px; }
+    .footer { margin-top: 32px; font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>当前 Tree 主线白盒流程</h1>
+    <p class="lead">
+      这张图只描述当前默认 tree 主线：<strong>文档 → spans → persisted tree → vector chunks → tree 内部语义统计 → traversal + decision → tree hits</strong>。
+      它回答的是“现在系统默认怎么生成树、怎么检索树、哪些 donor 逻辑已经被吸收”。
+    </p>
+
+    <section class="section">
+      <h2>1. 从文档到 persisted tree</h2>
+      <div class="flow-row">
+        <div class="box store"><h3>原始文档</h3><p>PDF / DOCX 文件保留在文件系统；数据库只登记 source_uri、content_hash、version。</p></div>
+        <div class="arrow">→</div>
+        <div class="box store"><h3>register_document</h3><p>生成 doc_id / version_id，写入 documents / document_versions。</p></div>
+        <div class="arrow">→</div>
+        <div class="box store"><h3>canonical_spans</h3><p>Docling 解析后的最小证据单元。后续所有 tree / vector / graph 都围绕 span_id 展开。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>TreeGenerator</h3><p>按 heading_path 组装 persisted tree，并在同 heading 下做轻量 semantic split。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>tree_nodes / tree_node_spans</h3><p>树节点持久化，以及 node ↔ span 的精确映射。</p></div>
+      </div>
+      <div class="code">关键代码
+- ingestion/pipeline.py → IngestionPipeline.ingest()
+- registry/tree_generator.py → generate_tree()
+- registry/postgres_adapter.py → write_tree()</div>
+    </section>
+
+    <section class="section">
+      <h2>2. 从 spans 到 chunk embeddings</h2>
+      <div class="flow-row">
+        <div class="box store"><h3>canonical_spans</h3><p>读取当前 version 的 spans，保证 start/end offset、heading_path、raw_text 已落库。</p></div>
+        <div class="arrow">→</div>
+        <div class="box vec"><h3>VectorLoader</h3><p>切 chunk、写 vector_chunk_spans、计算 embedding，并可投影到 pgvector / Qdrant / Milvus。</p></div>
+        <div class="arrow">→</div>
+        <div class="box vec"><h3>vector_chunks</h3><p>每个 chunk 带 text_preview / heading_path / embedding / node_id。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>chunk → node 回链</h3><p>通过 vector_chunk_spans + tree_node_spans，把 chunk embedding 归属到 tree node。</p></div>
+      </div>
+      <div class="code">关键代码
+- vector/loader.py → load()
+- vector/loader.py → _link_tree_nodes() / _repair_tree_nodes()
+- registry/postgres_adapter.py → query_vector_chunks_by_version() / query_vector_chunk_spans_by_version()</div>
+    </section>
+
+    <section class="section">
+      <h2>3. Tree 内部语义统计（当前默认主线）</h2>
+      <div class="subgrid">
+        <div class="card vec">
+          <h3>TreeSemanticDistributionAdapter</h3>
+          <p>把 vector chunks 的 embedding 聚到 tree nodes 上，产出 node 级语义统计，而不是直接召回答案。</p>
+          <div class="pill">centroid</div><div class="pill">dispersion</div><div class="pill">entropy</div><div class="pill">support_count</div>
+          <div class="code">llamaindex_runtime/tree/semantic_distribution.py
+- PersistedTreeSemanticDistributionAdapter
+- _collect_chunk_assignments()
+- _compute_centroid()
+- _compute_entropy()</div>
+        </div>
+        <div class="card code">
+          <h3>借来的 donor 思想</h3>
+          <p>当前默认并不是 donor 原仓直接跑，而是吸收 donor 的局部强逻辑。</p>
+          <div class="code">来自 Psi-RAG：
+- prototype embedding 思路
+- traversal skeleton 思路
+
+来自本地：
+- dispersion
+- entropy
+- support_count
+- provenance-preserving node/chunk/span 聚合</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. Tree retrieval：从 query 到 tree hit</h2>
+      <div class="flow-row">
+        <div class="box tree"><h3>query(mode="tree")</h3><p>统一入口；给 registry + version_id 时走 persisted tree backend path。</p></div>
+        <div class="arrow">→</div>
+        <div class="box vec"><h3>query embedding</h3><p>如果提供 embed_model，则先将 query 转为 embedding，用于 node 级语义比对。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>semantic distribution</h3><p>读取 node stats，优先使用 prototype embedding / centroid 做 query-to-node 相似度。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>traversal runner</h3><p>从 root 开始，逐层决定 keep_parent / drill_down / prune。</p></div>
+        <div class="arrow">→</div>
+        <div class="box code"><h3>decision policy</h3><p>默认 baseline；显式切换时可使用 HIRO policy。</p></div>
+        <div class="arrow">→</div>
+        <div class="box tree"><h3>BackendHit / QueryHit</h3><p>输出 node_id、span_ids、heading_path、text_preview、score。</p></div>
+      </div>
+      <div class="code">关键代码
+- tree/runtime.py → _retrieve_tree_hits_from_backend()
+- tree/semantic_distribution.py → RecursiveTreeTraversalRunner
+- tree/semantic_distribution.py → BaselineTreeBranchDecisionPolicy
+- tree/hiro_decision_policy.py → HIROEnhancedTreeBranchDecisionPolicy</div>
+    </section>
+
+    <section class="section">
+      <h2>5. 当前默认 vs 可选 donor path</h2>
+      <div class="subgrid">
+        <div class="card tree">
+          <h3>默认主线</h3>
+          <ul>
+            <li>本地 persisted tree</li>
+            <li>本地 semantic-distribution statistics</li>
+            <li>Psi-RAG donor 思想吸收到 traversal / prototype 表示</li>
+            <li>默认 decision policy = baseline</li>
+          </ul>
+        </div>
+        <div class="card tree">
+          <h3>已接入但非默认</h3>
+          <ul>
+            <li>PageIndexTreeAdapter</li>
+            <li>HIROEnhancedTreeBranchDecisionPolicy（显式切换）</li>
+          </ul>
+          <div class="code">意思：
+- 代码里有
+- 可显式调用
+- 但默认不会自动走</div>
+        </div>
+        <div class="card tree">
+          <h3>还只是研究/参考</h3>
+          <ul>
+            <li>RAPTOR（结构 donor 参考）</li>
+            <li>LightRAG（graph 支线暂停）</li>
+            <li>RAG-Anything（multimodal 支线暂停）</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. LLM 到底是不是必须？</h2>
+      <div class="subgrid">
+        <div class="card">
+          <h3>当前默认 baseline tree</h3>
+          <p><strong>不必须。</strong> 当前 persisted tree + vector stats + traversal 主线没有 LLM 也能生成树并检索。</p>
+        </div>
+        <div class="card">
+          <h3>PageIndex donor structural tree</h3>
+          <p><strong>通常需要。</strong> 尤其是 TOC / structural extraction 这条 donor 路径，在真实文档上更依赖统一 LLM seam。</p>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer">输出文件：E:\github\rag\changes\compatibility-adapter-program\05-TREE-CURRENT-WHITEBOX.html</p>
+  </div>
+</body>
+</html>

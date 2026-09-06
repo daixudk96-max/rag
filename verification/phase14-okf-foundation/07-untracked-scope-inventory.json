@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "phase": "14-okf-foundation",
+  "artifact_type": "untracked_scope_inventory",
+  "execution_date_utc": "2026-07-17",
+  "executed_at_utc": "2026-07-17T11:41:48Z",
+  "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+  "commands": [
+    "rtk git status --porcelain=v1 --untracked-files=all",
+    "rtk git -c core.quotePath=false ls-files --others --exclude-standard",
+    "rtk git diff --name-only",
+    "rtk git diff --cached --name-only"
+  ],
+  "methodology": {
+    "enumeration": "Used ignore-respecting Git enumeration. core.quotePath=false was used for classification so non-ASCII candidate paths were counted by their literal repository-relative paths.",
+    "A_phase14_implementation_tests_migrations_bundle_verification": "Exact intended implementation candidates matching the path set below.",
+    "B_phase14_planning_admin": "Only .planning/phases/14-okf-foundation/ plus the two named Phase 14 ADRs; include this group only if a future commit intentionally includes documentation.",
+    "C_unrelated_preexisting_other_phase": "All remaining untracked paths after A, B, and D; explicitly exclude from a Phase 14 commit.",
+    "D_tool_cache_generated_transient": "Ignore-respecting tool/cache/transient prefixes (.autod/, .claude/, .claude-plugin/, .coverage, .pytest-okf-it/, and .qoder/) plus root generated/transient artifacts (_tmp_* probes, debug/log/result outputs, malformed package artifacts 50] and =1.0.0, and EVALUATION_BASELINE_SUMMARY.md); explicitly exclude from a Phase 14 commit. Root debug scripts are classified as C rather than generated output."
+  },
+  "rerun_counts": {
+    "untracked_total": 1407,
+    "unstaged_tracked_modifications": 26,
+    "staged_tracked_modifications": 1,
+    "tracked_modified_phase14_okf_paths": 0,
+    "untracked_groups": {
+      "A_phase14_implementation_tests_migrations_bundle_verification": 201,
+      "B_phase14_planning_admin": 11,
+      "C_unrelated_preexisting_other_phase": 754,
+      "D_tool_cache_generated_transient": 441
+    },
+    "classification_reconciliation": "201 + 11 + 754 + 441 = 1407"
+  },
+  "intended_phase14_candidate_path_set": [
+    "llamaindex_runtime/okf/",
+    "llamaindex_runtime/registry/migrations/015_okf_sync_state.sql",
+    "llamaindex_runtime/registry/migrations/018_okf_rebuild_failure_audit.sql",
+    "scripts/rebuild_from_okf.py",
+    "pytest.ini",
+    "tests/llamaindex_runtime/okf/",
+    "tests/fixtures/okf_roundtrip/",
+    "tests/fixtures/okf_spec_bundles/",
+    "okf_bundle/",
+    "okf-bundles/main/entities/",
+    "verification/phase14-okf-foundation/"
+  ],
+  "optional_docs_only_if_intentionally_committed": [
+    ".planning/phases/14-okf-foundation/",
+    ".planning/ADR-OKF-PHASE-A-TECH-DECISIONS-2026-07-12.md",
+    ".planning/ADR-OKF-RAW-PAIR-GENERATION-BINDING-2026-07-16.md"
+  ],
+  "tracked_diff_and_untracked_coverage": "Untracked Phase 14 source symbols are absent from 05 tracked-diff detection because Git diff excludes untracked files. Current exact symbol-impact evidence for the named key symbols is recorded in 06; that targeted coverage is not exhaustive for every untracked symbol.",
+  "future_commit_gate": "Before any commit, validate the exact intended paths and rerun GitNexus detection after authorized staging or another supported exact-scope mechanism. Do not stage now.",
+  "caveats": [
+    "The final 1,407 untracked-path total and 201 + 11 + 754 + 441 classification reconcile. Native tracked status remains 26 unstaged/1 staged, differing from the independent audit's 23 unstaged/0 staged; this artifact records the rerun truthfully rather than retaining stale counts.",
+    "No source code, tests, SQL, package/lock files, okf_bundle contents, planning files, or Git state were changed to produce this inventory."
+  ]
+}

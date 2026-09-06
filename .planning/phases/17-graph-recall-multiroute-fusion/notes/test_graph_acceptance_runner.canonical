@@ -1,0 +1,419 @@
+"""Canonical tests for the Phase 17 graph-recall acceptance gate runner.
+
+The runner lives at verification/phase17-graph-recall-multiroute-fusion/
+run_graph_recall_acceptance.py and is loaded via importlib (16-17
+convention).  Every heavy dependency is injected through AcceptanceDeps;
+these tests use fakes only - zero sockets, zero docker, zero LLM calls.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import json
+import types
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from llamaindex_runtime.analysis.graph_channel import GraphHit, ranked_fusion
+from llamaindex_runtime.graph.lightrag_backend import IngestReceipt
+from llamaindex_runtime.entity.relation_review import KeywordEvidenceReviewer
+from llamaindex_runtime.extraction import trial
+from llamaindex_runtime import llm_openai
+from llamaindex_runtime.graph import lightrag_backend
+
+REPO_ROOT = Path(__file__).resolve().parents[3]
+VERIFICATION_DIR = REPO_ROOT / "verification" / "phase17-graph-recall-multiroute-fusion"
+RUNNER_PATH = VERIFICATION_DIR / "run_graph_recall_acceptance.py"
+
+
+def _load_runner() -> Any:
+    spec = importlib.util.spec_from_file_location(
+        "run_graph_recall_acceptance", RUNNER_PATH
+    )
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+RUNNER = _load_runner()
+AUTH_ENV = "OKF_GRAPH_RECALL_ACCEPTANCE_AUTHORIZED"
+DISPOSABLE_ENV = "OKF_MIGRATION_TEST_DATABASE_DISPOSABLE"
+EXPECTED_DATABASE_ENV = "OKF_REBUILD_EXPECTED_DATABASE"
+
+
+@pytest.fixture(autouse=True)
+def _isolate_runner_artifacts(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(RUNNER, "VERIFICATION_DIR", tmp_path)
+
+
+def _authorize(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(AUTH_ENV, "1")
+    monkeypatch.setenv(DISPOSABLE_ENV, "1")
+    monkeypatch.setenv(EXPECTED_DATABASE_ENV, "postgresql://fixture:5432/fixture")
+
+
+def _deauthorize(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in (AUTH_ENV, DISPOSABLE_ENV, EXPECTED_DATABASE_ENV):
+        monkeypatch.delenv(name, raising=False)
+
+
+class FakeTrialEngine:
+    def __init__(
+        self, coverage: float = 1.0, homogeneity: object | None = None
+    ) -> None:
+        self._coverage = coverage
+        self._homogeneity = homogeneity or trial.BatchHomogeneity.SIMILAR
+        self.calls: list[tuple[str, tuple[str, ...]]] = []
+
+    def run_trial(self, batch_id: str, sample_texts: Any) -> trial.TrialReport:
+        self.calls.append((batch_id, tuple(sample_texts)))
+        return trial.TrialReport(
+            batch_id=batch_id,
+            sample_texts=tuple(sample_texts),
+            coverage_ratio=self._coverage,
+            uncovered_items=(),
+            new_type_proposals=(),
+            homogeneity=self._homogeneity,
+            engine_id="fake-trial",
+            notes="",
+        )
+
+
+class FakeExtractor:
+    def __init__(self, runner: Any, *, fail: bool = False) -> None:
+        self._runner = runner
+        self._fail = fail
+        self.calls: list[tuple[str, ...]] = []
+
+    def extract(self, texts: Any) -> Any:
+        self.calls.append(tuple(texts))
+        if self._fail:
+            raise RuntimeError("boom")
+        return self._runner.build_gate_bundle()
+
+
+class FakeIngestor:
+    def __init__(self) -> None:
+        self.payloads: list[Any] = []
+        self.known: list[frozenset[str]] = []
+
+    def ingest(
+        self, payload: Any, *, known_entity_names: frozenset[str] = frozenset()
+    ) -> Any:
+        self.payloads.append(payload)
+        self.known.append(known_entity_names)
+        return IngestReceipt(
+            inserted_entities=tuple(payload.entities),
+            skipped_entities=(),
+            inserted_relations=tuple(payload.relations),
+            skipped_relations=(),
+            inserted_chunks=tuple(payload.chunks),
+        )
+
+
+class FakeRecall:
+    def __init__(self) -> None:
+        self.calls: list[dict[str, Any]] = []
+
+    def __call__(
+        self, query: str, *, hl_keywords: Any, ll_keywords: Any, top_k: int = 10
+    ) -> Any:
+        self.calls.append(
+            {
+                "query": query,
+                "hl": tuple(hl_keywords),
+                "ll": tuple(ll_keywords),
+                "top_k": top_k,
+            }
+        )
+        return (
+            GraphHit(
+                title="doc-1",
+                summary="s",
+                keywords=("use",),
+                source_ids=("gate-doc-1",),
+            ),
+            GraphHit(
+                title="doc-3",
+                summary="s",
+                keywords=("publish",),
+                source_ids=("gate-doc-3",),
+            ),
+        )
+
+
+def _bm25_titles() -> tuple[str, ...]:
+    return ("bm25-alpha", "bm25-beta")
+
+
+def _read_evidence() -> tuple[str, dict[str, Any]]:
+    path = RUNNER.VERIFICATION_DIR / RUNNER.EVIDENCE_NAME
+    content = path.read_text(encoding="utf-8")
+    return content, json.loads(content)
+
+
+def test_missing_authorization_skips_without_building_deps(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _deauthorize(monkeypatch)
+    recorder: dict[str, Any] = {}
+    factory = _deps_factory_that_must_not_run(recorder)
+    code = RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=factory)
+    assert code == 1
+    assert recorder.get("built", 0) == 0
+    content, data = _read_evidence()
+    assert data["status"] == RUNNER.SKIPPED_STATUS
+    assert data["reason"] == "authorization gate not satisfied (redacted)"
+    assert "\n" not in content.strip()
+
+
+def _deps_factory_that_must_not_run(recorder: dict[str, Any]) -> Any:
+    def _factory(target_uri: str) -> Any:
+        recorder["built"] = recorder.get("built", 0) + 1
+        raise AssertionError("deps must not be built when the gate is closed")
+
+    return _factory
+
+
+def test_missing_expected_database_skips(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(AUTH_ENV, "1")
+    monkeypatch.setenv(DISPOSABLE_ENV, "1")
+    monkeypatch.delenv(EXPECTED_DATABASE_ENV, raising=False)
+    recorder: dict[str, Any] = {}
+    factory = _deps_factory_that_must_not_run(recorder)
+    assert (
+        RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=factory)
+        == 1
+    )
+    assert recorder.get("built", 0) == 0
+
+
+def test_missing_disposable_flag_skips(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv(AUTH_ENV, "1")
+    monkeypatch.delenv(DISPOSABLE_ENV, raising=False)
+    monkeypatch.setenv(EXPECTED_DATABASE_ENV, "postgresql://fixture/okf")
+    recorder: dict[str, Any] = {}
+    factory = _deps_factory_that_must_not_run(recorder)
+    assert (
+        RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=factory)
+        == 1
+    )
+    assert recorder.get("built", 0) == 0
+
+
+def test_authorized_happy_path_executes(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    recorder: dict[str, Any] = {}
+    factory = _full_deps_factory(recorder)
+    code = RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=factory)
+    assert code == 0
+    content, data = _read_evidence()
+    assert data["status"] == RUNNER.OK_STATUS
+    assert data["route"] == "PURE_UIE"
+    assert data["batch_id"] == RUNNER.GATE_BATCH_ID
+    assert data["mentions_count"] == 7
+    assert data["identities_count"] == 7
+    assert data["relations_supported"] == 2
+    assert data["recall_hit_count"] == 2
+    assert data["fusion_max_score"] > 0.0
+    assert "\n" not in content.strip()
+
+
+def _full_deps_factory(recorder: dict[str, Any]) -> Any:
+    ingestor = FakeIngestor()
+    recorder["ingestor"] = ingestor
+
+    def _factory(target_uri: str) -> Any:
+        recorder["target_uri"] = target_uri
+        recorder["built"] = recorder.get("built", 0) + 1
+        return RUNNER.AcceptanceDeps(
+            trial_engine=FakeTrialEngine(),
+            extractor=FakeExtractor(RUNNER),
+            reviewer=KeywordEvidenceReviewer(),
+            ingestor=ingestor,
+            recall=FakeRecall(),
+            bm25_titles=_bm25_titles,
+        )
+
+    return _factory
+
+
+def test_happy_path_uses_real_ranked_fusion(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    hits = (
+        GraphHit(title="a", summary="s", keywords=("k",), source_ids=("d1",)),
+        GraphHit(title="b", summary="s", keywords=("k",), source_ids=("d2",)),
+    )
+    fused = ranked_fusion(hits, ("c",))
+    assert fused[0].title == "a"
+    assert fused[0].score > 0.0
+    assert [hit.title for hit in fused] == ["a", "c", "b"]
+
+
+def test_ingest_receives_entities_relations_chunks(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _authorize(monkeypatch)
+    recorder: dict[str, Any] = {}
+    factory = _full_deps_factory(recorder)
+    assert (
+        RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=factory)
+        == 0
+    )
+    ingestor = recorder["ingestor"]
+    assert len(ingestor.payloads) == 1
+    payload = ingestor.payloads[0]
+    assert len(payload.entities) == 7
+    assert len(payload.chunks) == 3
+    pairs = sorted((rel.src_id, rel.tgt_id) for rel in payload.relations)
+    assert pairs == [("华为", "手机"), ("李雷", "华为mate60")]
+    assert len(ingestor.known[0]) == 7
+
+
+def test_evidence_is_redacted(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    recorder: dict[str, Any] = {}
+    assert (
+        RUNNER.main(
+            [],
+            target_uri="postgresql://fixture/okf",
+            deps_factory=_full_deps_factory(recorder),
+        )
+        == 0
+    )
+    content, _ = _read_evidence()
+    assert "李雷" not in content
+    assert "华为" not in content
+    assert "韩梅梅" not in content
+
+
+def test_proof_failure_writes_failed_evidence(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+
+    class BrokenExtractor:
+        def extract(self, texts: Any) -> Any:
+            raise RuntimeError("boom")
+
+    def _factory(target_uri: str) -> Any:
+        return RUNNER.AcceptanceDeps(
+            trial_engine=FakeTrialEngine(),
+            extractor=BrokenExtractor(),
+            reviewer=KeywordEvidenceReviewer(),
+            ingestor=FakeIngestor(),
+            recall=FakeRecall(),
+            bm25_titles=_bm25_titles,
+        )
+
+    code = RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=_factory)
+    assert code == RUNNER.FAIL_EXIT
+    content, data = _read_evidence()
+    assert data["status"] == RUNNER.FAILED_STATUS
+    assert data["error_type"] == "RuntimeError"
+    assert "boom" not in content
+
+
+def test_argv_is_rejected() -> None:
+    with pytest.raises(ValueError):
+        RUNNER.main(["--flag"], target_uri="postgresql://fixture/okf")
+
+
+def test_trial_engine_receives_gate_batch(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    trial_engine = FakeTrialEngine()
+
+    def _factory(target_uri: str) -> Any:
+        return RUNNER.AcceptanceDeps(
+            trial_engine=trial_engine,
+            extractor=FakeExtractor(RUNNER),
+            reviewer=KeywordEvidenceReviewer(),
+            ingestor=FakeIngestor(),
+            recall=FakeRecall(),
+            bm25_titles=_bm25_titles,
+        )
+
+    assert (
+        RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=_factory)
+        == 0
+    )
+    assert trial_engine.calls[0][0] == RUNNER.GATE_BATCH_ID
+    assert trial_engine.calls[0][1] == RUNNER.SAMPLE_TEXTS
+
+
+def test_deterministic_evidence_bytes(monkeypatch: pytest.MonkeyPatch) -> None:
+    _authorize(monkeypatch)
+    recorder: dict[str, Any] = {}
+    assert (
+        RUNNER.main(
+            [],
+            target_uri="postgresql://fixture/okf",
+            deps_factory=_full_deps_factory(recorder),
+        )
+        == 0
+    )
+    first = (RUNNER.VERIFICATION_DIR / RUNNER.EVIDENCE_NAME).read_bytes()
+    assert (
+        RUNNER.main(
+            [],
+            target_uri="postgresql://fixture/okf",
+            deps_factory=_full_deps_factory(recorder),
+        )
+        == 0
+    )
+    second = (RUNNER.VERIFICATION_DIR / RUNNER.EVIDENCE_NAME).read_bytes()
+    assert first == second
+
+
+def test_heterogeneous_trial_routes_to_llm_primary(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _authorize(monkeypatch)
+    engine = FakeTrialEngine(
+        coverage=0.4, homogeneity=trial.BatchHomogeneity.HETEROGENEOUS
+    )
+
+    def _factory(target_uri: str) -> Any:
+        return RUNNER.AcceptanceDeps(
+            trial_engine=engine,
+            extractor=FakeExtractor(RUNNER),
+            reviewer=KeywordEvidenceReviewer(),
+            ingestor=FakeIngestor(),
+            recall=FakeRecall(),
+            bm25_titles=_bm25_titles,
+        )
+
+    assert (
+        RUNNER.main([], target_uri="postgresql://fixture/okf", deps_factory=_factory)
+        == 0
+    )
+    content, data = _read_evidence()
+    assert data["route"] == "LLM_PRIMARY_UIE_ASSIST"
+    assert "LLM_PRIMARY_UIE_ASSIST" == trial.ExtractionRoute.LLM_PRIMARY_UIE_ASSIST.name
+
+
+def test_build_deps_binds_relation_types_as_keyword(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    captured: dict[str, Any] = {}
+
+    class FakeEngine:
+        def __init__(self, client: Any, *, relation_types: Any) -> None:
+            captured["relation_types"] = relation_types
+
+    fake_module = types.ModuleType("llamaindex_runtime.llm_openai.trial_engine")
+    setattr(fake_module, "LlmTrialEngine", FakeEngine)
+    monkeypatch.setattr(llm_openai, "trial_engine", fake_module)
+    monkeypatch.setattr(
+        lightrag_backend.LightragKgIngestor,
+        "_ensure_rag",
+        lambda self: object(),
+    )
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setenv("DASHSCOPE_API_KEY", "test-ds-key")
+    deps = RUNNER.build_deps("postgresql://fixture/okf")
+    assert captured["relation_types"] == frozenset(
+        ("所在地", "所属公司", "任职于", "发布", "总部位于", "使用", "通话", "前往")
+    )
+    assert deps.trial_engine is not None

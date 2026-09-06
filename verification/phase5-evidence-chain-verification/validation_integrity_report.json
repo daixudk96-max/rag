@@ -1,0 +1,30 @@
+{
+  "passed": false,
+  "retrieval_file": "E:\\github\\rag\\verification\\phase3-real-validation\\retrieval_results.json",
+  "judgment_file": "E:\\github\\rag\\verification\\phase3-real-validation\\judgment_completed.csv",
+  "counts_file": "E:\\github\\rag\\verification\\phase5-evidence-chain-verification\\active_version_counts.json",
+  "retrieval_judgment_integrity": {
+    "passed": false,
+    "retrieval_hit_rows": 98,
+    "judgment_rows": 33,
+    "blocking_reasons": [
+      "unknown_hit",
+      "missing_judgment_rows",
+      "corpus_mismatch"
+    ]
+  },
+  "evidence_chain_gate": {
+    "passed": false,
+    "classification": "missing_canonical_spans",
+    "blocking_reasons": [
+      "missing_canonical_spans"
+    ]
+  },
+  "blocking_reasons": [
+    "unknown_hit",
+    "missing_judgment_rows",
+    "corpus_mismatch",
+    "missing_canonical_spans"
+  ],
+  "next_allowed_action": "fix_evidence_chain"
+}

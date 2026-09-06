@@ -1,0 +1,310 @@
+{
+  "schema_version": "1.1",
+  "phase": "14-okf-foundation",
+  "artifact_type": "gate_e_disposable_postgres_rebuild_reconciliation_failure_audit_execution",
+  "gate": "E",
+  "verdict": "PASS",
+  "result": "PASS",
+  "authorization": {
+    "basis": "User-authorized disposable Docker/PostgreSQL Gate E evidence boundary.",
+    "authorization_date": "2026-07-17"
+  },
+  "execution": {
+    "working_directory": "E:/github/rag",
+    "environment_isolation": {
+      "protected_variables_unset_before_process_local_assignment": [
+        "DATABASE_URL",
+        "FORMAL_RUNTIME_DATABASE_URL",
+        "OKF_MIGRATION_TEST_DATABASE_DISPOSABLE",
+        "OKF_REBUILD_EXPECTED_DATABASE",
+        "OKF_FAILURE_AUDIT_ACCEPTANCE",
+        "OKF_REBUILD_DOCKER_ACCEPTANCE"
+      ],
+      "libpq_routing_and_passfile_variables_unset": [
+        "PGSERVICE",
+        "PGSERVICEFILE",
+        "PGSYSCONFDIR",
+        "PGHOST",
+        "PGHOSTADDR",
+        "PGPORT",
+        "PGDATABASE",
+        "PGUSER",
+        "PGPASSWORD",
+        "PGPASSFILE",
+        "PGTARGETSESSIONATTRS",
+        "PGREQUIRESSL"
+      ],
+      "intentionally_assigned_process_local_values": {
+        "OKF_MIGRATION_TEST_DATABASE_DISPOSABLE": "1",
+        "OKF_REBUILD_DOCKER_ACCEPTANCE": "1",
+        "OKF_FAILURE_AUDIT_ACCEPTANCE": "1",
+        "OKF_REBUILD_EXPECTED_DATABASE": "phase14_gate_e_disposable",
+        "database_user": "okf_gate_e",
+        "database_password": "fresh generated process-local value; not inspected, printed, or retained",
+        "connection_uri": "fresh process-local strict URI; not retained"
+      },
+      "connection_boundary": {
+        "scheme": "postgresql",
+        "required_components": [
+          "explicit user",
+          "explicit password",
+          "database",
+          "numeric port"
+        ],
+        "host": "127.0.0.1",
+        "database": "phase14_gate_e_disposable",
+        "disallowed": [
+          "query",
+          "fragment",
+          "service routing",
+          "socket routing",
+          "multihost routing",
+          "localhost",
+          "IPv6"
+        ],
+        "verified_before_migrations": true
+      },
+      "credential_handling": "Existing credentials and their environment values were not inspected, printed, or persisted. The generated password and full connection URI existed only in the isolated process and its children."
+    },
+    "container": {
+      "name": "phase14-gate-e-20260717-d84c1e9a",
+      "label": {
+        "key": "phase14.gate-e",
+        "value": "20260717-d84c1e9a"
+      },
+      "image_tag": "pgvector/pgvector:pg16",
+      "image_id": "sha256:1d533553fefe4f12e5d80c7b80622ba0c382abb5758856f52983d8789179f0fb",
+      "image_digest": "pgvector/pgvector@sha256:1d533553fefe4f12e5d80c7b80622ba0c382abb5758856f52983d8789179f0fb",
+      "target": {
+        "host": "127.0.0.1",
+        "host_port": 60397,
+        "container_port": 5432,
+        "database": "phase14_gate_e_disposable",
+        "user": "okf_gate_e"
+      },
+      "docker_inspect_port_binding": {
+        "container_port_protocol": "5432/tcp",
+        "HostIp": "127.0.0.1",
+        "HostPort": "60397",
+        "HostPort_is_numeric": true
+      },
+      "loopback_only_published_port": true,
+      "database_equals_expected_disposable_database": true
+    },
+    "concrete_command_templates": [
+      "rtk docker run --detach --name phase14-gate-e-20260717-d84c1e9a --label phase14.gate-e=20260717-d84c1e9a --env POSTGRES_DB=phase14_gate_e_disposable --env POSTGRES_USER=okf_gate_e --env POSTGRES_PASSWORD=<fresh-process-local-secret-not-retained> --publish 127.0.0.1:60397:5432 pgvector/pgvector:pg16",
+      "rtk docker inspect phase14-gate-e-20260717-d84c1e9a --format {{json .NetworkSettings.Ports}}",
+      "rtk python E:/github/rag/run_migrations.py",
+      "rtk python E:/github/rag/scripts/rebuild_from_okf.py --help",
+      "rtk python E:/github/rag/scripts/rebuild_from_okf.py --bundle <transient-admitted-frozen-fixture-bundle> --rebuild",
+      "rtk python -m pytest E:/github/rag/tests/llamaindex_runtime/okf/test_rebuild_from_okf_integration.py E:/github/rag/tests/llamaindex_runtime/okf/test_rebuild_failure_audit_integration.py -m integration",
+      "rtk python -m pytest E:/github/rag/tests/llamaindex_runtime/okf/test_rebuild_failure_audit_transactions.py E:/github/rag/tests/llamaindex_runtime/okf/test_rebuild_public_api.py",
+      "rtk python -m pytest E:/github/rag/tests/llamaindex_runtime/okf/test_span_id_roundtrip.py::test_frozen_docling_spans_roundtrip_through_real_okf"
+    ],
+    "exit_codes": {
+      "manual_container_setup": 0,
+      "strict_target_readiness_and_validation": 0,
+      "repository_migrations": 0,
+      "canonical_cli_help": 0,
+      "transient_direct_okf_database_probe": 0,
+      "docker_integration_selector": 0,
+      "transaction_and_public_api_selector": 0,
+      "frozen_roundtrip_selector": 0,
+      "observed_helper_cleanup_selector": 0,
+      "manual_cleanup_and_zero_match_checks": 0
+    },
+    "migration_setup": {
+      "runner": "E:/github/rag/run_migrations.py",
+      "outcome": "passed",
+      "scope": "repository-supported migration runner against the exact inspected disposable target; the transient three-fixture probe reset the disposable public schema and reran the same runner before each fixture."
+    },
+    "cli": {
+      "canonical_path": "scripts/rebuild_from_okf.py",
+      "canonical_help_invocation_exit_code": 0,
+      "canonical_rebuild_invocation_exit_code": 0,
+      "hyphenated_wrapper_used": false
+    }
+  },
+  "focused_tests": {
+    "docker_integration_selector": "tests/llamaindex_runtime/okf/test_rebuild_from_okf_integration.py tests/llamaindex_runtime/okf/test_rebuild_failure_audit_integration.py -m integration",
+    "docker_integration_summary": {
+      "collected": 12,
+      "selected": 10,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 2,
+      "duration_seconds": 203.9,
+      "warnings": 1
+    },
+    "transaction_and_public_api_selector": "tests/llamaindex_runtime/okf/test_rebuild_failure_audit_transactions.py tests/llamaindex_runtime/okf/test_rebuild_public_api.py",
+    "transaction_and_public_api_summary": {
+      "collected": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 0,
+      "duration_seconds": 4.27
+    },
+    "strict_connection_boundary_selector": "tests/llamaindex_runtime/okf/test_rebuild_from_okf_cli_rebuild.py::test_runtime_target_parser_rejects_non_exact_postgresql_uris_before_connect tests/llamaindex_runtime/okf/test_rebuild_from_okf_cli_rebuild.py::test_runtime_factory_refuses_ambient_service_routing_before_connect",
+    "strict_connection_boundary_summary": {
+      "collected": 12,
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 0,
+      "duration_seconds": 74.0,
+      "warnings": 1
+    },
+    "frozen_roundtrip_selector": "tests/llamaindex_runtime/okf/test_span_id_roundtrip.py::test_frozen_docling_spans_roundtrip_through_real_okf",
+    "frozen_roundtrip_summary": {
+      "collected": 3,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 0,
+      "fixture_classes": [
+        "sectioned-pdf",
+        "complex-layout-pdf",
+        "docx"
+      ],
+      "duration_seconds": 81.64,
+      "warnings": 1
+    },
+    "primary_selector_total": {
+      "collected": 38,
+      "selected_or_collected": 36,
+      "passed": 36,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 2
+    },
+    "cleanup_observer_rerun": {
+      "selector": "tests/llamaindex_runtime/okf/test_rebuild_from_okf_integration.py::test_rebuild_reconciles_spans_without_destroying_retained_dependencies",
+      "passed": 1,
+      "failed": 0,
+      "duration_seconds": 60.4,
+      "purpose": "Capture the repository test helper container identity and independently check its label-scoped cleanup. This rerun is not included in primary_selector_total."
+    }
+  },
+  "s_direct_equals_s_okf": {
+    "requirement": "S_direct == S_okf",
+    "result": true,
+    "source_mapping": {
+      "authoritative_existing_test": "tests/llamaindex_runtime/okf/test_span_id_roundtrip.py::test_frozen_docling_spans_roundtrip_through_real_okf",
+      "frozen_direct_fixture_contract": "tests/fixtures/okf_roundtrip/<fixture>/expected_span_ids.json",
+      "direct_normalization_and_serialization_contract": "llamaindex_runtime/okf/serializer.py::serialize_document, which uses NormalizationContract and DoclingIngestor._flatten_docling_metadata",
+      "okf_recomputation_contract": "llamaindex_runtime/okf/roundtrip.py::recompute_span_dicts and roundtrip_mismatch",
+      "canonical_rebuild_contract": "scripts/rebuild_from_okf.py::_canonical_rows and the canonical CLI invocation",
+      "database_materialization_check": "The transient probe queried canonical_spans by registered fixture version after the canonical CLI rebuild and compared every span_id, page_no, heading_path, offset, and text coordinate to both direct and recomputed OKF records."
+    },
+    "transient_probe": {
+      "probe_type": "repository-code-based; process-only; temporary bundle and temporary probe directory deleted",
+      "fixture_execution": "Each admitted frozen fixture was serialized separately because the three fixture classes intentionally share the same document/version scope. Before each fixture, only the disposable database public schema was reset and the repository migration runner was rerun.",
+      "fixture_classes": [
+        {
+          "fixture": "sectioned-pdf",
+          "direct_count": 6,
+          "okf_count": 6,
+          "database_canonical_spans_count": 6,
+          "direct_digest": "48df8c8cbe188690754ccca64c118c578f8d823f81b4917eb87c54b926a49b6f",
+          "okf_digest": "48df8c8cbe188690754ccca64c118c578f8d823f81b4917eb87c54b926a49b6f",
+          "database_digest": "48df8c8cbe188690754ccca64c118c578f8d823f81b4917eb87c54b926a49b6f",
+          "direct_equals_okf": true,
+          "okf_equals_database": true
+        },
+        {
+          "fixture": "complex-layout-pdf",
+          "direct_count": 4,
+          "okf_count": 4,
+          "database_canonical_spans_count": 4,
+          "direct_digest": "f05f709ac8accb82fc9a1e84bfa4a8fd9c1ac4335325e52b8a165728128783c4",
+          "okf_digest": "f05f709ac8accb82fc9a1e84bfa4a8fd9c1ac4335325e52b8a165728128783c4",
+          "database_digest": "f05f709ac8accb82fc9a1e84bfa4a8fd9c1ac4335325e52b8a165728128783c4",
+          "direct_equals_okf": true,
+          "okf_equals_database": true
+        },
+        {
+          "fixture": "docx",
+          "direct_count": 3,
+          "okf_count": 3,
+          "database_canonical_spans_count": 3,
+          "direct_digest": "00be7fe6cd7cc39e541b8ea5ad962ffa29f02f5317b972dcf0bbdaafcbb464e1",
+          "okf_digest": "00be7fe6cd7cc39e541b8ea5ad962ffa29f02f5317b972dcf0bbdaafcbb464e1",
+          "database_digest": "00be7fe6cd7cc39e541b8ea5ad962ffa29f02f5317b972dcf0bbdaafcbb464e1",
+          "direct_equals_okf": true,
+          "okf_equals_database": true
+        }
+      ],
+      "direct_count": 13,
+      "okf_count": 13,
+      "database_canonical_spans_count": 13,
+      "direct_set_digest": "250c1177fc10fb4418fcebd51b2f9da70ed23e81a7d032a17a2b7d589fbad04d",
+      "okf_set_digest": "250c1177fc10fb4418fcebd51b2f9da70ed23e81a7d032a17a2b7d589fbad04d",
+      "database_set_digest": "250c1177fc10fb4418fcebd51b2f9da70ed23e81a7d032a17a2b7d589fbad04d",
+      "direct_equals_okf": true,
+      "okf_equals_database": true,
+      "digest_encoding": "SHA-256 of canonical sorted JSON coordinate records; document contents are not retained in this artifact."
+    }
+  },
+  "behavioral_assertions": [
+    {
+      "assertion": "E1 admits raw documents before writing, rebuilds only admitted raw scope, and preserves registered document/version parents.",
+      "evidence": [
+        "test_rebuild_public_api.py::test_public_rebuild_is_path_only_and_admits_once_before_private_writer",
+        "test_rebuild_from_okf_integration.py::test_rebuild_bundle_rolls_back_registered_scope_when_later_scope_is_missing"
+      ]
+    },
+    {
+      "assertion": "E1 canonical_spans reconciliation is deterministic: expected rows replace stale/corrupt span rows while retained dependency parents and unrelated scope are preserved; an equivalent second run performs zero canonical-span DML.",
+      "evidence": [
+        "test_rebuild_from_okf_integration.py::test_rebuild_reconciles_spans_without_destroying_retained_dependencies"
+      ]
+    },
+    {
+      "assertion": "Cross-version identity collision and later missing scope roll back earlier mutations; failure audit is evaluated only after target verification, rollback, and primary close, while successful rebuild leaves no failure-audit row.",
+      "evidence": [
+        "test_rebuild_from_okf_integration.py::test_rebuild_bundle_rolls_back_on_cross_version_span_id_collision",
+        "test_rebuild_failure_audit_integration.py::test_later_scope_rollback_leaves_one_redacted_audit",
+        "test_rebuild_failure_audit_integration.py::test_collision_failure_leaves_identity_conflict_audit",
+        "test_rebuild_failure_audit_integration.py::test_successful_rebuild_leaves_zero_failure_audits",
+        "test_rebuild_failure_audit_transactions.py"
+      ]
+    },
+    {
+      "assertion": "The strict disposable target parser rejects non-exact connection inputs and ambient service routing before connection; child helpers sanitize libpq routing variables.",
+      "evidence": [
+        "test_rebuild_from_okf_cli_rebuild.py::test_runtime_target_parser_rejects_non_exact_postgresql_uris_before_connect",
+        "test_rebuild_from_okf_cli_rebuild.py::test_runtime_factory_refuses_ambient_service_routing_before_connect",
+        "test_rebuild_failure_audit_integration.py::test_disposable_subprocess_environment_removes_libpq_canaries"
+      ]
+    }
+  ],
+  "cleanup": {
+    "manual_container": {
+      "exact_removal_command": "rtk docker rm --force phase14-gate-e-20260717-d84c1e9a",
+      "post_removal_exact_name_filter": "name=^/phase14-gate-e-20260717-d84c1e9a$",
+      "post_removal_exact_label_filter": "label=phase14.gate-e=20260717-d84c1e9a",
+      "post_removal_name_matches": 0,
+      "post_removal_label_matches": 0
+    },
+    "repository_test_helper": {
+      "observed_container_name": "okf-task34-09b15707d99747ac8dd839e289675956",
+      "exact_label_key": "okf.task",
+      "exact_label_value": "34",
+      "repository_helper_cleanup_template": "docker rm --force <helper-container-name> after helper label inspection confirms okf.task=34",
+      "observed_helper_cleanup_selector": "test_rebuild_from_okf_integration.py::test_rebuild_reconciles_spans_without_destroying_retained_dependencies",
+      "post_removal_exact_label_filter": "label=okf.task=34",
+      "post_removal_label_matches": 0
+    },
+    "transient_material": "The Docker-event observer log, temporary fixture bundles, temporary probe directory, and generated password/URI were deleted; no transient scripts or logs were retained.",
+    "result": "passed_no_manual_or_observed_helper_labeled_containers_remain"
+  },
+  "failure_class": "none",
+  "limitations": [
+    "E1 evidence is bounded to deterministic admitted raw-sidecar-to-canonical_spans reconciliation for registered/protected parents.",
+    "E2a/E2b derived materialization is not exercised or claimed by this artifact.",
+    "This is not a full derived-database rebuild, hermetic execution, tamper-evident audit, production authorization, repository-wide test-cleanliness claim, or Phase/Gate closure claim.",
+    "No document contents, raw connection URI, password, pre-existing credential, environment value, temporary bundle, or temporary log is retained."
+  ]
+}

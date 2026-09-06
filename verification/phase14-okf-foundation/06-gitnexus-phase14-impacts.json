@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "phase": "14-okf-foundation",
+  "artifact_type": "gitnexus_phase14_symbol_impacts",
+  "execution_date_utc": "2026-07-17",
+  "repository_revision": "9c1922ce2a6d89933b3708bc7043f6f914ecb6db",
+  "indexed_revision_short": "9c1922c",
+  "command_pattern": "npx gitnexus impact --repo rag --direction upstream --depth 3 --include-tests <UID>",
+  "execution_wrapper": "Before each npx package command, DATABASE_URL, FORMAL_RUNTIME_DATABASE_URL, OKF_MIGRATION_TEST_DATABASE_DISPOSABLE, OKF_REBUILD_EXPECTED_DATABASE, OKF_FAILURE_AUDIT_ACCEPTANCE, and OKF_REBUILD_DOCKER_ACCEPTANCE were explicitly unset. Their values were not inspected, printed, or persisted.",
+  "scope": "Fresh current/indexed-commit upstream depth-3 symbol-impact evidence for selected Phase 14 symbols; not a commit-scope PASS.",
+  "result": "WARN",
+  "verdict": "WARN",
+  "fresh_current_cli_results": [
+    {
+      "uid": "Function:llamaindex_runtime/okf/serializer.py:serialize_document",
+      "total_impacted": 68,
+      "direct_dependants": 33,
+      "indexed_production_processes": 0,
+      "risk": "CRITICAL"
+    },
+    {
+      "uid": "Function:llamaindex_runtime/okf/raw_pair.py:read_raw_pair",
+      "total_impacted": 45,
+      "direct_dependants": 17,
+      "indexed_production_processes": 0,
+      "risk": "HIGH"
+    },
+    {
+      "uid": "Method:llamaindex_runtime/okf/parser.py:OKFParser.parse_document#2",
+      "total_impacted": 22,
+      "direct_dependants": 22,
+      "indexed_production_processes": 0,
+      "risk": "HIGH"
+    },
+    {
+      "uid": "Function:llamaindex_runtime/okf/canonical_hash.py:canonical_hash",
+      "selection_note": "Selected from 12 name candidates by exact UID.",
+      "total_impacted": 83,
+      "direct_dependants": 26,
+      "indexed_production_processes": 1,
+      "risk": "HIGH",
+      "affected_processes": [
+        {
+          "name": "prepare_raw_pair",
+          "indexed_flow_hits": 10
+        }
+      ]
+    },
+    {
+      "uid": "Function:llamaindex_runtime/okf/_raw_pair_admission.py:prepare_raw_pair",
+      "total_impacted": 9,
+      "direct_dependants": 2,
+      "indexed_production_processes": 0,
+      "risk": "LOW"
+    },
+    {
+      "uid": "Function:scripts/rebuild_from_okf.py:rebuild_bundle",
+      "total_impacted": 0,
+      "direct_dependants": 0,
+      "indexed_production_processes": 0,
+      "risk": "LOW"
+    },
+    {
+      "uid": "Method:llamaindex_runtime/config.py:RuntimeSettings.from_env#0",
+      "total_impacted": 49,
+      "direct_dependants": 32,
+      "indexed_production_processes": 7,
+      "risk": "CRITICAL",
+      "scope_note": "Broad existing runtime/config exposure; not touched by the final lint remediation."
+    }
+  ],
+  "historical_comparison": {
+    "source": ".planning/phases/14-okf-foundation/14-04-SUMMARY.md",
+    "status": "All historical headline total/direct/process/risk values match the fresh current CLI evidence.",
+    "values_matched": [
+      "serialize_document: 68 total, 33 direct, 0 processes, CRITICAL",
+      "read_raw_pair: 45 total, 17 direct, 0 processes, HIGH",
+      "OKFParser.parse_document#2: 22 total, 22 direct, 0 processes, HIGH",
+      "canonical_hash: 83 total, 26 direct, 1 process, HIGH",
+      "prepare_raw_pair: 9 total, 2 direct, 0 processes, LOW",
+      "rebuild_bundle: 0 total, 0 direct, 0 processes, LOW",
+      "RuntimeSettings.from_env#0: 49 total, 32 direct, 7 processes, CRITICAL"
+    ]
+  },
+  "warnings_acknowledged": [
+    "CRITICAL: serialize_document.",
+    "HIGH: read_raw_pair, OKFParser.parse_document#2, and canonical_hash.",
+    "CRITICAL: RuntimeSettings.from_env#0 has broad existing runtime/config exposure and is outside the final lint remediation."
+  ],
+  "coverage_limit": "This is targeted symbol-impact evidence. It separately covers named key symbols that are untracked and therefore absent from tracked-diff detection, but it is not exhaustive impact coverage for every untracked symbol.",
+  "caveats": [
+    "This evidence is not a commit-scope PASS and does not authorize staging, commit, or push.",
+    "Raw terminal output and output digests are intentionally not retained."
+  ]
+}

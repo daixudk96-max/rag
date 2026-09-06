@@ -1,0 +1,1 @@
+{"apply_callers_outside_tests":0,"approved_chain_merged":true,"checks_failed":2,"checks_run":9,"cli_merge_subcommand_absent":true,"live_selectors":{"w7_live_acceptance":"blocked_not_executed"},"parser_staging_zero_ingest":true,"raw_write_rejected":false,"traversal_rejected":true,"unapproved_apply_rejected":true,"verification_status":"verification_failed"}

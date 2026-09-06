@@ -1,0 +1,45 @@
+{
+  "doc_id": "00000000-0000-0000-0000-000000000001",
+  "version_id": "00000000-0000-0000-0000-000000000003",
+  "spans": [
+    {
+      "span_id": "e2caf951-8746-5525-a5aa-ad95c58107cb",
+      "page_no": 1,
+      "heading_path": [
+        "Quarterly Financial Report"
+      ],
+      "offset": 0,
+      "text": "This report summarizes Q4 2024 financial performance metrics."
+    },
+    {
+      "span_id": "87096a7f-3a0d-593c-afd4-8ef267537fdd",
+      "page_no": 1,
+      "heading_path": [
+        "Quarterly Financial Report"
+      ],
+      "offset": 0,
+      "text": "Revenue, Q3 2024 = 12,500. Revenue, Q4 2024 = 14,200. Revenue, Change = +13.6%. Expenses, Q3 2024 = 8,200. Expenses, Q4 2024 = 8,900. Expenses, Change = +8.5%. Profit, Q3 2024 = 4,300. Profit, Q4 2024 = 5,300. Profit, Change = +23.3%"
+    },
+    {
+      "span_id": "fdaba98f-ee4c-5449-9a69-ab71ae83417e",
+      "page_no": 1,
+      "heading_path": [
+        "Quarterly Financial Report",
+        "Analysis"
+      ],
+      "offset": 0,
+      "text": "The strong Q4 performance reflects improved market conditions."
+    },
+    {
+      "span_id": "cb0d69ff-d2fa-558b-9ace-42cb9b3acf74",
+      "page_no": 1,
+      "heading_path": [
+        "Quarterly Financial Report",
+        "Analysis",
+        "Regional Breakdown"
+      ],
+      "offset": 0,
+      "text": "North America contributed 45% of total revenue."
+    }
+  ]
+}

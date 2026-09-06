@@ -1,0 +1,433 @@
+{
+ "schemaVersion": 1,
+ "nodes": [
+  {
+   "key": "prepare",
+   "kind": "prepare",
+   "kindVersion": "1",
+   "config": {
+    "repo": "E:/github/rag",
+    "tests": {
+     "llamaindex_runtime/okf/test_okf_lazy_heavy_import.py": "\"\"\"Zero-heavy-import guards: okf serializer chain must stay import-clean.\n\nPhase 19 debt wave (lazy heavy imports). Before the fix, ingestion/bundle.py\nimported docling + llama_index at module top level, so importing\nllamaindex_runtime.okf.serializer (via the ingestion package __init__)\npulled torch/transformers into sys.modules and broke the entity\nzero-heavy-import guards whenever okf shared a pytest process.\n\"\"\"\nfrom __future__ import annotations\n\nimport ast\nimport json\nimport subprocess\nimport sys\nfrom pathlib import Path\n\nREPO_ROOT = Path(__file__).resolve().parents[3]\nBUNDLE_PATH = REPO_ROOT / \"llamaindex_runtime\" / \"ingestion\" / \"bundle.py\"\n\nHEAVY_MODULES = (\n    \"docling\",\n    \"llama_index\",\n    \"torch\",\n    \"transformers\",\n    \"modelscope\",\n    \"tokenizers\",\n    \"sentencepiece\",\n)\n\n\ndef _probe_source(module: str) -> str:\n    lines = [\n        \"import json, sys\",\n        \"heavy = \" + repr(HEAVY_MODULES),\n        \"import \" + module,\n        \"hits = sorted(\",\n        \"    m for m in sys.modules for h in heavy if m == h or m.startswith(h + '.')\",\n        \")\",\n        \"print(json.dumps(hits))\",\n        \"sys.exit(1 if hits else 0)\",\n    ]\n    return \"\\n\".join(lines) + \"\\n\"\n\n\ndef _run_probe(source: str) -> subprocess.CompletedProcess[str]:\n    return subprocess.run(\n        [sys.executable, \"-c\", source],\n        capture_output=True,\n        text=True,\n        cwd=str(REPO_ROOT),\n        timeout=180,\n    )\n\n\ndef _assert_heavy_free(proc: subprocess.CompletedProcess[str], module: str) -> None:\n    assert proc.returncode == 0, (\n        f\"importing {module!r} pulled heavy modules into sys.modules: \"\n        f\"stdout={proc.stdout!r} stderr={proc.stderr[-2000:]!r}\"\n    )\n\n\ndef test_okf_serializer_import_is_heavy_free():\n    proc = _run_probe(_probe_source(\"llamaindex_runtime.okf.serializer\"))\n    _assert_heavy_free(proc, \"llamaindex_runtime.okf.serializer\")\n\n\ndef test_ingestion_package_import_is_heavy_free():\n    proc = _run_probe(_probe_source(\"llamaindex_runtime.ingestion\"))\n    _assert_heavy_free(proc, \"llamaindex_runtime.ingestion\")\n\n\ndef test_docling_ingestor_import_is_heavy_free():\n    proc = _run_probe(_probe_source(\"llamaindex_runtime.ingestion.docling_ingestor\"))\n    _assert_heavy_free(proc, \"llamaindex_runtime.ingestion.docling_ingestor\")\n\n\ndef test_build_with_injected_converter_never_imports_docling():\n    lines = [\n        \"import json, sys, tempfile\",\n        \"from pathlib import Path\",\n        \"import llamaindex_runtime.ingestion.bundle as bundle_mod\",\n        \"class _FakeDocument:\",\n        \"    def export_to_dict(self):\",\n        \"        return {'fake': True}\",\n        \"    def export_to_markdown(self, image_placeholder=''):\",\n        \"        return '# fake md'\",\n        \"class _FakeResult:\",\n        \"    document = _FakeDocument()\",\n        \"class _FakeConverter:\",\n        \"    def convert(self, source):\",\n        \"        return _FakeResult()\",\n        \"tmp = Path(tempfile.mkdtemp()) / 'doc.md'\",\n        \"tmp.write_text('# hello', encoding='utf-8')\",\n        \"b = bundle_mod.build_docling_bundle(tmp, converter=_FakeConverter())\",\n        \"assert len(b.json_documents) == 1 and len(b.markdown_documents) == 1\",\n        \"assert b.json_documents[0].text == json.dumps({'fake': True})\",\n        \"assert b.markdown_documents[0].text == '# fake md'\",\n        \"assert b.source_path.name == 'doc.md'\",\n        \"assert 'docling' not in sys.modules, 'docling must stay unimported when converter is injected'\",\n        \"print('OK')\",\n    ]\n    proc = _run_probe(\"\\n\".join(lines) + \"\\n\")\n    assert proc.returncode == 0, (\n        f\"injected-converter bundle build broken or docling imported: \"\n        f\"stdout={proc.stdout!r} stderr={proc.stderr[-2000:]!r}\"\n    )\n\n\ndef test_bundle_module_has_no_top_level_heavy_imports():\n    tree = ast.parse(BUNDLE_PATH.read_text(encoding=\"utf-8\"))\n    offenders = []\n    for node in tree.body:\n        if isinstance(node, ast.Import):\n            names = [alias.name for alias in node.names]\n        elif isinstance(node, ast.ImportFrom):\n            names = [node.module or \"\"]\n        else:\n            continue\n        for name in names:\n            if name.split(\".\")[0] in {\"docling\", \"llama_index\"}:\n                offenders.append(name)\n    assert offenders == [], (\n        f\"bundle.py must not import heavy libraries at module top level: {offenders}\"\n    )\n"
+    },
+    "testsRoot": "tests",
+    "allowTestsUpdate": true,
+    "allowScratchInit": true
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "external-idempotent"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:workspace",
+   "kind": "workspace",
+   "kindVersion": "1",
+   "config": {
+    "testPaths": [
+     "llamaindex_runtime/okf/test_okf_lazy_heavy_import.py"
+    ]
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "external-idempotent"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:writer",
+   "kind": "writer",
+   "kindVersion": "1",
+   "config": {
+    "spec": "GOAL: Make importing the okf serializer chain (llamaindex_runtime.okf.serializer, llamaindex_runtime.ingestion, llamaindex_runtime.ingestion.docling_ingestor) free of heavy libraries (docling, llama_index, torch, transformers, modelscope, tokenizers, sentencepiece) so okf and entity can share a pytest process. Root cause: llamaindex_runtime/ingestion/bundle.py imports docling (:9) and llama_index.core (:10) at module top level; every import of any ingestion submodule executes ingestion/__init__.py:1 which imports bundle. Bundle-stripped probe (bundle stubbed in sys.modules) proves bundle.py is the ONLY heavy entry: HEAVY=[] for both chains.\n\nEXACT EDITS — the ONLY implementation file is llamaindex_runtime/ingestion/bundle.py:\n1. Line 7: 'from typing import Protocol' -> 'from typing import TYPE_CHECKING, Protocol'.\n2. Delete top-level lines 9-10 ('from docling.document_converter import DocumentConverter' and 'from llama_index.core import Document as LlamaDocument').\n3. Add after the import section (before 'class DoclingBundle' at :13):\n   if TYPE_CHECKING:\n       from llama_index.core import Document as LlamaDocument\n   (DoclingBundle field annotations 'tuple[LlamaDocument, ...]' are strings under 'from __future__ import annotations', so runtime never evaluates them; the TYPE_CHECKING import satisfies mypy. Do NOT import DocumentConverter even under TYPE_CHECKING — it is not used in any annotation.)\n4. In build_docling_bundle, replace line 33 'doc_converter = converter or DocumentConverter()' with:\n   if converter is None:\n       from docling.document_converter import DocumentConverter\n\n       doc_converter = DocumentConverter()\n   else:\n       doc_converter = converter\n   (Conditional is REQUIRED: with an injected converter docling must never be imported — acceptance test ac4 asserts this.)\n5. Immediately after that if/else, add function-level lazy import before the LlamaDocument constructions at :36/:40:\n   from llama_index.core import Document as LlamaDocument\n\nINVARIANTS: build_docling_bundle behavior byte-identical for all callers (tree/runtime.py:14, vector/runtime.py:11, tests): same DoclingBundle fields, same FileNotFoundError on missing source, same DoclingConverterProtocol injection semantics. No signature changes. Docling real-conversion path stays functional (covered by existing tests/llamaindex_runtime/test_docling_bundle.py and test_docling_2109_default_reader.py in okf full regression)."
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2,
+    "loopBudget": 2
+   },
+   "effect": "non-idempotent"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:candidate",
+   "kind": "candidate",
+   "kindVersion": "1",
+   "config": {},
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "external-idempotent"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:test",
+   "kind": "test",
+   "kindVersion": "1",
+   "config": {
+    "testPaths": [
+     "llamaindex_runtime/okf/test_okf_lazy_heavy_import.py"
+    ]
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "pure"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:reviewer",
+   "kind": "reviewer",
+   "kindVersion": "1",
+   "config": {
+    "spec": "GOAL: Make importing the okf serializer chain (llamaindex_runtime.okf.serializer, llamaindex_runtime.ingestion, llamaindex_runtime.ingestion.docling_ingestor) free of heavy libraries (docling, llama_index, torch, transformers, modelscope, tokenizers, sentencepiece) so okf and entity can share a pytest process. Root cause: llamaindex_runtime/ingestion/bundle.py imports docling (:9) and llama_index.core (:10) at module top level; every import of any ingestion submodule executes ingestion/__init__.py:1 which imports bundle. Bundle-stripped probe (bundle stubbed in sys.modules) proves bundle.py is the ONLY heavy entry: HEAVY=[] for both chains.\n\nEXACT EDITS — the ONLY implementation file is llamaindex_runtime/ingestion/bundle.py:\n1. Line 7: 'from typing import Protocol' -> 'from typing import TYPE_CHECKING, Protocol'.\n2. Delete top-level lines 9-10 ('from docling.document_converter import DocumentConverter' and 'from llama_index.core import Document as LlamaDocument').\n3. Add after the import section (before 'class DoclingBundle' at :13):\n   if TYPE_CHECKING:\n       from llama_index.core import Document as LlamaDocument\n   (DoclingBundle field annotations 'tuple[LlamaDocument, ...]' are strings under 'from __future__ import annotations', so runtime never evaluates them; the TYPE_CHECKING import satisfies mypy. Do NOT import DocumentConverter even under TYPE_CHECKING — it is not used in any annotation.)\n4. In build_docling_bundle, replace line 33 'doc_converter = converter or DocumentConverter()' with:\n   if converter is None:\n       from docling.document_converter import DocumentConverter\n\n       doc_converter = DocumentConverter()\n   else:\n       doc_converter = converter\n   (Conditional is REQUIRED: with an injected converter docling must never be imported — acceptance test ac4 asserts this.)\n5. Immediately after that if/else, add function-level lazy import before the LlamaDocument constructions at :36/:40:\n   from llama_index.core import Document as LlamaDocument\n\nINVARIANTS: build_docling_bundle behavior byte-identical for all callers (tree/runtime.py:14, vector/runtime.py:11, tests): same DoclingBundle fields, same FileNotFoundError on missing source, same DoclingConverterProtocol injection semantics. No signature changes. Docling real-conversion path stays functional (covered by existing tests/llamaindex_runtime/test_docling_bundle.py and test_docling_2109_default_reader.py in okf full regression).",
+    "acceptanceCriteria": [
+     {
+      "id": "ac1",
+      "scenario": "subprocess 'import llamaindex_runtime.okf.serializer' exits 0 with none of docling/llama_index/torch/transformers/modelscope/tokenizers/sentencepiece in sys.modules"
+     },
+     {
+      "id": "ac2",
+      "scenario": "subprocess 'import llamaindex_runtime.ingestion' exits 0 with the same heavy set absent"
+     },
+     {
+      "id": "ac3",
+      "scenario": "subprocess 'import llamaindex_runtime.ingestion.docling_ingestor' exits 0 with the same heavy set absent"
+     },
+     {
+      "id": "ac4",
+      "scenario": "subprocess builds build_docling_bundle(tmp_md, converter=fake) -> DoclingBundle with exactly 1 json + 1 markdown document whose .text equal json.dumps({'fake': True}) and '# fake md', source_path.name=='doc.md', and 'docling' NOT in sys.modules after the call"
+     },
+     {
+      "id": "ac5",
+      "scenario": "AST scan of bundle.py module top level finds zero Import/ImportFrom nodes whose root package is docling or llama_index"
+     }
+    ]
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "non-idempotent"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:mutation",
+   "kind": "mutation",
+   "kindVersion": "1",
+   "config": {
+    "testPaths": [
+     "llamaindex_runtime/okf/test_okf_lazy_heavy_import.py"
+    ]
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "pure"
+  },
+  {
+   "key": "w1-lazy-heavy-imports:certificate",
+   "kind": "certificate",
+   "kindVersion": "1",
+   "config": {
+    "acceptanceCriteria": [
+     {
+      "id": "ac1",
+      "scenario": "subprocess 'import llamaindex_runtime.okf.serializer' exits 0 with none of docling/llama_index/torch/transformers/modelscope/tokenizers/sentencepiece in sys.modules"
+     },
+     {
+      "id": "ac2",
+      "scenario": "subprocess 'import llamaindex_runtime.ingestion' exits 0 with the same heavy set absent"
+     },
+     {
+      "id": "ac3",
+      "scenario": "subprocess 'import llamaindex_runtime.ingestion.docling_ingestor' exits 0 with the same heavy set absent"
+     },
+     {
+      "id": "ac4",
+      "scenario": "subprocess builds build_docling_bundle(tmp_md, converter=fake) -> DoclingBundle with exactly 1 json + 1 markdown document whose .text equal json.dumps({'fake': True}) and '# fake md', source_path.name=='doc.md', and 'docling' NOT in sys.modules after the call"
+     },
+     {
+      "id": "ac5",
+      "scenario": "AST scan of bundle.py module top level finds zero Import/ImportFrom nodes whose root package is docling or llama_index"
+     }
+    ]
+   },
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "pure"
+  },
+  {
+   "key": "merge",
+   "kind": "merge",
+   "kindVersion": "1",
+   "config": {},
+   "retry": {
+    "maxAttempts": 2,
+    "backoffMs": 100,
+    "maxBackoffMs": 5000
+   },
+   "budget": {
+    "maxSpend": 8192,
+    "attemptBudget": 2
+   },
+   "effect": "external-idempotent"
+  }
+ ],
+ "edges": [
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:workspace",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:writer",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:test",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:reviewer",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:mutation",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:workspace",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:writer",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:workspace",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:candidate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:workspace",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:test",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:workspace",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:reviewer",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:workspace",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:mutation",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:workspace",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:writer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:candidate",
+   "toPort": "in",
+   "label": "data+invalidate"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:writer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "invalidate"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:writer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:test",
+   "toPort": "in",
+   "label": "rework-auth"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:writer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:reviewer",
+   "toPort": "in",
+   "label": "rework-auth"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:writer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:mutation",
+   "toPort": "in",
+   "label": "rework-auth"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:candidate",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:test",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:candidate",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:reviewer",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:candidate",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:mutation",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:candidate",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:test",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:reviewer",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:test",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:mutation",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:test",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:reviewer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:mutation",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:reviewer",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:mutation",
+   "fromPort": "out",
+   "to": "w1-lazy-heavy-imports:certificate",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "w1-lazy-heavy-imports:certificate",
+   "fromPort": "out",
+   "to": "merge",
+   "toPort": "in",
+   "label": "data"
+  },
+  {
+   "from": "prepare",
+   "fromPort": "out",
+   "to": "merge",
+   "toPort": "in",
+   "label": "data"
+  }
+ ],
+ "policy": {
+  "reserveBeforeDispatch": true,
+  "defaultRetry": {
+   "maxAttempts": 2,
+   "backoffMs": 100,
+   "maxBackoffMs": 5000
+  },
+  "concurrentDispatch": true
+ }
+}

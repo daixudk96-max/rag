@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real Validation Tree Nodes</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121935;
+      --text: #edf2ff;
+      --muted: #a9b5d6;
+      --line: #30406f;
+      --accent: #79c0ff;
+      --accent-2: #7ee787;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", sans-serif;
+      background: linear-gradient(180deg, var(--bg), #0a0f1a 60%);
+      color: var(--text);
+      line-height: 1.45;
+      padding: 32px 24px;
+    }
+    h1 { font-size: 28px; margin-bottom: 24px; }
+    .node-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .node-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .node-title {
+      font-size: 20px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .node-type {
+      background: var(--accent-2);
+      color: var(--bg);
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .node-fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .field {
+      background: var(--panel-2);
+      padding: 10px 14px;
+      border-radius: 6px;
+    }
+    .field-label {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .field-value {
+      color: var(--text);
+      font-size: 14px;
+      word-break: break-all;
+    }
+    .metadata {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Real Validation Tree Nodes</h1>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">第二阶段-竞品分析-代旭</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">null (root)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">1</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">1 - 1</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">第二阶段-竞品分析-代旭</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">目的</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">7247da86-def0-40f6-9bae-d4c7ea055fe5</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/目的</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">10</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">10 - 10</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">目的</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">1. 竞品识别与定义</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">443436bb-7112-4132-94c3-8b3ac3dd648f</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/1. 竞品识别与定义</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">15</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">15 - 15</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">1. 竞品识别与定义</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品全景图</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">ce79e2ad-3260-412e-8c96-bc6c1749e21d</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">443436bb-7112-4132-94c3-8b3ac3dd648f</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/1. 竞品识别与定义/竞品全景图</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">18</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">18 - 18</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品全景图</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">2. 核心分析对象确认</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">82e4227b-dfc5-4f4e-8f07-b64a035d149c</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/2. 核心分析对象确认</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">24</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">24 - 24</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">2. 核心分析对象确认</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">3. 竞品深度剖析</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/3. 竞品深度剖析</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">33</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">33 - 33</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">3. 竞品深度剖析</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品 A：爱复盘</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">98b21ba0-59b8-4e0f-89d5-eba5a177bb67</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 A：爱复盘</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">36</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">36 - 36</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品 A：爱复盘</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品 B：DeepSeek 智能场控看板 (直接竞品)</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">ad716195-5d1a-437f-b776-128ff1ebfadd</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 B：DeepSeek 智能场控看板 (直接竞品)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">63</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">63 - 63</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品 B：DeepSeek 智能场控看板 (直接竞品)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品 C：巨量千川智投星 (间接竞品)</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">d10a3f8c-0577-4d08-ba50-133c58c352c8</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 C：巨量千川智投星 (间接竞品)</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">85</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">85 - 85</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品 C：巨量千川智投星 (间接竞品)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品 D：飞书多维表格AI辅助（间接竞品）</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">3b71ca17-3402-49b3-92ee-48656a7d5556</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 D：飞书多维表格AI辅助（间接竞品）</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">103</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">103 - 103</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品 D：飞书多维表格AI辅助（间接竞品）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品 E：Plaud Note等智能硬件（间接竞品）</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">256c7d54-abcc-4888-b20a-83a6c9d5b2df</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">0438e44d-d9ab-4cda-9aa8-cb77a5149f71</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/3. 竞品深度剖析/竞品 E：Plaud Note等智能硬件（间接竞品）</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">121</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">121 - 121</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品 E：Plaud Note等智能硬件（间接竞品）</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">4. 市场机会与差异化定位</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">f6dc7dfa-67e0-40fc-bdb1-aebce3d8f099</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">acd7bf7d-2108-4ee4-96ed-31c4c55a5606</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/4. 市场机会与差异化定位</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">139</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">139 - 139</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">4. 市场机会与差异化定位</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">竞品对比矩阵</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">1c8b3eba-5319-4b6c-b004-471d59e161ff</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">f6dc7dfa-67e0-40fc-bdb1-aebce3d8f099</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/4. 市场机会与差异化定位/竞品对比矩阵</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">142</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">142 - 142</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">竞品对比矩阵</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="node-card">
+    <div class="node-header">
+      <span class="node-title">差异化策略</span>
+      <span class="node-type">page_index</span>
+    </div>
+    <div class="node-fields">
+      <div class="field">
+        <div class="field-label">node_id</div>
+        <div class="field-value">f5989d72-6f7e-44ba-9cc4-70f6cb3a699c</div>
+      </div>
+      <div class="field">
+        <div class="field-label">version_id</div>
+        <div class="field-value">fdc0e2eb-18cc-4e73-9192-646873849fae</div>
+      </div>
+      <div class="field">
+        <div class="field-label">parent_node_id</div>
+        <div class="field-value">f6dc7dfa-67e0-40fc-bdb1-aebce3d8f099</div>
+      </div>
+      <div class="field">
+        <div class="field-label">heading_path</div>
+        <div class="field-value">第二阶段-竞品分析-代旭/4. 市场机会与差异化定位/差异化策略</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_no</div>
+        <div class="field-value">152</div>
+      </div>
+      <div class="field">
+        <div class="field-label">page_range</div>
+        <div class="field-value">152 - 152</div>
+      </div>
+      <div class="field">
+        <div class="field-label">level_no</div>
+        <div class="field-value">null</div>
+      </div>
+      <div class="field">
+        <div class="field-label">summary_text</div>
+        <div class="field-value">差异化策略</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="metadata">
+    Total nodes: 14 | Source: verification/real_validation_nodes.json | Model: gpt-5.4-mini
+  </div>
+</body>
+</html>
